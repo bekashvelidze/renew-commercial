@@ -1,0 +1,6 @@
+{
+  "კოსმეტოლოგია": "self.cos_appointments",
+  "ლაზერი": "self.las_appointments",
+  "სოლარიუმი_1": "self.sol1_appointments",
+  "სოლარიუმი_2": "self.sol2_appointments"
+}

@@ -8,7 +8,6 @@ from PyQt6.uic import loadUi
 from PyQt6 import QtGui
 from main_window import MainWindow
 
-
 class Login(QMainWindow):
     def __init__(self):
         super(Login, self).__init__()
