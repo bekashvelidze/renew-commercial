@@ -21,22 +21,11 @@ def load_times():
     return times
 
 
-def make_connection():
-
-
-    return cursor
-
-
 class MainWindow(QMainWindow):
 
     def __init__(self):
         super(MainWindow, self).__init__()
         loadUi('ui/main_window.ui', self)
-        self.clients = [{"name": "სახელი", "lname": "გვარი", "phone": "599999999", "zone": "ზონა", "doctor": "ექიმი",
-                        "price": "100", "time": "11:45"},
-                        {"name": "სახელი2", "lname": "გვარი2", "phone": "577777777", "zone": "ზონა2", "doctor": "ექიმი2",
-                        "price": "120", "time": "12:00"}]
-        services = load_services()
         self.load_data(self.tabWidget.tabText(self.tabWidget.currentIndex()))
         self.cos_make_an_appointment_button.clicked.connect(self.make_an_appointment_cos)
         self.cos_buy_subscription_button.clicked.connect(self.buy_subscription)
@@ -125,5 +114,6 @@ class MainWindow(QMainWindow):
         # იხსნება ცხრილი 'clients', მოწმდება კლიენტის ნომრის მიხედვით წუთების რაოდენობა, ემატება და კეთდება 'UPDATE"
         # იხურება ფანჯარა და ბრუნდება ძირითად ფანჯარაში
         QMessageBox.information(self, 'აბონემენტის შეძება',
-                                f"აბონემენტი დარეგისტრირებულია:\nსახელი, გვარი: {self.clients[0]['name']} {self.clients[0]['lname']}"
-                                f"\nწუთი: 50")
+                                f"აბონემენტი დარეგისტრირებულია:"
+                                f"\nსახელი, გვარი: {self.clients[0]['name']} {self.clients[0]['lname']}\nწუთი: 50")
+        
