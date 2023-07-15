@@ -8,6 +8,7 @@ from PyQt6.uic import loadUi
 from PyQt6 import QtGui
 from main_window import MainWindow
 
+
 class Login(QMainWindow):
     def __init__(self):
         super(Login, self).__init__()
@@ -32,7 +33,6 @@ class Login(QMainWindow):
         y = (mainwindow.screen().geometry().height() // 2) - (widget.height() // 2)
         widget.move(x, y)
         widget.setCurrentIndex(widget.currentIndex() + 1)
-
 
 
 app = QApplication(sys.argv)

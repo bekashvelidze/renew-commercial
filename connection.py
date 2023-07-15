@@ -18,16 +18,14 @@ class Database:
     def connect(self):
         try:
             connection = mariadb.connect(
-                host = self.database_data["HOST"],
-                port = 3306,
-                database = self.database_data["DATABASE"],
-                user = self.database_data["USER"],
-                password = self.database_data["PASSWORD"]
+                host=self.database_data["HOST"],
+                port=3306,
+                database=self.database_data["DATABASE"],
+                user=self.database_data["USER"],
+                password=self.database_data["PASSWORD"]
             )
         except mariadb.Error as error:
             print(error)
             sys.exit(1)
 
-        cursor = connection.cursor()
-
-        return cursor
+        return connection
