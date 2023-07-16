@@ -48,6 +48,8 @@ class MainWindow(QMainWindow):
         self.las_make_an_appointment_button.clicked.connect(self.make_an_appointment_las)
         self.sol_1_make_an_appointment_button.clicked.connect(self.make_an_appointment_sol_1)
         self.sol_2_make_an_appointment_button.clicked.connect(self.make_an_appointment_sol_2)
+        self.sol_1_buy_subscription_button.clicked.connect(self.sol_1_buy_subscription)
+        self.sol_2_buy_subscription_button.clicked.connect(self.sol_2_buy_subscription)
         # Cell click events
         self.cos_appointments.cellClicked.connect(self.get_cos_cell_information)
         self.las_appointments.cellClicked.connect(self.get_las_cell_information)
@@ -135,18 +137,34 @@ class MainWindow(QMainWindow):
         conn.commit()
         conn.close()
 
+        # კლიენტის დამატება თუ მისი ნომერი არაა ბაზაში.
+        conn2 = db.connect()
+        cursor2 = conn2.cursor()
+        cursor2.execute("SELECT * FROM clients")
+        print(cursor2.rowcount)
+        client_phones = []
+        if cursor2.rowcount > 0:
+             for _ in cursor2:
+                 client_phones.append(cursor2[3])
+        else:
+            print(client_phones)
+            for _ in cursor2:
+                if phone in client_phones:
+                    print(phone)
+                else:
+                    conn3 = db.connect()
+                    cursor3 = conn3.cursor()
+                    cursor3.execute("INSERT INTO clients (fname, lname, phone) "
+                                   "VALUES (?, ?, ?)", (first_name, last_name, phone))
+                    conn3.commit()
+                    conn3.close()
+
         QMessageBox.information(self, 'პაციენტი ჩაიწერა',
                                 f"პაციენტი ჩაწერილია:\nსახელი, გვარი: {first_name} {last_name}"
                                 f"\nდრო: {time}")
         self.load_data()
 
-    def buy_subscription(self):
-        QMessageBox.information(self, 'აბონემენტის შეძება',
-                                f"აბონემენტი დარეგისტრირებულია:"
-                                f"\nსახელი, გვარი: {self.clients[0]['name']} {self.clients[0]['lname']}\nწუთი: 50")
-
     # ლაზერი
-
     def change_date_las(self):
         global today
         today = self.las_new_date.text()
@@ -296,6 +314,10 @@ class MainWindow(QMainWindow):
                                 f"\nწუთები: {minutes}")
         self.load_data()
 
+    def sol_1_buy_subscription(self):
+        print("Clicked")
+        pass
+
     # სოლარიუმი 2
     def change_date_sol_2(self):
         global today
@@ -365,3 +387,7 @@ class MainWindow(QMainWindow):
                                 f"\nდრო: {time}"
                                 f"\nწუთები: {minutes}")
         self.load_data()
+
+    def sol_2_buy_subscription(self):
+        print("Clicked")
+        pass
