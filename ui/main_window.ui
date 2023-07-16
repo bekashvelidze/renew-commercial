@@ -14,7 +14,11 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QLineEdit {
+   <string notr="true">QTabWidget:item {
+	text-align: center;
+}
+
+QLineEdit {
 	border: 0.5px solid black;
 }
 
@@ -41,10 +45,6 @@ QPushButton {
 QPushButton:hover {
 	border: 1px solid black;
 	background-color: #F8AD25;
-}
-
-QTableWidget {
-	text-align: center;
 }</string>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -65,6 +65,9 @@ QTableWidget {
     </property>
     <property name="styleSheet">
      <string notr="true"/>
+    </property>
+    <property name="tabPosition">
+     <enum>QTabWidget::North</enum>
     </property>
     <property name="currentIndex">
      <number>0</number>
@@ -214,7 +217,7 @@ QTableWidget {
      <widget class="QTableWidget" name="cos_appointments">
       <property name="geometry">
        <rect>
-        <x>0</x>
+        <x>-2</x>
         <y>30</y>
         <width>1000</width>
         <height>351</height>
@@ -488,11 +491,11 @@ QTableWidget {
        <property name="font">
         <font>
          <family>BPG Nino Mtavruli</family>
-         <pointsize>10</pointsize>
+         <pointsize>12</pointsize>
         </font>
        </property>
        <property name="textAlignment">
-        <set>AlignLeading|AlignVCenter</set>
+        <set>AlignCenter</set>
        </property>
       </column>
       <column>
@@ -502,11 +505,11 @@ QTableWidget {
        <property name="font">
         <font>
          <family>BPG Nino Mtavruli</family>
-         <pointsize>10</pointsize>
+         <pointsize>12</pointsize>
         </font>
        </property>
        <property name="textAlignment">
-        <set>AlignLeading|AlignVCenter</set>
+        <set>AlignCenter</set>
        </property>
       </column>
       <column>
@@ -516,11 +519,11 @@ QTableWidget {
        <property name="font">
         <font>
          <family>BPG Nino Mtavruli</family>
-         <pointsize>10</pointsize>
+         <pointsize>12</pointsize>
         </font>
        </property>
        <property name="textAlignment">
-        <set>AlignLeading|AlignVCenter</set>
+        <set>AlignCenter</set>
        </property>
       </column>
       <column>
@@ -530,11 +533,11 @@ QTableWidget {
        <property name="font">
         <font>
          <family>BPG Nino Mtavruli</family>
-         <pointsize>10</pointsize>
+         <pointsize>12</pointsize>
         </font>
        </property>
        <property name="textAlignment">
-        <set>AlignLeading|AlignVCenter</set>
+        <set>AlignCenter</set>
        </property>
       </column>
       <column>
@@ -544,11 +547,11 @@ QTableWidget {
        <property name="font">
         <font>
          <family>BPG Nino Mtavruli</family>
-         <pointsize>10</pointsize>
+         <pointsize>12</pointsize>
         </font>
        </property>
        <property name="textAlignment">
-        <set>AlignLeading|AlignVCenter</set>
+        <set>AlignCenter</set>
        </property>
       </column>
       <item row="4" column="3">
@@ -725,9 +728,9 @@ QTableWidget {
      <widget class="QLabel" name="current_date">
       <property name="geometry">
        <rect>
-        <x>200</x>
+        <x>184</x>
         <y>6</y>
-        <width>101</width>
+        <width>120</width>
         <height>19</height>
        </rect>
       </property>
@@ -765,7 +768,7 @@ QTableWidget {
        <rect>
         <x>430</x>
         <y>6</y>
-        <width>170</width>
+        <width>174</width>
         <height>19</height>
        </rect>
       </property>
@@ -776,7 +779,7 @@ QTableWidget {
        </font>
       </property>
       <property name="text">
-       <string>აირჩიეთ სხვა თარიღი</string>
+       <string>აირჩიეთ სხვა თარიღი:</string>
       </property>
      </widget>
      <widget class="QLabel" name="today_is_cos">
@@ -971,7 +974,7 @@ QTableWidget {
      <widget class="QTableWidget" name="las_appointments">
       <property name="geometry">
        <rect>
-        <x>0</x>
+        <x>-2</x>
         <y>30</y>
         <width>1000</width>
         <height>351</height>
@@ -1249,8 +1252,11 @@ QTableWidget {
        <property name="font">
         <font>
          <family>BPG Nino Mtavruli</family>
-         <pointsize>10</pointsize>
+         <pointsize>12</pointsize>
         </font>
+       </property>
+       <property name="textAlignment">
+        <set>AlignCenter</set>
        </property>
       </column>
       <column>
@@ -1260,8 +1266,11 @@ QTableWidget {
        <property name="font">
         <font>
          <family>BPG Nino Mtavruli</family>
-         <pointsize>10</pointsize>
+         <pointsize>12</pointsize>
         </font>
+       </property>
+       <property name="textAlignment">
+        <set>AlignCenter</set>
        </property>
       </column>
       <column>
@@ -1271,8 +1280,11 @@ QTableWidget {
        <property name="font">
         <font>
          <family>BPG Nino Mtavruli</family>
-         <pointsize>10</pointsize>
+         <pointsize>12</pointsize>
         </font>
+       </property>
+       <property name="textAlignment">
+        <set>AlignCenter</set>
        </property>
       </column>
       <column>
@@ -1282,8 +1294,11 @@ QTableWidget {
        <property name="font">
         <font>
          <family>BPG Nino Mtavruli</family>
-         <pointsize>10</pointsize>
+         <pointsize>12</pointsize>
         </font>
+       </property>
+       <property name="textAlignment">
+        <set>AlignCenter</set>
        </property>
       </column>
       <column>
@@ -1293,8 +1308,11 @@ QTableWidget {
        <property name="font">
         <font>
          <family>BPG Nino Mtavruli</family>
-         <pointsize>10</pointsize>
+         <pointsize>12</pointsize>
         </font>
+       </property>
+       <property name="textAlignment">
+        <set>AlignCenter</set>
        </property>
       </column>
       <column>
@@ -1304,19 +1322,11 @@ QTableWidget {
        <property name="font">
         <font>
          <family>BPG Nino Mtavruli</family>
-         <pointsize>10</pointsize>
+         <pointsize>12</pointsize>
         </font>
        </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>ფასი</string>
-       </property>
-       <property name="font">
-        <font>
-         <family>BPG Nino Mtavruli</family>
-         <pointsize>10</pointsize>
-        </font>
+       <property name="textAlignment">
+        <set>AlignCenter</set>
        </property>
       </column>
       <item row="4" column="4">
@@ -1468,9 +1478,9 @@ QTableWidget {
      <widget class="QLabel" name="las_current_date">
       <property name="geometry">
        <rect>
-        <x>200</x>
+        <x>184</x>
         <y>6</y>
-        <width>101</width>
+        <width>120</width>
         <height>19</height>
        </rect>
       </property>
@@ -1527,7 +1537,7 @@ QTableWidget {
        <rect>
         <x>430</x>
         <y>6</y>
-        <width>170</width>
+        <width>174</width>
         <height>19</height>
        </rect>
       </property>
@@ -1538,10 +1548,10 @@ QTableWidget {
        </font>
       </property>
       <property name="text">
-       <string>აირჩიეთ სხვა თარიღი</string>
+       <string>აირჩიეთ სხვა თარიღი:</string>
       </property>
      </widget>
-     <widget class="QLabel" name="today_is_cos_2">
+     <widget class="QLabel" name="today_is_las">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -1565,107 +1575,70 @@ QTableWidget {
      <attribute name="title">
       <string>სოლარიუმი 1</string>
      </attribute>
-     <widget class="QLineEdit" name="lineEdit_9">
+     <widget class="QLabel" name="sol_1_current_date">
       <property name="geometry">
        <rect>
-        <x>250</x>
-        <y>430</y>
-        <width>113</width>
+        <x>184</x>
+        <y>6</y>
+        <width>120</width>
+        <height>19</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>თარიღი</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="sol_1_choose_date">
+      <property name="geometry">
+       <rect>
+        <x>430</x>
+        <y>6</y>
+        <width>174</width>
+        <height>19</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>აირჩიეთ სხვა თარიღი:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="sol_1_date">
+      <property name="geometry">
+       <rect>
+        <x>450</x>
+        <y>398</y>
+        <width>90</width>
         <height>20</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>11</pointsize>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
        </font>
       </property>
-      <property name="placeholderText">
-       <string>ტელეფონი</string>
+      <property name="text">
+       <string/>
       </property>
      </widget>
-     <widget class="QComboBox" name="comboBox_9">
+     <widget class="QTableWidget" name="sol_1_appointments">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>460</y>
-        <width>111</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>11</pointsize>
-       </font>
-      </property>
-      <item>
-       <property name="text">
-        <string>ლაზერი</string>
-       </property>
-      </item>
-     </widget>
-     <widget class="QLineEdit" name="lineEdit_8">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>430</y>
-        <width>113</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>11</pointsize>
-       </font>
-      </property>
-      <property name="placeholderText">
-       <string>სახელი</string>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBox_7">
-      <property name="geometry">
-       <rect>
-        <x>130</x>
-        <y>460</y>
-        <width>111</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>11</pointsize>
-       </font>
-      </property>
-      <item>
-       <property name="text">
-        <string>სახეობა</string>
-       </property>
-      </item>
-     </widget>
-     <widget class="QLineEdit" name="lineEdit_7">
-      <property name="geometry">
-       <rect>
-        <x>130</x>
-        <y>430</y>
-        <width>113</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>11</pointsize>
-       </font>
-      </property>
-      <property name="placeholderText">
-       <string>გვარი</string>
-      </property>
-     </widget>
-     <widget class="QTableWidget" name="tableWidget_6">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>20</y>
-        <width>771</width>
-        <height>401</height>
+        <x>-2</x>
+        <y>30</y>
+        <width>1000</width>
+        <height>351</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -1688,12 +1661,53 @@ QTableWidget {
       </property>
       <property name="font">
        <font>
-        <pointsize>10</pointsize>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>11</pointsize>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true"/>
+       <string notr="true">QTableWidget#sol_1 {
+	color: red;
+}</string>
       </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
+      </property>
+      <property name="alternatingRowColors">
+       <bool>true</bool>
+      </property>
+      <property name="showGrid">
+       <bool>true</bool>
+      </property>
+      <property name="gridStyle">
+       <enum>Qt::SolidLine</enum>
+      </property>
+      <property name="sortingEnabled">
+       <bool>false</bool>
+      </property>
+      <row>
+       <property name="text">
+        <string>09:00</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>09:15</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>09:30</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>09:45</string>
+       </property>
+      </row>
       <row>
        <property name="text">
         <string>10:00</string>
@@ -1779,200 +1793,465 @@ QTableWidget {
         <string>14:00</string>
        </property>
       </row>
+      <row>
+       <property name="text">
+        <string>14:15</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>14:30</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>14:45</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>15:00</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>15:15</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>15:30</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>15:45</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>16:00</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>16:15</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>16:30</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>16:45</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>17:00</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>17:15</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>17:30</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>17:45</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>18:00</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>18:15</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>18:30</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>18:45</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>19:00</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>19:15</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>19:30</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>19:45</string>
+       </property>
+      </row>
       <column>
        <property name="text">
-        <string>ორშაბათი</string>
+        <string>სახელი</string>
+       </property>
+       <property name="font">
+        <font>
+         <family>BPG Nino Mtavruli</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="textAlignment">
+        <set>AlignCenter</set>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>სამშაბათი</string>
+        <string>გვარი</string>
+       </property>
+       <property name="font">
+        <font>
+         <family>BPG Nino Mtavruli</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="textAlignment">
+        <set>AlignCenter</set>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>ოთხშაბათი</string>
+        <string>ტელეფონი</string>
+       </property>
+       <property name="font">
+        <font>
+         <family>BPG Nino Mtavruli</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="textAlignment">
+        <set>AlignCenter</set>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>ხუთშაბათი</string>
+        <string>წუთები (აბონემენტი)</string>
+       </property>
+       <property name="font">
+        <font>
+         <family>BPG Nino Mtavruli</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="textAlignment">
+        <set>AlignCenter</set>
        </property>
       </column>
-      <column>
+      <item row="2" column="1">
        <property name="text">
-        <string>პარასკევი</string>
+        <string/>
        </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>შაბათი</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>კვირა</string>
-       </property>
-      </column>
-      <item row="0" column="2">
+      </item>
+      <item row="4" column="2">
        <property name="text">
         <string/>
        </property>
       </item>
      </widget>
-     <widget class="QPushButton" name="pushButton_3">
+     <widget class="QPushButton" name="sol_1_pay_button">
       <property name="geometry">
        <rect>
-        <x>380</x>
-        <y>450</y>
-        <width>181</width>
-        <height>31</height>
+        <x>670</x>
+        <y>390</y>
+        <width>170</width>
+        <height>45</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>11</pointsize>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>გადახდა</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="sol_1_make_an_appointment_button">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>454</y>
+        <width>170</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
        </font>
       </property>
       <property name="text">
        <string>პაციენტის ჩაწერა</string>
       </property>
      </widget>
-     <widget class="QComboBox" name="comboBox_8">
+     <widget class="QLabel" name="sol_1_patients">
       <property name="geometry">
        <rect>
-        <x>250</x>
-        <y>460</y>
-        <width>111</width>
+        <x>852</x>
+        <y>446</y>
+        <width>66</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="sol_1_phone">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>422</y>
+        <width>170</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="placeholderText">
+       <string>ტელეფონი</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="sol_1_patients_label">
+      <property name="geometry">
+       <rect>
+        <x>670</x>
+        <y>450</y>
+        <width>171</width>
+        <height>19</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>დღეს სულ ჩაწერილია:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="today_is_sol_1">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>6</y>
+        <width>85</width>
+        <height>19</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>დღეს არის:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="sol_1_time_label">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>430</y>
+        <width>42</width>
+        <height>19</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>დრო:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="sol_1_fname">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>390</y>
+        <width>170</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="placeholderText">
+       <string>სახელი</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="sol_1_lname">
+      <property name="geometry">
+       <rect>
+        <x>186</x>
+        <y>390</y>
+        <width>170</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="placeholderText">
+       <string>გვარი</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="sol_1_date_label">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>398</y>
+        <width>70</width>
+        <height>19</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>თარიღი:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="sol_1_current_day">
+      <property name="geometry">
+       <rect>
+        <x>102</x>
+        <y>5</y>
+        <width>81</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>დღე</string>
+      </property>
+     </widget>
+     <widget class="QDateEdit" name="sol_1_new_date">
+      <property name="geometry">
+       <rect>
+        <x>620</x>
+        <y>2</y>
+        <width>110</width>
         <height>22</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>11</pointsize>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
        </font>
       </property>
-      <item>
-       <property name="text">
-        <string>ექიმი</string>
-       </property>
-      </item>
+      <property name="calendarPopup">
+       <bool>true</bool>
+      </property>
      </widget>
-     <widget class="QLabel" name="label">
+     <widget class="QLabel" name="sol_1_time">
       <property name="geometry">
        <rect>
-        <x>63</x>
-        <y>0</y>
-        <width>74</width>
-        <height>18</height>
+        <x>432</x>
+        <y>428</y>
+        <width>90</width>
+        <height>16</height>
        </rect>
       </property>
-      <property name="text">
-       <string>03.07.2023</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_2">
-      <property name="geometry">
-       <rect>
-        <x>160</x>
-        <y>0</y>
-        <width>74</width>
-        <height>18</height>
-       </rect>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
+       </font>
       </property>
       <property name="text">
-       <string>04.07.2023</string>
+       <string/>
       </property>
      </widget>
-     <widget class="QLabel" name="label_3">
-      <property name="geometry">
-       <rect>
-        <x>260</x>
-        <y>0</y>
-        <width>74</width>
-        <height>18</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>05.07.2023</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_4">
-      <property name="geometry">
-       <rect>
-        <x>360</x>
-        <y>0</y>
-        <width>74</width>
-        <height>18</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>06.07.2023</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_5">
-      <property name="geometry">
-       <rect>
-        <x>460</x>
-        <y>0</y>
-        <width>74</width>
-        <height>18</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>07.07.2023</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_6">
-      <property name="geometry">
-       <rect>
-        <x>560</x>
-        <y>0</y>
-        <width>74</width>
-        <height>18</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>08.07.2023</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_7">
+     <widget class="Line" name="las_line_2">
       <property name="geometry">
        <rect>
         <x>660</x>
-        <y>0</y>
-        <width>74</width>
-        <height>18</height>
+        <y>380</y>
+        <width>5</width>
+        <height>110</height>
        </rect>
       </property>
-      <property name="text">
-       <string>09.07.2023</string>
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton">
+     <widget class="QLineEdit" name="sol_1_minutes">
       <property name="geometry">
        <rect>
-        <x>740</x>
-        <y>0</y>
-        <width>25</width>
-        <height>18</height>
+        <x>186</x>
+        <y>422</y>
+        <width>170</width>
+        <height>30</height>
        </rect>
       </property>
-      <property name="text">
-       <string>&gt;</string>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
+       </font>
       </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_6">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>0</y>
-        <width>25</width>
-        <height>18</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>&lt;</string>
+      <property name="placeholderText">
+       <string>წუთი</string>
       </property>
      </widget>
     </widget>
@@ -1980,145 +2259,241 @@ QTableWidget {
      <attribute name="title">
       <string>სოლარიუმი 2</string>
      </attribute>
-     <widget class="QLineEdit" name="lineEdit_12">
+     <widget class="QLabel" name="sol_2_time">
       <property name="geometry">
        <rect>
-        <x>250</x>
-        <y>430</y>
-        <width>113</width>
-        <height>20</height>
+        <x>432</x>
+        <y>428</y>
+        <width>90</width>
+        <height>16</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>11</pointsize>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
        </font>
       </property>
-      <property name="placeholderText">
-       <string>ტელეფონი</string>
+      <property name="text">
+       <string/>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_4">
+     <widget class="QPushButton" name="sol_2_make_an_appointment_button">
       <property name="geometry">
        <rect>
-        <x>380</x>
-        <y>450</y>
-        <width>181</width>
-        <height>31</height>
+        <x>370</x>
+        <y>454</y>
+        <width>170</width>
+        <height>30</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>11</pointsize>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
        </font>
       </property>
       <property name="text">
        <string>პაციენტის ჩაწერა</string>
       </property>
      </widget>
-     <widget class="QComboBox" name="comboBox_10">
+     <widget class="QLabel" name="sol_2_patients">
       <property name="geometry">
        <rect>
-        <x>130</x>
-        <y>460</y>
-        <width>111</width>
-        <height>22</height>
+        <x>852</x>
+        <y>446</y>
+        <width>66</width>
+        <height>25</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>11</pointsize>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
        </font>
       </property>
-      <item>
-       <property name="text">
-        <string>სახეობა</string>
-       </property>
-      </item>
+      <property name="text">
+       <string/>
+      </property>
      </widget>
-     <widget class="QComboBox" name="comboBox_11">
+     <widget class="QLabel" name="sol_2_current_date">
       <property name="geometry">
        <rect>
-        <x>250</x>
-        <y>460</y>
-        <width>111</width>
-        <height>22</height>
+        <x>184</x>
+        <y>6</y>
+        <width>120</width>
+        <height>19</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>11</pointsize>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
        </font>
       </property>
-      <item>
-       <property name="text">
-        <string>ექიმი</string>
-       </property>
-      </item>
+      <property name="text">
+       <string>თარიღი</string>
+      </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_11">
+     <widget class="QLineEdit" name="sol_2_phone">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>430</y>
-        <width>113</width>
-        <height>20</height>
+        <y>422</y>
+        <width>170</width>
+        <height>30</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>11</pointsize>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
        </font>
       </property>
       <property name="placeholderText">
-       <string>სახელი</string>
+       <string>ტელეფონი</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_10">
+     <widget class="QLabel" name="sol_2_date_label">
       <property name="geometry">
        <rect>
-        <x>130</x>
-        <y>430</y>
-        <width>113</width>
-        <height>20</height>
+        <x>370</x>
+        <y>398</y>
+        <width>70</width>
+        <height>19</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>11</pointsize>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>თარიღი:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="sol_2_patients_label">
+      <property name="geometry">
+       <rect>
+        <x>670</x>
+        <y>450</y>
+        <width>171</width>
+        <height>19</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>დღეს სულ ჩაწერილია:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="sol_2_choose_date">
+      <property name="geometry">
+       <rect>
+        <x>430</x>
+        <y>6</y>
+        <width>174</width>
+        <height>19</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>აირჩიეთ სხვა თარიღი:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="sol_2_lname">
+      <property name="geometry">
+       <rect>
+        <x>186</x>
+        <y>390</y>
+        <width>170</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
        </font>
       </property>
       <property name="placeholderText">
        <string>გვარი</string>
       </property>
      </widget>
-     <widget class="QComboBox" name="comboBox_12">
+     <widget class="QPushButton" name="sol_2_pay_button">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>460</y>
-        <width>111</width>
-        <height>22</height>
+        <x>670</x>
+        <y>390</y>
+        <width>170</width>
+        <height>45</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>11</pointsize>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
        </font>
       </property>
-      <item>
-       <property name="text">
-        <string>ლაზერი</string>
-       </property>
-      </item>
+      <property name="text">
+       <string>გადახდა</string>
+      </property>
      </widget>
-     <widget class="QTableWidget" name="tableWidget_7">
+     <widget class="QLineEdit" name="sol_2_minutes">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>771</width>
-        <height>421</height>
+        <x>186</x>
+        <y>422</y>
+        <width>170</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="placeholderText">
+       <string>წუთი</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="sol_2_fname">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>390</y>
+        <width>170</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="placeholderText">
+       <string>სახელი</string>
+      </property>
+     </widget>
+     <widget class="QTableWidget" name="sol_2_appointments">
+      <property name="geometry">
+       <rect>
+        <x>-2</x>
+        <y>30</y>
+        <width>1000</width>
+        <height>351</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -2141,12 +2516,53 @@ QTableWidget {
       </property>
       <property name="font">
        <font>
+        <family>BPG Nino Mtavruli</family>
         <pointsize>11</pointsize>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true"/>
+       <string notr="true">QTableWidget#sol_1 {
+	color: red;
+}</string>
       </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
+      </property>
+      <property name="alternatingRowColors">
+       <bool>true</bool>
+      </property>
+      <property name="showGrid">
+       <bool>true</bool>
+      </property>
+      <property name="gridStyle">
+       <enum>Qt::SolidLine</enum>
+      </property>
+      <property name="sortingEnabled">
+       <bool>false</bool>
+      </property>
+      <row>
+       <property name="text">
+        <string>09:00</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>09:15</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>09:30</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>09:45</string>
+       </property>
+      </row>
       <row>
        <property name="text">
         <string>10:00</string>
@@ -2232,46 +2648,282 @@ QTableWidget {
         <string>14:00</string>
        </property>
       </row>
+      <row>
+       <property name="text">
+        <string>14:15</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>14:30</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>14:45</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>15:00</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>15:15</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>15:30</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>15:45</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>16:00</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>16:15</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>16:30</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>16:45</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>17:00</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>17:15</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>17:30</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>17:45</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>18:00</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>18:15</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>18:30</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>18:45</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>19:00</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>19:15</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>19:30</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>19:45</string>
+       </property>
+      </row>
       <column>
        <property name="text">
-        <string>ორშაბათი</string>
+        <string>სახელი</string>
+       </property>
+       <property name="font">
+        <font>
+         <family>BPG Nino Mtavruli</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="textAlignment">
+        <set>AlignCenter</set>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>სამშაბათი</string>
+        <string>გვარი</string>
+       </property>
+       <property name="font">
+        <font>
+         <family>BPG Nino Mtavruli</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="textAlignment">
+        <set>AlignCenter</set>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>ოთხშაბათი</string>
+        <string>ტელეფონი</string>
+       </property>
+       <property name="font">
+        <font>
+         <family>BPG Nino Mtavruli</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="textAlignment">
+        <set>AlignCenter</set>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>ხუთშაბათი</string>
+        <string>წუთები (აბონემენტი)</string>
+       </property>
+       <property name="font">
+        <font>
+         <family>BPG Nino Mtavruli</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="textAlignment">
+        <set>AlignCenter</set>
        </property>
       </column>
-      <column>
-       <property name="text">
-        <string>პარასკევი</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>შაბათი</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>კვირა</string>
-       </property>
-      </column>
-      <item row="0" column="2">
+      <item row="2" column="1">
        <property name="text">
         <string/>
        </property>
       </item>
+      <item row="4" column="2">
+       <property name="text">
+        <string/>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="sol_2_time_label">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>430</y>
+        <width>42</width>
+        <height>19</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>დრო:</string>
+      </property>
+     </widget>
+     <widget class="QDateEdit" name="sol_2_new_date">
+      <property name="geometry">
+       <rect>
+        <x>620</x>
+        <y>2</y>
+        <width>110</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="calendarPopup">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="today_is_sol_2">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>6</y>
+        <width>85</width>
+        <height>19</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>დღეს არის:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="sol_2_current_day">
+      <property name="geometry">
+       <rect>
+        <x>102</x>
+        <y>5</y>
+        <width>81</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>დღე</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="sol_2_date">
+      <property name="geometry">
+       <rect>
+        <x>450</x>
+        <y>398</y>
+        <width>90</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
      </widget>
     </widget>
    </widget>
@@ -2295,38 +2947,36 @@ QTableWidget {
   <tabstop>cos_zone</tabstop>
   <tabstop>cos_doctor</tabstop>
   <tabstop>cos_make_an_appointment_button</tabstop>
-  <tabstop>las_make_an_appointment_button</tabstop>
-  <tabstop>cos_pay_button</tabstop>
-  <tabstop>lineEdit_9</tabstop>
-  <tabstop>comboBox_9</tabstop>
-  <tabstop>lineEdit_8</tabstop>
-  <tabstop>comboBox_7</tabstop>
-  <tabstop>lineEdit_7</tabstop>
-  <tabstop>tableWidget_6</tabstop>
-  <tabstop>pushButton_3</tabstop>
-  <tabstop>comboBox_8</tabstop>
-  <tabstop>pushButton</tabstop>
-  <tabstop>pushButton_6</tabstop>
-  <tabstop>lineEdit_12</tabstop>
-  <tabstop>pushButton_4</tabstop>
-  <tabstop>comboBox_10</tabstop>
-  <tabstop>comboBox_11</tabstop>
-  <tabstop>lineEdit_11</tabstop>
-  <tabstop>lineEdit_10</tabstop>
-  <tabstop>comboBox_12</tabstop>
-  <tabstop>tableWidget_7</tabstop>
-  <tabstop>cos_appointments</tabstop>
+  <tabstop>las_fname</tabstop>
   <tabstop>las_lname</tabstop>
   <tabstop>las_phone</tabstop>
-  <tabstop>las_pay_button</tabstop>
-  <tabstop>las_appointments</tabstop>
-  <tabstop>las_doctor</tabstop>
   <tabstop>las_type</tabstop>
-  <tabstop>tabWidget</tabstop>
   <tabstop>las_zone</tabstop>
-  <tabstop>cos_new_date</tabstop>
+  <tabstop>las_doctor</tabstop>
+  <tabstop>las_make_an_appointment_button</tabstop>
+  <tabstop>sol_1_fname</tabstop>
+  <tabstop>sol_1_lname</tabstop>
+  <tabstop>sol_1_phone</tabstop>
+  <tabstop>sol_1_minutes</tabstop>
+  <tabstop>sol_1_make_an_appointment_button</tabstop>
+  <tabstop>sol_2_fname</tabstop>
+  <tabstop>sol_2_lname</tabstop>
+  <tabstop>sol_2_phone</tabstop>
+  <tabstop>sol_2_minutes</tabstop>
+  <tabstop>sol_2_make_an_appointment_button</tabstop>
   <tabstop>las_new_date</tabstop>
-  <tabstop>las_fname</tabstop>
+  <tabstop>cos_pay_button</tabstop>
+  <tabstop>sol_1_new_date</tabstop>
+  <tabstop>sol_1_pay_button</tabstop>
+  <tabstop>sol_1_appointments</tabstop>
+  <tabstop>sol_2_appointments</tabstop>
+  <tabstop>sol_2_pay_button</tabstop>
+  <tabstop>cos_new_date</tabstop>
+  <tabstop>las_appointments</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>las_pay_button</tabstop>
+  <tabstop>cos_appointments</tabstop>
+  <tabstop>sol_2_new_date</tabstop>
  </tabstops>
  <resources/>
  <connections/>
