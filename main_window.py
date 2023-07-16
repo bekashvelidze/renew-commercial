@@ -226,6 +226,7 @@ class MainWindow(QMainWindow):
                                 f"აბონემენტი დარეგისტრირებულია:"
                                 f"\nსახელი, გვარი: {self.clients[0]['name']} {self.clients[0]['lname']}\nწუთი: 50")
 
+    # სოლარიუმი 1
     def change_date_sol_1(self):
         global today
         today = self.sol_1_new_date.text()
@@ -295,6 +296,7 @@ class MainWindow(QMainWindow):
                                 f"\nწუთები: {minutes}")
         self.load_data()
 
+    # სოლარიუმი 2
     def change_date_sol_2(self):
         global today
         today = self.sol_2_new_date.text()
