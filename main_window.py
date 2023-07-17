@@ -458,14 +458,5 @@ class MainWindow(QMainWindow):
             self.load_data()
 
     def sol_2_buy_subscription(self):
-        from login import widget
-        subs_window = QDialog()
-        widget.addWidget(subs_window)
-        # widget.setWindowTitle('მრავალპროფილური ესთეტიკური მედიცინის ცენტრი "რენიუ"')
-        # widget.setFixedWidth(1000)
-        # widget.setFixedHeight(550)
-        # x = (subs_window.screen().geometry().width() // 2) - (widget.width() // 2)
-        # y = (subs_window.screen().geometry().height() // 2) - (widget.height() // 2)
-        # widget.move(x, y)
-        widget.setCurrentIndex(widget.currentIndex() + 1)
+        subs = Subscription()
 
