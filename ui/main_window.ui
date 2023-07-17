@@ -1900,7 +1900,7 @@ QPushButton:hover {
       </column>
       <column>
        <property name="text">
-        <string>წუთები (აბონემენტი)</string>
+        <string>წუთები</string>
        </property>
        <property name="font">
         <font>
@@ -2774,7 +2774,7 @@ QPushButton:hover {
       </column>
       <column>
        <property name="text">
-        <string>წუთები (აბონემენტი)</string>
+        <string>წუთები</string>
        </property>
        <property name="font">
         <font>

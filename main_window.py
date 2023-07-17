@@ -60,8 +60,6 @@ class MainWindow(QMainWindow):
         self.las_make_an_appointment_button.clicked.connect(self.make_an_appointment_las)
         self.sol_1_make_an_appointment_button.clicked.connect(self.make_an_appointment_sol_1)
         self.sol_2_make_an_appointment_button.clicked.connect(self.make_an_appointment_sol_2)
-        self.sol_1_buy_subscription_button.clicked.connect(self.sol_1_buy_subscription)
-        self.sol_2_buy_subscription_button.clicked.connect(self.sol_2_buy_subscription)
         # Cell click events
         self.cos_appointments.cellClicked.connect(self.get_cos_cell_information)
         self.las_appointments.cellClicked.connect(self.get_las_cell_information)
@@ -139,6 +137,7 @@ class MainWindow(QMainWindow):
         doctor = self.cos_doctor.currentText()
         date = self.cos_date.text()
         time = self.cos_time.text()
+
         if self.cos_time.text() == "":
             QMessageBox.warning(self, 'შეცდომა', "აირჩიეთ დრო ჩასაწერად.")
         else:
@@ -156,19 +155,22 @@ class MainWindow(QMainWindow):
                 self.cos_zone.addItem(zone_cos)
             conn.commit()
 
+            balance = 0
+            init_minutes = 0
+
             cursor2 = conn.cursor()
             cursor2.execute("SELECT * FROM clients")
             if cursor2.rowcount == 0:
                 cursor3 = conn.cursor()
-                cursor3.execute("INSERT INTO clients (fname, lname, phone) "
-                                "VALUES (?, ?, ?)", (first_name, last_name, phone))
+                cursor3.execute("INSERT INTO clients (fname, lname, phone, balance, minutes) "
+                                "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, init_minutes))
                 conn.commit()
             else:
                 client_phones = [client[3] for client in cursor2]
                 if phone not in client_phones:
                     cursor3 = conn.cursor()
-                    cursor3.execute("INSERT INTO clients (fname, lname, phone) "
-                                    "VALUES (?, ?, ?)", (first_name, last_name, phone))
+                    cursor3.execute("INSERT INTO clients (fname, lname, phone, balance, minutes) "
+                                    "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, init_minutes))
                     conn.commit()
             conn.close()
 
@@ -255,20 +257,23 @@ class MainWindow(QMainWindow):
             for zone_las in self.settings["ლაზერი"]["ზონები"]:
                 self.las_zone.addItem(zone_las)
 
+            balance = 0
+            init_minutes = 0
+
             conn.commit()
             cursor2 = conn.cursor()
             cursor2.execute("SELECT * FROM clients")
             if cursor2.rowcount == 0:
                 cursor3 = conn.cursor()
-                cursor3.execute("INSERT INTO clients (fname, lname, phone) "
-                                "VALUES (?, ?, ?)", (first_name, last_name, phone))
+                cursor3.execute("INSERT INTO clients (fname, lname, phone, balance, minutes) "
+                                "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, init_minutes))
                 conn.commit()
             else:
                 client_phones = [client[3] for client in cursor2]
                 if phone not in client_phones:
                     cursor3 = conn.cursor()
-                    cursor3.execute("INSERT INTO clients (fname, lname, phone) "
-                                    "VALUES (?, ?, ?)", (first_name, last_name, phone))
+                    cursor3.execute("INSERT INTO clients (fname, lname, phone, balance, minutes) "
+                                    "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, init_minutes))
                     conn.commit()
             conn.close()
 
@@ -331,6 +336,7 @@ class MainWindow(QMainWindow):
         minutes = self.sol_1_minutes.text()
         date = self.sol_1_date.text()
         time = self.sol_1_time.text()
+
         if self.sol_1_time.text() == "":
             QMessageBox.warning(self, 'შეცდომა', "აირჩიეთ დრო ჩასაწერად.")
         else:
@@ -342,20 +348,23 @@ class MainWindow(QMainWindow):
             self.sol_1_phone.clear()
             self.sol_1_minutes.clear()
 
+            balance = 0
+            init_minutes = 0
+
             conn.commit()
             cursor2 = conn.cursor()
             cursor2.execute("SELECT * FROM clients")
             if cursor2.rowcount == 0:
                 cursor3 = conn.cursor()
-                cursor3.execute("INSERT INTO clients (fname, lname, phone) "
-                                "VALUES (?, ?, ?)", (first_name, last_name, phone))
+                cursor3.execute("INSERT INTO clients (fname, lname, phone, balance, minutes) "
+                                "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, init_minutes))
                 conn.commit()
             else:
                 client_phones = [client[3] for client in cursor2]
                 if phone not in client_phones:
                     cursor3 = conn.cursor()
-                    cursor3.execute("INSERT INTO clients (fname, lname, phone) "
-                                    "VALUES (?, ?, ?)", (first_name, last_name, phone))
+                    cursor3.execute("INSERT INTO clients (fname, lname, phone, balance, minutes) "
+                                    "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, init_minutes))
                     conn.commit()
             conn.close()
             QMessageBox.information(self, 'პაციენტი ჩაიწერა',
@@ -363,10 +372,6 @@ class MainWindow(QMainWindow):
                                     f"\nდრო: {time}"
                                     f"\nწუთები: {minutes}")
             self.load_data()
-
-    def sol_1_buy_subscription(self):
-        subs = Subscription()
-        subs.buy_subscription()
 
     # სოლარიუმი 2
     def change_date_sol_2(self):
@@ -423,6 +428,7 @@ class MainWindow(QMainWindow):
         minutes = self.sol_2_minutes.text()
         date = self.sol_2_date.text()
         time = self.sol_2_time.text()
+
         if self.sol_2_time.text() == "":
             QMessageBox.warning(self, 'შეცდომა', "აირჩიეთ დრო ჩასაწერად.")
         else:
@@ -435,19 +441,22 @@ class MainWindow(QMainWindow):
             self.sol_2_minutes.clear()
             conn.commit()
 
+            balance = 0
+            init_minutes = 0
+
             cursor2 = conn.cursor()
             cursor2.execute("SELECT * FROM clients")
             if cursor2.rowcount == 0:
                 cursor3 = conn.cursor()
-                cursor3.execute("INSERT INTO clients (fname, lname, phone) "
-                                "VALUES (?, ?, ?)", (first_name, last_name, phone))
+                cursor3.execute("INSERT INTO clients (fname, lname, phone, balance, minutes) "
+                                "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, init_minutes))
                 conn.commit()
             else:
                 client_phones = [client[3] for client in cursor2]
                 if phone not in client_phones:
                     cursor3 = conn.cursor()
-                    cursor3.execute("INSERT INTO clients (fname, lname, phone) "
-                                    "VALUES (?, ?, ?)", (first_name, last_name, phone))
+                    cursor3.execute("INSERT INTO clients (fname, lname, phone, balance, minutes) "
+                                    "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, init_minutes))
                     conn.commit()
             conn.close()
 
@@ -456,7 +465,3 @@ class MainWindow(QMainWindow):
                                     f"\nდრო: {time}"
                                     f"\nწუთები: {minutes}")
             self.load_data()
-
-    def sol_2_buy_subscription(self):
-        subs = Subscription()
-
