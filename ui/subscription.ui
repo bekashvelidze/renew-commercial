@@ -35,7 +35,7 @@ QPushButton:hover {
 	background-color: #F8AD25;
 }</string>
   </property>
-  <widget class="QLineEdit" name="lineEdit">
+  <widget class="QLineEdit" name="fname">
    <property name="geometry">
     <rect>
      <x>33</x>
@@ -54,7 +54,7 @@ QPushButton:hover {
     <string>სახელი</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_2">
+  <widget class="QLineEdit" name="lname">
    <property name="geometry">
     <rect>
      <x>33</x>
@@ -76,7 +76,7 @@ QPushButton:hover {
     <string>გვარი</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_3">
+  <widget class="QLineEdit" name="phone">
    <property name="geometry">
     <rect>
      <x>33</x>
@@ -98,7 +98,7 @@ QPushButton:hover {
     <string>ტელეფონი</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_4">
+  <widget class="QLineEdit" name="minutes">
    <property name="geometry">
     <rect>
      <x>33</x>
@@ -136,7 +136,7 @@ QPushButton:hover {
     <string>ან მოძებნეთ ტელეფონის ნომრით</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_5">
+  <widget class="QLineEdit" name="search">
    <property name="geometry">
     <rect>
      <x>203</x>
@@ -171,7 +171,7 @@ QPushButton:hover {
     <enum>Qt::Vertical</enum>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="buy">
    <property name="geometry">
     <rect>
      <x>203</x>
@@ -190,7 +190,7 @@ QPushButton:hover {
     <string>აბონემენტის ყიდვა</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_2">
+  <widget class="QLabel" name="subscription_title">
    <property name="geometry">
     <rect>
      <x>150</x>
@@ -209,7 +209,7 @@ QPushButton:hover {
     <string>აბონემენტის ყიდვა</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QPushButton" name="search_button">
    <property name="geometry">
     <rect>
      <x>360</x>
@@ -224,13 +224,13 @@ QPushButton:hover {
   </widget>
  </widget>
  <tabstops>
-  <tabstop>lineEdit</tabstop>
-  <tabstop>lineEdit_2</tabstop>
-  <tabstop>lineEdit_3</tabstop>
-  <tabstop>lineEdit_4</tabstop>
-  <tabstop>lineEdit_5</tabstop>
-  <tabstop>pushButton_2</tabstop>
-  <tabstop>pushButton</tabstop>
+  <tabstop>fname</tabstop>
+  <tabstop>lname</tabstop>
+  <tabstop>phone</tabstop>
+  <tabstop>minutes</tabstop>
+  <tabstop>search</tabstop>
+  <tabstop>search_button</tabstop>
+  <tabstop>buy</tabstop>
  </tabstops>
  <resources/>
  <connections/>

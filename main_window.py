@@ -2,9 +2,10 @@ import json
 import datetime
 import locale
 from datetime import datetime
-from PyQt6.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem
+from PyQt6.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem, QDialog
 from PyQt6.uic import loadUi
 from connection import Database
+from subscription import Subscription
 
 locale.setlocale(locale.LC_ALL, "ka_GE.utf-8")
 today = datetime.now().date().strftime("%d.%m.%Y")
@@ -24,13 +25,6 @@ def load_times():
     return times
 
 
-def load_services():
-    with open("services.json", "r", encoding="utf-8") as file:
-        services = json.load(file)
-
-    return services
-
-
 class MainWindow(QMainWindow):
 
     def __init__(self):
@@ -38,7 +32,6 @@ class MainWindow(QMainWindow):
         loadUi('ui/main_window.ui', self)
         self.settings = load_settings()
         self.load_data()
-        self.services = load_services()
         self.tabWidget.currentChanged.connect(self.load_data)
         # Cosmetics
         self.cos_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
@@ -89,8 +82,8 @@ class MainWindow(QMainWindow):
     # კოსმეტოლოგია
 
     def change_date_cos(self):
-
         global today
+
         today = self.cos_new_date.text()
         self.current_date.clear()
         self.current_date.setText(today)
@@ -137,14 +130,6 @@ class MainWindow(QMainWindow):
         else:
             print("empty")
 
-    # def accept_only_numbers(self):
-    #     num = self.cos_phone.text()
-    #     if int(num).isnumeric():
-    #         pass
-    #     else:
-    #         self.cos_phone.clear()
-    #         return False
-
     def make_an_appointment_cos(self):
         conn = db.connect()
         first_name = self.cos_fname.text()
@@ -169,8 +154,8 @@ class MainWindow(QMainWindow):
                 self.cos_doctor.addItem(doctor_cos)
             for zone_cos in self.settings["კოსმეტოლოგია"]["პროცედურები"]:
                 self.cos_zone.addItem(zone_cos)
-
             conn.commit()
+
             cursor2 = conn.cursor()
             cursor2.execute("SELECT * FROM clients")
             if cursor2.rowcount == 0:
@@ -292,11 +277,6 @@ class MainWindow(QMainWindow):
                                     f"\nდრო: {time}")
             self.load_data()
 
-    def buy_subscription(self):
-        QMessageBox.information(self, 'აბონემენტის შეძება',
-                                f"აბონემენტი დარეგისტრირებულია:"
-                                f"\nსახელი, გვარი: {self.clients[0]['name']} {self.clients[0]['lname']}\nწუთი: 50")
-
     # სოლარიუმი 1
     def change_date_sol_1(self):
         global today
@@ -307,7 +287,6 @@ class MainWindow(QMainWindow):
         self.load_data()
 
     def solarium_1(self):
-        db = Database()
         conn = db.connect()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM `solarium_1_appointments` WHERE date=%s", (today,))
@@ -345,35 +324,54 @@ class MainWindow(QMainWindow):
             print("empty")
 
     def make_an_appointment_sol_1(self):
-
+        conn = db.connect()
         first_name = self.sol_1_fname.text()
         last_name = self.sol_1_lname.text()
         phone = self.sol_1_phone.text()
         minutes = self.sol_1_minutes.text()
         date = self.sol_1_date.text()
         time = self.sol_1_time.text()
+        if self.sol_1_time.text() == "":
+            QMessageBox.warning(self, 'შეცდომა', "აირჩიეთ დრო ჩასაწერად.")
+        else:
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO solarium_1_appointments (fname, lname, phone, minutes, date, time) "
+                           "VALUES (?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, minutes, date, time))
+            self.sol_1_fname.clear()
+            self.sol_1_lname.clear()
+            self.sol_1_phone.clear()
+            self.sol_1_minutes.clear()
 
-        db = Database()
-        conn = db.connect()
-        cursor = conn.cursor()
-        cursor.execute("INSERT INTO solarium_1_appointments (fname, lname, phone, minutes, date, time) "
-                       "VALUES (?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, minutes, date, time))
-        conn.commit()
-        conn.close()
-
-        QMessageBox.information(self, 'პაციენტი ჩაიწერა',
-                                f"პაციენტი ჩაწერილია:\nსახელი, გვარი: {first_name} {last_name}"
-                                f"\nდრო: {time}"
-                                f"\nწუთები: {minutes}")
-        self.load_data()
+            conn.commit()
+            cursor2 = conn.cursor()
+            cursor2.execute("SELECT * FROM clients")
+            if cursor2.rowcount == 0:
+                cursor3 = conn.cursor()
+                cursor3.execute("INSERT INTO clients (fname, lname, phone) "
+                                "VALUES (?, ?, ?)", (first_name, last_name, phone))
+                conn.commit()
+            else:
+                client_phones = [client[3] for client in cursor2]
+                if phone not in client_phones:
+                    cursor3 = conn.cursor()
+                    cursor3.execute("INSERT INTO clients (fname, lname, phone) "
+                                    "VALUES (?, ?, ?)", (first_name, last_name, phone))
+                    conn.commit()
+            conn.close()
+            QMessageBox.information(self, 'პაციენტი ჩაიწერა',
+                                    f"პაციენტი ჩაწერილია:\nსახელი, გვარი: {first_name} {last_name}"
+                                    f"\nდრო: {time}"
+                                    f"\nწუთები: {minutes}")
+            self.load_data()
 
     def sol_1_buy_subscription(self):
-        print("Clicked")
-        pass
+        subs = Subscription()
+        subs.buy_subscription()
 
     # სოლარიუმი 2
     def change_date_sol_2(self):
         global today
+
         today = self.sol_2_new_date.text()
         self.sol_2_current_date.clear()
         self.sol_2_current_date.setText(today)
@@ -381,7 +379,6 @@ class MainWindow(QMainWindow):
         self.load_data()
 
     def solarium_2(self):
-        db = Database()
         conn = db.connect()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM `solarium_2_appointments` WHERE date=%s", (today,))
@@ -419,28 +416,56 @@ class MainWindow(QMainWindow):
             print("empty")
 
     def make_an_appointment_sol_2(self):
-
+        conn = db.connect()
         first_name = self.sol_2_fname.text()
         last_name = self.sol_2_lname.text()
         phone = self.sol_2_phone.text()
         minutes = self.sol_2_minutes.text()
         date = self.sol_2_date.text()
         time = self.sol_2_time.text()
+        if self.sol_2_time.text() == "":
+            QMessageBox.warning(self, 'შეცდომა', "აირჩიეთ დრო ჩასაწერად.")
+        else:
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO solarium_2_appointments (fname, lname, phone, minutes, date, time) "
+                           "VALUES (?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, minutes, date, time))
+            self.sol_2_fname.clear()
+            self.sol_2_lname.clear()
+            self.sol_2_phone.clear()
+            self.sol_2_minutes.clear()
+            conn.commit()
 
-        db = Database()
-        conn = db.connect()
-        cursor = conn.cursor()
-        cursor.execute("INSERT INTO solarium_2_appointments (fname, lname, phone, minutes, date, time) "
-                       "VALUES (?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, minutes, date, time))
-        conn.commit()
-        conn.close()
+            cursor2 = conn.cursor()
+            cursor2.execute("SELECT * FROM clients")
+            if cursor2.rowcount == 0:
+                cursor3 = conn.cursor()
+                cursor3.execute("INSERT INTO clients (fname, lname, phone) "
+                                "VALUES (?, ?, ?)", (first_name, last_name, phone))
+                conn.commit()
+            else:
+                client_phones = [client[3] for client in cursor2]
+                if phone not in client_phones:
+                    cursor3 = conn.cursor()
+                    cursor3.execute("INSERT INTO clients (fname, lname, phone) "
+                                    "VALUES (?, ?, ?)", (first_name, last_name, phone))
+                    conn.commit()
+            conn.close()
 
-        QMessageBox.information(self, 'პაციენტი ჩაიწერა',
-                                f"პაციენტი ჩაწერილია:\nსახელი, გვარი: {first_name} {last_name}"
-                                f"\nდრო: {time}"
-                                f"\nწუთები: {minutes}")
-        self.load_data()
+            QMessageBox.information(self, 'პაციენტი ჩაიწერა',
+                                    f"პაციენტი ჩაწერილია:\nსახელი, გვარი: {first_name} {last_name}"
+                                    f"\nდრო: {time}"
+                                    f"\nწუთები: {minutes}")
+            self.load_data()
 
     def sol_2_buy_subscription(self):
-        print("Clicked")
-        pass
+        from login import widget
+        subs_window = QDialog()
+        widget.addWidget(subs_window)
+        # widget.setWindowTitle('მრავალპროფილური ესთეტიკური მედიცინის ცენტრი "რენიუ"')
+        # widget.setFixedWidth(1000)
+        # widget.setFixedHeight(550)
+        # x = (subs_window.screen().geometry().width() // 2) - (widget.width() // 2)
+        # y = (subs_window.screen().geometry().height() // 2) - (widget.height() // 2)
+        # widget.move(x, y)
+        widget.setCurrentIndex(widget.currentIndex() + 1)
+
