@@ -8,12 +8,13 @@ from connection import Database
 
 locale.setlocale(locale.LC_ALL, "ka_GE.utf-8")
 today = datetime.now().date().strftime("%d.%m.%Y")
+db = Database()
 
-def load_services():
-    with open("services.json", "r", encoding="utf-8") as file:
-        services = json.load(file)
 
-    return services
+def load_settings():
+    with open("settings.json", "r", encoding="utf-8") as data:
+        settings = json.load(data)
+    return settings
 
 
 def load_times():
@@ -23,20 +24,38 @@ def load_times():
     return times
 
 
+def load_services():
+    with open("services.json", "r", encoding="utf-8") as file:
+        services = json.load(file)
+
+    return services
+
+
 class MainWindow(QMainWindow):
 
     def __init__(self):
         super(MainWindow, self).__init__()
         loadUi('ui/main_window.ui', self)
+        self.settings = load_settings()
         self.load_data()
         self.services = load_services()
         self.tabWidget.currentChanged.connect(self.load_data)
         # Cosmetics
         self.cos_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
         self.cos_new_date.dateChanged.connect(self.change_date_cos)
+        for doctor_cos in self.settings["კოსმეტოლოგია"]["ექიმები"]:
+            self.cos_doctor.addItem(doctor_cos)
+        for zone_cos in self.settings["კოსმეტოლოგია"]["პროცედურები"]:
+            self.cos_zone.addItem(zone_cos)
         # Laser
         self.las_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
         self.las_new_date.dateChanged.connect(self.change_date_las)
+        for doctor_las in self.settings["ლაზერი"]["ექიმები"]:
+            self.las_doctor.addItem(doctor_las)
+        for type_las in self.settings["ლაზერი"]["ლაზერის ტიპები"]:
+            self.las_type.addItem(type_las)
+        for zone_las in self.settings["ლაზერი"]["ზონები"]:
+            self.las_zone.addItem(zone_las)
         # Solarium 1
         self.sol_1_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
         self.sol_1_new_date.dateChanged.connect(self.change_date_sol_1)
@@ -70,6 +89,7 @@ class MainWindow(QMainWindow):
     # კოსმეტოლოგია
 
     def change_date_cos(self):
+
         global today
         today = self.cos_new_date.text()
         self.current_date.clear()
@@ -78,7 +98,6 @@ class MainWindow(QMainWindow):
         self.load_data()
 
     def cosmetology(self):
-        db = Database()
         conn = db.connect()
         cursor = conn.cursor()
         cursor.execute(f"SELECT * FROM `cosmetology_appointments` WHERE date=%s", (today,))
@@ -104,7 +123,6 @@ class MainWindow(QMainWindow):
             self.cos_appointments.setItem(int(times[cos[7]]), 4, QTableWidgetItem(cos[5]))
 
             row += 1
-
         conn.close()
 
     def get_cos_cell_information(self):
@@ -119,8 +137,16 @@ class MainWindow(QMainWindow):
         else:
             print("empty")
 
-    def make_an_appointment_cos(self):
+    # def accept_only_numbers(self):
+    #     num = self.cos_phone.text()
+    #     if int(num).isnumeric():
+    #         pass
+    #     else:
+    #         self.cos_phone.clear()
+    #         return False
 
+    def make_an_appointment_cos(self):
+        conn = db.connect()
         first_name = self.cos_fname.text()
         last_name = self.cos_lname.text()
         phone = self.cos_phone.text()
@@ -128,41 +154,43 @@ class MainWindow(QMainWindow):
         doctor = self.cos_doctor.currentText()
         date = self.cos_date.text()
         time = self.cos_time.text()
-
-        db = Database()
-        conn = db.connect()
-        cursor = conn.cursor()
-        cursor.execute("INSERT INTO cosmetology_appointments (procedure_name, fname, lname, phone, doctor, date, time) "
-                       "VALUES (?, ?, ?, ?, ?, ?, ?)", (zone, first_name, last_name, phone, doctor, date, time))
-        conn.commit()
-        conn.close()
-
-        # კლიენტის დამატება თუ მისი ნომერი არაა ბაზაში.
-        conn2 = db.connect()
-        cursor2 = conn2.cursor()
-        cursor2.execute("SELECT * FROM clients")
-        print(cursor2.rowcount)
-        client_phones = []
-        if cursor2.rowcount > 0:
-             for _ in cursor2:
-                 client_phones.append(cursor2[3])
+        if self.cos_time.text() == "":
+            QMessageBox.warning(self, 'შეცდომა', "აირჩიეთ დრო ჩასაწერად.")
         else:
-            print(client_phones)
-            for _ in cursor2:
-                if phone in client_phones:
-                    print(phone)
-                else:
-                    conn3 = db.connect()
-                    cursor3 = conn3.cursor()
-                    cursor3.execute("INSERT INTO clients (fname, lname, phone) "
-                                   "VALUES (?, ?, ?)", (first_name, last_name, phone))
-                    conn3.commit()
-                    conn3.close()
+            cursor = conn.cursor()
+            cursor.execute(
+                "INSERT INTO cosmetology_appointments (procedure_name, fname, lname, phone, doctor, date, time) "
+                "VALUES (?, ?, ?, ?, ?, ?, ?)", (zone, first_name, last_name, phone, doctor, date, time))
+            self.cos_fname.clear()
+            self.cos_lname.clear()
+            self.cos_phone.clear()
+            self.cos_doctor.clear()
+            for doctor_cos in self.settings["კოსმეტოლოგია"]["ექიმები"]:
+                self.cos_doctor.addItem(doctor_cos)
+            for zone_cos in self.settings["კოსმეტოლოგია"]["პროცედურები"]:
+                self.cos_zone.addItem(zone_cos)
 
-        QMessageBox.information(self, 'პაციენტი ჩაიწერა',
-                                f"პაციენტი ჩაწერილია:\nსახელი, გვარი: {first_name} {last_name}"
-                                f"\nდრო: {time}")
-        self.load_data()
+            conn.commit()
+            cursor2 = conn.cursor()
+            cursor2.execute("SELECT * FROM clients")
+            if cursor2.rowcount == 0:
+                cursor3 = conn.cursor()
+                cursor3.execute("INSERT INTO clients (fname, lname, phone) "
+                                "VALUES (?, ?, ?)", (first_name, last_name, phone))
+                conn.commit()
+            else:
+                client_phones = [client[3] for client in cursor2]
+                if phone not in client_phones:
+                    cursor3 = conn.cursor()
+                    cursor3.execute("INSERT INTO clients (fname, lname, phone) "
+                                    "VALUES (?, ?, ?)", (first_name, last_name, phone))
+                    conn.commit()
+            conn.close()
+
+            QMessageBox.information(self, 'პაციენტი ჩაიწერა',
+                                    f"პაციენტი ჩაწერილია:\nსახელი, გვარი: {first_name} {last_name}"
+                                    f"\nდრო: {time}")
+            self.load_data()
 
     # ლაზერი
     def change_date_las(self):
@@ -216,7 +244,7 @@ class MainWindow(QMainWindow):
             print("empty")
 
     def make_an_appointment_las(self):
-
+        conn = db.connect()
         first_name = self.las_fname.text()
         last_name = self.las_lname.text()
         phone = self.las_phone.text()
@@ -226,18 +254,43 @@ class MainWindow(QMainWindow):
         date = self.las_date.text()
         time = self.las_time.text()
 
-        db = Database()
-        conn = db.connect()
-        cursor = conn.cursor()
-        cursor.execute("INSERT INTO laser_appointments (laser_type, zone, fname, lname, phone, doctor, date, time) "
-                       "VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (laser_type, zone, first_name, last_name, phone, doctor, date, time))
-        conn.commit()
-        conn.close()
+        if self.las_time.text() == "":
+            QMessageBox.warning(self, 'შეცდომა', "აირჩიეთ დრო ჩასაწერად.")
+        else:
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO laser_appointments (laser_type, zone, fname, lname, phone, doctor, date, time) "
+                           "VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (laser_type, zone, first_name, last_name, phone, doctor, date, time))
+            self.las_fname.clear()
+            self.las_lname.clear()
+            self.las_phone.clear()
+            for doctor_las in self.settings["ლაზერი"]["ექიმები"]:
+                self.las_doctor.addItem(doctor_las)
+            for type_las in self.settings["ლაზერი"]["ლაზერის ტიპები"]:
+                self.las_type.addItem(type_las)
+            for zone_las in self.settings["ლაზერი"]["ზონები"]:
+                self.las_zone.addItem(zone_las)
 
-        QMessageBox.information(self, 'პაციენტი ჩაიწერა',
-                                f"პაციენტი ჩაწერილია:\nსახელი, გვარი: {first_name} {last_name}"
-                                f"\nდრო: {time}")
-        self.load_data()
+            conn.commit()
+            cursor2 = conn.cursor()
+            cursor2.execute("SELECT * FROM clients")
+            if cursor2.rowcount == 0:
+                cursor3 = conn.cursor()
+                cursor3.execute("INSERT INTO clients (fname, lname, phone) "
+                                "VALUES (?, ?, ?)", (first_name, last_name, phone))
+                conn.commit()
+            else:
+                client_phones = [client[3] for client in cursor2]
+                if phone not in client_phones:
+                    cursor3 = conn.cursor()
+                    cursor3.execute("INSERT INTO clients (fname, lname, phone) "
+                                    "VALUES (?, ?, ?)", (first_name, last_name, phone))
+                    conn.commit()
+            conn.close()
+
+            QMessageBox.information(self, 'პაციენტი ჩაიწერა',
+                                    f"პაციენტი ჩაწერილია:\nსახელი, გვარი: {first_name} {last_name}"
+                                    f"\nდრო: {time}")
+            self.load_data()
 
     def buy_subscription(self):
         QMessageBox.information(self, 'აბონემენტის შეძება',

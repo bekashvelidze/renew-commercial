@@ -70,7 +70,7 @@ QPushButton:hover {
      <enum>QTabWidget::North</enum>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="cos">
      <attribute name="title">
@@ -158,16 +158,6 @@ QPushButton:hover {
         <pointsize>12</pointsize>
        </font>
       </property>
-      <item>
-       <property name="text">
-        <string>აირჩიეთ პროცედურა</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>პროცედურა 1</string>
-       </property>
-      </item>
      </widget>
      <widget class="QComboBox" name="cos_doctor">
       <property name="geometry">
@@ -184,16 +174,6 @@ QPushButton:hover {
         <pointsize>12</pointsize>
        </font>
       </property>
-      <item>
-       <property name="text">
-        <string>აირჩიეთ ექიმი</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>ეთერ კილაძე</string>
-       </property>
-      </item>
      </widget>
      <widget class="QLineEdit" name="cos_phone">
       <property name="geometry">
@@ -209,6 +189,9 @@ QPushButton:hover {
         <family>BPG Nino Mtavruli</family>
         <pointsize>12</pointsize>
        </font>
+      </property>
+      <property name="inputMask">
+       <string/>
       </property>
       <property name="placeholderText">
        <string>ტელეფონი</string>
@@ -1350,16 +1333,6 @@ QPushButton:hover {
         <pointsize>11</pointsize>
        </font>
       </property>
-      <item>
-       <property name="text">
-        <string>აირჩიეთ ექიმი</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>ეთერ კილაძე</string>
-       </property>
-      </item>
      </widget>
      <widget class="QComboBox" name="las_type">
       <property name="geometry">
@@ -1376,21 +1349,6 @@ QPushButton:hover {
         <pointsize>12</pointsize>
        </font>
       </property>
-      <item>
-       <property name="text">
-        <string>აირჩიეთ ლაზერის ტიპი</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>ალექსანდრიტი</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>დიოდი</string>
-       </property>
-      </item>
      </widget>
      <widget class="QPushButton" name="las_make_an_appointment_button">
       <property name="geometry">
@@ -1426,16 +1384,6 @@ QPushButton:hover {
         <pointsize>11</pointsize>
        </font>
       </property>
-      <item>
-       <property name="text">
-        <string>აირჩიეთ ზონა</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>სახე</string>
-       </property>
-      </item>
      </widget>
      <widget class="QLabel" name="las_patients_label">
       <property name="geometry">
