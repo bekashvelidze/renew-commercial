@@ -1,18 +1,17 @@
 import mariadb
 from connection import Database
-from PyQt6.QtWidgets import QDialog
+from PyQt6.QtWidgets import QMainWindow
 from PyQt6.uic import loadUi
 
 db = Database()
 conn = db.connect()
 
 
-class Subscription(QDialog):
+class Subscription(QMainWindow):
 
     def __init__(self):
         super(Subscription, self).__init__()
         loadUi("ui/subscription.ui", self)
-        self.show_window()
         # self.buy.clicked.connect(self.buy_subscription)
 
     def load_clients(self):
