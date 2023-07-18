@@ -199,6 +199,12 @@ QPushButton:hover {
         <pointsize>12</pointsize>
        </font>
       </property>
+      <property name="whatsThis">
+       <string/>
+      </property>
+      <property name="editable">
+       <bool>true</bool>
+      </property>
      </widget>
      <widget class="QComboBox" name="cos_doctor">
       <property name="geometry">
@@ -214,6 +220,9 @@ QPushButton:hover {
         <family>BPG Nino Mtavruli</family>
         <pointsize>12</pointsize>
        </font>
+      </property>
+      <property name="editable">
+       <bool>true</bool>
       </property>
      </widget>
      <widget class="QLineEdit" name="cos_phone">
@@ -1372,6 +1381,9 @@ QPushButton:hover {
         <pointsize>11</pointsize>
        </font>
       </property>
+      <property name="editable">
+       <bool>true</bool>
+      </property>
      </widget>
      <widget class="QComboBox" name="las_type">
       <property name="geometry">
@@ -1387,6 +1399,9 @@ QPushButton:hover {
         <family>BPG Nino Mtavruli</family>
         <pointsize>12</pointsize>
        </font>
+      </property>
+      <property name="editable">
+       <bool>true</bool>
       </property>
      </widget>
      <widget class="QPushButton" name="las_make_an_appointment_button">
@@ -1422,6 +1437,9 @@ QPushButton:hover {
         <family>BPG Nino Mtavruli</family>
         <pointsize>11</pointsize>
        </font>
+      </property>
+      <property name="editable">
+       <bool>true</bool>
       </property>
      </widget>
      <widget class="QLabel" name="las_patients_label">

@@ -13,13 +13,51 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget  {background-color: #FFF7D4;}
+
+QPushButton {
+	border: 1px solid #C07F00;
+	background: #FFF7D4;
+	border-radius: 6px;
+
+}
+
+QPushButton:hover {
+	border: 1px solid black;
+	background-color: #FFD95A;
+}
+QLineEdit {
+	border: 1px solid #C07F00;
+	border-radius: 6px;	
+	padding: 6px;
+	background: white;
+}
+
+QLineEdit:focus {
+	border: 1px solid #F8AD25;
+}
+
+QLineEdit:hover {
+	background-color: #FFD95A;
+}
+
+QComboBox {
+	border: 0.5px solid #C07F00;
+}
+
+QComboBox:hover {
+	background-color: #FFD95A;
+}
+</string>
+  </property>
   <widget class="QPushButton" name="buy">
    <property name="geometry">
     <rect>
      <x>170</x>
      <y>245</y>
      <width>152</width>
-     <height>30</height>
+     <height>35</height>
     </rect>
    </property>
    <property name="font">
@@ -73,7 +111,7 @@
      <x>170</x>
      <y>175</y>
      <width>150</width>
-     <height>25</height>
+     <height>30</height>
     </rect>
    </property>
    <property name="font">
@@ -95,7 +133,7 @@
      <x>170</x>
      <y>140</y>
      <width>150</width>
-     <height>25</height>
+     <height>30</height>
     </rect>
    </property>
    <property name="font">
@@ -138,7 +176,7 @@
      <x>170</x>
      <y>105</y>
      <width>150</width>
-     <height>25</height>
+     <height>30</height>
     </rect>
    </property>
    <property name="font">
@@ -157,7 +195,7 @@
      <x>170</x>
      <y>210</y>
      <width>150</width>
-     <height>25</height>
+     <height>30</height>
     </rect>
    </property>
    <property name="font">
@@ -176,7 +214,7 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>122</x>
+     <x>121</x>
      <y>320</y>
      <width>255</width>
      <height>19</height>
@@ -220,7 +258,7 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>280</y>
+     <y>290</y>
      <width>490</width>
      <height>5</height>
     </rect>

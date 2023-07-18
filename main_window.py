@@ -2,14 +2,23 @@ import json
 import datetime
 import locale
 from datetime import datetime
-from PyQt6.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem, QDialog
+from PyQt6.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem
 from PyQt6.uic import loadUi
 from connection import Database
 from subscription import Subscription
+from funds import Funds
 
 locale.setlocale(locale.LC_ALL, "ka_GE.utf-8")
 today = datetime.now().date().strftime("%d.%m.%Y")
 db = Database()
+
+
+def check_integer(number):
+    try:
+        if int(number):
+            return True
+    except ValueError:
+        return False
 
 
 def load_settings():
@@ -34,6 +43,7 @@ class MainWindow(QMainWindow):
         self.load_data()
         self.tabWidget.currentChanged.connect(self.load_data)
         self.subs_window = Subscription()
+        self.funds_window = Funds()
         # Cosmetics
         self.cos_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
         self.cos_new_date.dateChanged.connect(self.change_date_cos)
@@ -61,13 +71,23 @@ class MainWindow(QMainWindow):
         self.las_make_an_appointment_button.clicked.connect(self.make_an_appointment_las)
         self.sol_1_make_an_appointment_button.clicked.connect(self.make_an_appointment_sol_1)
         self.sol_2_make_an_appointment_button.clicked.connect(self.make_an_appointment_sol_2)
-        self.sol_1_buy_subscription_button.clicked.connect(self.buy_subscritption)
-        self.sol_2_buy_subscription_button.clicked.connect(self.buy_subscritption)
+        self.sol_1_buy_subscription_button.clicked.connect(self.buy_subscription)
+        self.sol_2_buy_subscription_button.clicked.connect(self.buy_subscription)
+        self.cos_pay_button.clicked.connect(self.funds)
+        self.las_pay_button.clicked.connect(self.funds)
+        self.sol_1_pay_button.clicked.connect(self.funds)
+        self.sol_2_pay_button.clicked.connect(self.funds)
         # Cell click events
         self.cos_appointments.cellClicked.connect(self.get_cos_cell_information)
         self.las_appointments.cellClicked.connect(self.get_las_cell_information)
         self.sol_1_appointments.cellClicked.connect(self.get_sol_1_cell_information)
         self.sol_2_appointments.cellClicked.connect(self.get_sol_2_cell_information)
+        # Placeholder
+        self.cos_zone.setCurrentText("აირჩიეთ პროცედურა")
+        self.cos_doctor.setCurrentText("აირჩიეთ ექიმი")
+        self.las_type.setCurrentText("აირჩიეთ ლაზერის ტიპი")
+        self.las_zone.setCurrentText("აირჩიეთ ზონა")
+        self.las_doctor.setCurrentText("აირჩიეთ ექიმი")
 
     def load_data(self):
         self.cos_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
@@ -132,8 +152,6 @@ class MainWindow(QMainWindow):
         self.cos_date.setText(date)
         if self.cos_appointments.item(current_row, current_column):
             QMessageBox.information(self, "დრო დაკავებულია", "ეს დრო დაკავებულია, აირჩიეთ სხვა დრო.")
-        else:
-            print("empty")
 
     def make_an_appointment_cos(self):
         conn = db.connect()
@@ -145,8 +163,18 @@ class MainWindow(QMainWindow):
         date = self.cos_date.text()
         time = self.cos_time.text()
 
+        checked = check_integer(phone)
+
         if self.cos_time.text() == "":
             QMessageBox.warning(self, 'შეცდომა', "აირჩიეთ დრო ჩასაწერად.")
+        elif self.cos_fname.text() == "" or self.cos_lname.text() == "" or self.cos_phone.text() == "":
+            QMessageBox.warning(self, 'შეცდომა', "ყველა ველის შევსება სავალდებულოა!")
+        elif not checked:
+            QMessageBox.warning(self, 'შეცდომა', "ტელეფონის ველში მხოლოდ ციფრებია დაშვებული!")
+        elif self.cos_zone.currentText() == "აირჩიეთ პროცედურა":
+            QMessageBox.warning(self, 'შეცდომა', "აირჩიეთ პროცედურა.")
+        elif self.cos_doctor.currentText() == "აირჩიეთ ექიმი":
+            QMessageBox.warning(self, 'შეცდომა', "აირჩიეთ ექიმი.")
         else:
             cursor = conn.cursor()
             cursor.execute(
@@ -181,7 +209,13 @@ class MainWindow(QMainWindow):
                     conn.commit()
             conn.close()
 
-            QMessageBox.information(self, 'პაციენტი ჩაიწერა',
+            self.cos_fname.clear()
+            self.cos_lname.clear()
+            self.cos_phone.clear()
+            self.cos_zone.setCurrentText("აირჩიეთ პროცედურა")
+            self.cos_doctor.setCurrentText("აირჩიეთ ექიმი")
+
+            QMessageBox.information(self, 'პაციენტი ჩაწერილია',
                                     f"პაციენტი ჩაწერილია:\nსახელი, გვარი: {first_name} {last_name}"
                                     f"\nდრო: {time}")
             self.load_data()
@@ -196,7 +230,6 @@ class MainWindow(QMainWindow):
         self.laser()
 
     def laser(self):
-        db = Database()
         conn = db.connect()
         cursor = conn.cursor()
         cursor.execute(f"SELECT * FROM `laser_appointments` WHERE date=%s", (today,))
@@ -234,8 +267,6 @@ class MainWindow(QMainWindow):
         self.las_date.setText(date)
         if self.las_appointments.item(current_row, current_column):
             QMessageBox.information(self, "დრო დაკავებულია", "ეს დრო დაკავებულია, აირჩიეთ სხვა დრო.")
-        else:
-            print("empty")
 
     def make_an_appointment_las(self):
         conn = db.connect()
@@ -248,12 +279,27 @@ class MainWindow(QMainWindow):
         date = self.las_date.text()
         time = self.las_time.text()
 
+        checked = check_integer(phone)
+
         if self.las_time.text() == "":
             QMessageBox.warning(self, 'შეცდომა', "აირჩიეთ დრო ჩასაწერად.")
+        elif self.las_fname.text() == "" or self.las_lname.text() == "" or self.las_phone.text() == "":
+            QMessageBox.warning(self, 'შეცდომა', "ყველა ველის შევსება სავალდებულოა!")
+        elif not checked:
+            QMessageBox.warning(self, 'შეცდომა', "ტელეფონის ველში მხოლოდ ციფრებია დაშვებული!")
+        elif self.las_type.currentText() == "აირჩიეთ ლაზერის ტიპი":
+            QMessageBox.warning(self, 'შეცდომა', "აირჩიეთ ლაზერის ტიპი.")
+        elif self.las_zone.currentText() == "აირჩიეთ ზონა":
+            QMessageBox.warning(self, 'შეცდომა', "აირჩიეთ ზონა.")
+        elif self.las_doctor.currentText() == "აირჩიეთ ექიმი":
+            QMessageBox.warning(self, 'შეცდომა', "აირჩიეთ ექიმი.")
         else:
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO laser_appointments (laser_type, zone, fname, lname, phone, doctor, date, time) "
-                           "VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (laser_type, zone, first_name, last_name, phone, doctor, date, time))
+            cursor.execute(
+                "INSERT INTO laser_appointments (laser_type, zone, fname, lname, phone, doctor, date, time) "
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                (laser_type, zone, first_name, last_name, phone, doctor, date, time)
+            )
             self.las_fname.clear()
             self.las_lname.clear()
             self.las_phone.clear()
@@ -284,7 +330,14 @@ class MainWindow(QMainWindow):
                     conn.commit()
             conn.close()
 
-            QMessageBox.information(self, 'პაციენტი ჩაიწერა',
+            self.las_fname.clear()
+            self.las_lname.clear()
+            self.las_phone.clear()
+            self.las_type.setCurrentText("აირჩიეთ ლაზერის ტიპი")
+            self.las_zone.setCurrentText("აირჩიეთ ზონა")
+            self.las_doctor.setCurrentText("აირჩიეთ ექიმი")
+
+            QMessageBox.information(self, 'პაციენტი ჩაწერილია',
                                     f"პაციენტი ჩაწერილია:\nსახელი, გვარი: {first_name} {last_name}"
                                     f"\nდრო: {time}")
             self.load_data()
@@ -332,8 +385,6 @@ class MainWindow(QMainWindow):
         self.sol_1_date.setText(date)
         if self.sol_1_appointments.item(current_row, current_column):
             QMessageBox.information(self, "დრო დაკავებულია", "ეს დრო დაკავებულია, აირჩიეთ სხვა დრო.")
-        else:
-            print("empty")
 
     def make_an_appointment_sol_1(self):
         conn = db.connect()
@@ -344,8 +395,21 @@ class MainWindow(QMainWindow):
         date = self.sol_1_date.text()
         time = self.sol_1_time.text()
 
+        checked_phone = check_integer(phone)
+        checked_minutes = check_integer(minutes)
+
         if self.sol_1_time.text() == "":
             QMessageBox.warning(self, 'შეცდომა', "აირჩიეთ დრო ჩასაწერად.")
+        elif self.sol_1_fname.text() == "" or self.sol_1_lname.text() == "":
+            QMessageBox.warning(self, 'შეცდომა', "ყველა ველის შევსება სავალდებულოა!")
+        elif self.sol_1_phone.text() == "":
+            QMessageBox.warning(self, 'შეცდომა', "ყველა ველის შევსება სავალდებულოა!")
+        elif not checked_phone:
+            QMessageBox.warning(self, 'შეცდომა', "ტელეფონის ველში მხოლოდ ციფრებია დაშვებული!")
+        elif self.sol_1_minutes.text() == "":
+            QMessageBox.warning(self, 'შეცდომა', "ყველა ველის შევსება სავალდებულოა!")
+        elif not checked_minutes:
+            QMessageBox.warning(self, 'შეცდომა', "წუთების ველში მხოლოდ ციფრებია დაშვებული!")
         else:
             cursor = conn.cursor()
             cursor.execute("INSERT INTO solarium_1_appointments (fname, lname, phone, minutes, date, time) "
@@ -374,7 +438,7 @@ class MainWindow(QMainWindow):
                                     "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, init_minutes))
                     conn.commit()
             conn.close()
-            QMessageBox.information(self, 'პაციენტი ჩაიწერა',
+            QMessageBox.information(self, 'პაციენტი ჩაწერილია',
                                     f"პაციენტი ჩაწერილია:\nსახელი, გვარი: {first_name} {last_name}"
                                     f"\nდრო: {time}"
                                     f"\nწუთები: {minutes}")
@@ -424,8 +488,6 @@ class MainWindow(QMainWindow):
         self.sol_2_date.setText(date)
         if self.sol_2_appointments.item(current_row, current_column):
             QMessageBox.information(self, "დრო დაკავებულია", "ეს დრო დაკავებულია, აირჩიეთ სხვა დრო.")
-        else:
-            print("empty")
 
     def make_an_appointment_sol_2(self):
         conn = db.connect()
@@ -436,8 +498,21 @@ class MainWindow(QMainWindow):
         date = self.sol_2_date.text()
         time = self.sol_2_time.text()
 
+        checked_phone = check_integer(phone)
+        checked_minutes = check_integer(minutes)
+
         if self.sol_2_time.text() == "":
             QMessageBox.warning(self, 'შეცდომა', "აირჩიეთ დრო ჩასაწერად.")
+        elif self.sol_2_fname.text() == "" or self.sol_2_lname.text() == "":
+            QMessageBox.warning(self, 'შეცდომა', "ყველა ველის შევსება სავალდებულოა!")
+        elif self.sol_2_phone.text() == "":
+            QMessageBox.warning(self, 'შეცდომა', "ყველა ველის შევსება სავალდებულოა!")
+        elif not checked_phone:
+            QMessageBox.warning(self, 'შეცდომა', "ტელეფონის ველში მხოლოდ ციფრებია დაშვებული!")
+        elif self.sol_2_minutes.text() == "":
+            QMessageBox.warning(self, 'შეცდომა', "ყველა ველის შევსება სავალდებულოა!")
+        elif not checked_minutes:
+            QMessageBox.warning(self, 'შეცდომა', "წუთების ველში მხოლოდ ციფრებია დაშვებული!")
         else:
             cursor = conn.cursor()
             cursor.execute("INSERT INTO solarium_2_appointments (fname, lname, phone, minutes, date, time) "
@@ -467,12 +542,16 @@ class MainWindow(QMainWindow):
                     conn.commit()
             conn.close()
 
-            QMessageBox.information(self, 'პაციენტი ჩაიწერა',
+            QMessageBox.information(self, 'პაციენტი ჩაწერილია',
                                     f"პაციენტი ჩაწერილია:\nსახელი, გვარი: {first_name} {last_name}"
                                     f"\nდრო: {time}"
                                     f"\nწუთები: {minutes}")
             self.load_data()
 
-    def buy_subscritption(self):
+    def buy_subscription(self):
         self.subs_window.setWindowTitle("აბონემენტის შეძენა")
         self.subs_window.show()
+
+    def funds(self):
+        self.funds_window.setWindowTitle("საფასურის გადახდა")
+        self.funds_window.show()
