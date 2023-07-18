@@ -2450,6 +2450,12 @@ QPushButton:hover {
         <pointsize>12</pointsize>
        </font>
       </property>
+      <property name="whatsThis">
+       <string/>
+      </property>
+      <property name="inputMask">
+       <string/>
+      </property>
       <property name="placeholderText">
        <string>გვარი</string>
       </property>
