@@ -11,7 +11,7 @@ def main_window():
     widget.addWidget(mainwindow)
     widget.setWindowTitle('მრავალპროფილური ესთეტიკური მედიცინის ცენტრი "რენიუ"')
     widget.setFixedWidth(1000)
-    widget.setFixedHeight(550)
+    widget.setFixedHeight(560)
     x = (mainwindow.screen().geometry().width() // 2) - (widget.width() // 2)
     y = (mainwindow.screen().geometry().height() // 2) - (widget.height() // 2)
     widget.move(x, y)

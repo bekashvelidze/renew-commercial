@@ -293,7 +293,7 @@ QPushButton:hover {
        <enum>Qt::ScrollBarAlwaysOn</enum>
       </property>
       <property name="alternatingRowColors">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <row>
        <property name="text">
@@ -3006,9 +3006,9 @@ QPushButton:hover {
     <property name="title">
      <string>პროგრამა</string>
     </property>
-    <addaction name="action"/>
+    <addaction name="close_application"/>
    </widget>
-   <widget class="QMenu" name="menu_2">
+   <widget class="QMenu" name="finances">
     <property name="font">
      <font>
       <pointsize>10</pointsize>
@@ -3017,10 +3017,10 @@ QPushButton:hover {
     <property name="title">
      <string>ფინანსები</string>
     </property>
-    <addaction name="action_2"/>
-    <addaction name="action_3"/>
+    <addaction name="daily_report"/>
+    <addaction name="monthlyreport"/>
    </widget>
-   <widget class="QMenu" name="menu_3">
+   <widget class="QMenu" name="settings">
     <property name="font">
      <font>
       <pointsize>10</pointsize>
@@ -3029,11 +3029,9 @@ QPushButton:hover {
     <property name="title">
      <string>პარამეტრები</string>
     </property>
-    <addaction name="action_4"/>
-    <addaction name="action_5"/>
-    <addaction name="action_6"/>
+    <addaction name="change_settings"/>
    </widget>
-   <widget class="QMenu" name="menu_4">
+   <widget class="QMenu" name="help">
     <property name="font">
      <font>
       <pointsize>10</pointsize>
@@ -3042,14 +3040,16 @@ QPushButton:hover {
     <property name="title">
      <string>დახმარება</string>
     </property>
+    <addaction name="action"/>
+    <addaction name="action_2"/>
    </widget>
    <addaction name="menu"/>
-   <addaction name="menu_2"/>
-   <addaction name="menu_3"/>
-   <addaction name="menu_4"/>
+   <addaction name="finances"/>
+   <addaction name="settings"/>
+   <addaction name="help"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="action">
+  <action name="close_application">
    <property name="text">
     <string>დახურვა</string>
    </property>
@@ -3060,7 +3060,7 @@ QPushButton:hover {
     </font>
    </property>
   </action>
-  <action name="action_2">
+  <action name="daily_report">
    <property name="text">
     <string>დღის რეპორტი</string>
    </property>
@@ -3071,7 +3071,7 @@ QPushButton:hover {
     </font>
    </property>
   </action>
-  <action name="action_3">
+  <action name="monthlyreport">
    <property name="text">
     <string>თვის რეპორტი</string>
    </property>
@@ -3113,6 +3113,21 @@ QPushButton:hover {
      <family>Segoe UI</family>
      <pointsize>10</pointsize>
     </font>
+   </property>
+  </action>
+  <action name="change_settings">
+   <property name="text">
+    <string>პროგრამის პარამეტრები</string>
+   </property>
+  </action>
+  <action name="action">
+   <property name="text">
+    <string>პროგრამის სახელმძღვანელო</string>
+   </property>
+  </action>
+  <action name="action_2">
+   <property name="text">
+    <string>პროგრამის შესახებ</string>
    </property>
   </action>
  </widget>

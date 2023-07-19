@@ -1,3 +1,4 @@
+import sys
 import json
 import datetime
 import locale
@@ -5,6 +6,7 @@ from datetime import datetime
 from PyQt6.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem
 from PyQt6.uic import loadUi
 from connection import Database
+from settings import Settings
 from subscription import Subscription
 from funds import Funds
 
@@ -42,8 +44,12 @@ class MainWindow(QMainWindow):
         self.settings = load_settings()
         self.load_data()
         self.tabWidget.currentChanged.connect(self.load_data)
+        self.settings_window_open = Settings()
         self.subs_window = Subscription()
         self.funds_window = Funds()
+        # Menu items
+        self.close_application.triggered.connect(self.close_main_application)
+        self.change_settings.triggered.connect(self.settings_window)
         # Cosmetics
         self.cos_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
         self.cos_new_date.dateChanged.connect(self.change_date_cos)
@@ -88,6 +94,10 @@ class MainWindow(QMainWindow):
         self.las_type.setCurrentText("აირჩიეთ ლაზერის ტიპი")
         self.las_zone.setCurrentText("აირჩიეთ ზონა")
         self.las_doctor.setCurrentText("აირჩიეთ ექიმი")
+
+
+    def close_main_application(self):
+        sys.exit()
 
     def load_data(self):
         self.cos_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
@@ -555,3 +565,7 @@ class MainWindow(QMainWindow):
     def funds(self):
         self.funds_window.setWindowTitle("საფასურის გადახდა")
         self.funds_window.show()
+
+    def settings_window(self):
+        self.settings_window_open.setWindowTitle("პარამეტრები")
+        self.settings_window_open.show()
