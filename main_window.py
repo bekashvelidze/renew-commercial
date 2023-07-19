@@ -36,6 +36,10 @@ def load_times():
     return times
 
 
+def close_main_application():
+    sys.exit()
+
+
 class MainWindow(QMainWindow):
 
     def __init__(self):
@@ -48,7 +52,7 @@ class MainWindow(QMainWindow):
         self.subs_window = Subscription()
         self.funds_window = Funds()
         # Menu items
-        self.close_application.triggered.connect(self.close_main_application)
+        self.close_application.triggered.connect(close_main_application)
         self.change_settings.triggered.connect(self.settings_window)
         # Cosmetics
         self.cos_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
@@ -94,10 +98,6 @@ class MainWindow(QMainWindow):
         self.las_type.setCurrentText("აირჩიეთ ლაზერის ტიპი")
         self.las_zone.setCurrentText("აირჩიეთ ზონა")
         self.las_doctor.setCurrentText("აირჩიეთ ექიმი")
-
-
-    def close_main_application(self):
-        sys.exit()
 
     def load_data(self):
         self.cos_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))

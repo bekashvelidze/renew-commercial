@@ -9,9 +9,7 @@ def load_settings():
         settings = json.load(data)
     return settings
 
-
 db = Database()
-
 
 class Funds(QWidget):
 

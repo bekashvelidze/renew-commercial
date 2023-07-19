@@ -1,4 +1,3 @@
-import mariadb
 from PyQt6.QtWidgets import QWidget, QTableWidgetItem, QMessageBox
 from PyQt6.uic import loadUi
 from connection import Database
