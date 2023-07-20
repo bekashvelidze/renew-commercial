@@ -130,20 +130,6 @@ class MainWindow(QMainWindow):
         self.las_zone.setCurrentText("აირჩიეთ ზონა")
         self.las_doctor.setCurrentText("აირჩიეთ ექიმი")
 
-    def closeEvent(self, event):
-        """Override the close event handler."""
-        reply = QMessageBox.question(
-            self,
-            "Confirmation",
-            "Are you sure you want to close the application?",
-            QMessageBox.Yes | QMessageBox.No,
-            QMessageBox.No,
-        )
-
-        if reply == QMessageBox.Yes:
-            event.accept()  # Accept the event and close the window
-        else:
-            event.ignore()
 
     def load_data(self):
         self.cos_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))

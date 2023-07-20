@@ -25,9 +25,22 @@ class Funds(QWidget):
         self.payment_method.setCurrentText("გადახდის მეთოდი")
         self.pay_button.clicked.connect(self.pay)
 
+
     def closeEvent(self, event):
-        self.clear_fields()
-        self.search_by_phone.setFocus()
+        reply = QMessageBox.question(
+            self,
+            "ფანჯრის დახურვა",
+            "დარწმუნებული ხართ, რომ გსურთ ფანჯრის დახურვა?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.No,
+        )
+
+        if reply == QMessageBox.StandardButton.Yes:
+            event.accept()
+            self.clear_fields()
+            self.search_by_phone.setFocus()
+        else:
+            event.ignore()
 
     def clear_fields(self):
         self.conn.commit()

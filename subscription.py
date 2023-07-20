@@ -23,8 +23,20 @@ class Subscription(QWidget):
         self.buy.clicked.connect(self.buy_subscription)
 
     def closeEvent(self, event):
-        self.clear_fields()
-        self.fname.setFocus()
+        reply = QMessageBox.question(
+            self,
+            "ფანჯრის დახურვა",
+            "დარწმუნებული ხართ, რომ გსურთ ფანჯრის დახურვა?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.No,
+        )
+
+        if reply == QMessageBox.StandardButton.Yes:
+            event.accept()
+            self.clear_fields()
+            self.search_button.setFocus()
+        else:
+            event.ignore()
 
     def clear_fields(self):
         self.conn.commit()
