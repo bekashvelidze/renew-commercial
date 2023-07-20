@@ -5,6 +5,7 @@ import locale
 from datetime import datetime
 from PyQt6.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem
 from PyQt6.uic import loadUi
+from PyQt6.QtCore import Qt
 from connection import Database
 from settings import Settings
 from subscription import Subscription
@@ -23,10 +24,35 @@ def check_integer(number):
         return False
 
 
-def load_settings():
-    with open("settings.json", "r", encoding="utf-8") as data:
-        settings = json.load(data)
-    return settings
+def load_procedures():
+    conn = db.connect()
+    cursor_procedures = conn.cursor()
+    cursor_procedures.execute("SELECT * FROM procedures")
+
+    return cursor_procedures
+
+def load_doctors(category):
+    conn = db.connect()
+    cursor_doctors = conn.cursor()
+    cursor_doctors.execute("SELECT * FROM doctors WHERE category=%s", (category,))
+
+    return cursor_doctors
+
+
+def load_zones():
+    conn = db.connect()
+    cursor_zones = conn.cursor()
+    cursor_zones.execute("SELECT * FROM zones")
+
+    return cursor_zones
+
+
+def load_types():
+    conn = db.connect()
+    cursor_types = conn.cursor()
+    cursor_types.execute("SELECT * FROM types")
+
+    return cursor_types
 
 
 def load_times():
@@ -45,7 +71,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         loadUi('ui/main_window.ui', self)
-        self.settings = load_settings()
+        self.procedures = load_procedures()
         self.load_data()
         self.tabWidget.currentChanged.connect(self.load_data)
         self.settings_window_open = Settings()
@@ -57,19 +83,24 @@ class MainWindow(QMainWindow):
         # Cosmetics
         self.cos_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
         self.cos_new_date.dateChanged.connect(self.change_date_cos)
-        for doctor_cos in self.settings["კოსმეტოლოგია"]["ექიმები"]:
-            self.cos_doctor.addItem(doctor_cos)
-        for zone_cos in self.settings["კოსმეტოლოგია"]["პროცედურები"]:
-            self.cos_zone.addItem(zone_cos)
+        self.doctors_cos = load_doctors("კოსმეტოლოგია")
+        for doctor_cos in self.doctors_cos:
+            self.cos_doctor.addItem(doctor_cos[1])
+        self.procedures = load_procedures()
+        for zone_cos in self.procedures:
+            self.cos_zone.addItem(zone_cos[1])
         # Laser
         self.las_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
         self.las_new_date.dateChanged.connect(self.change_date_las)
-        for doctor_las in self.settings["ლაზერი"]["ექიმები"]:
-            self.las_doctor.addItem(doctor_las)
-        for type_las in self.settings["ლაზერი"]["ლაზერის ტიპები"]:
-            self.las_type.addItem(type_las)
-        for zone_las in self.settings["ლაზერი"]["ზონები"]:
-            self.las_zone.addItem(zone_las)
+        self.doctors_las = load_doctors("ლაზერი")
+        for doctor_las in self.doctors_las:
+            self.las_doctor.addItem(doctor_las[1])
+        self.laser_types = load_types()
+        for type_las in self.laser_types:
+            self.las_type.addItem(type_las[1])
+        self.zones = load_zones()
+        for zone_las in self.zones:
+            self.las_zone.addItem(zone_las[1])
         # Solarium 1
         self.sol_1_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
         self.sol_1_new_date.dateChanged.connect(self.change_date_sol_1)
@@ -98,6 +129,21 @@ class MainWindow(QMainWindow):
         self.las_type.setCurrentText("აირჩიეთ ლაზერის ტიპი")
         self.las_zone.setCurrentText("აირჩიეთ ზონა")
         self.las_doctor.setCurrentText("აირჩიეთ ექიმი")
+
+    def closeEvent(self, event):
+        """Override the close event handler."""
+        reply = QMessageBox.question(
+            self,
+            "Confirmation",
+            "Are you sure you want to close the application?",
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.No,
+        )
+
+        if reply == QMessageBox.Yes:
+            event.accept()  # Accept the event and close the window
+        else:
+            event.ignore()
 
     def load_data(self):
         self.cos_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))

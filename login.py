@@ -24,6 +24,7 @@ class Login(QMainWindow):
         loadUi('ui/login.ui', self)
         self.login_button.clicked.connect(self.authorize)
 
+
     def authorize(self):
         with open("users.json", "r") as file:
             users = json.load(file)

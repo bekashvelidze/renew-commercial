@@ -5,6 +5,14 @@ from PyQt6.uic import loadUi
 db = Database()
 
 
+def check_integer(number):
+    try:
+        if int(number):
+            return True
+    except ValueError:
+        return False
+
+
 class Subscription(QWidget):
 
     def __init__(self):
@@ -13,6 +21,18 @@ class Subscription(QWidget):
         self.conn = db.connect()
         self.search_button.clicked.connect(self.search_client)
         self.buy.clicked.connect(self.buy_subscription)
+
+    def closeEvent(self, event):
+        self.clear_fields()
+        self.fname.setFocus()
+
+    def clear_fields(self):
+        self.conn.commit()
+        self.fname.clear()
+        self.lname.clear()
+        self.phone.clear()
+        self.minutes.clear()
+        self.search.clear()
 
     def load_clients(self):
         cursor = self.conn.cursor()
@@ -35,7 +55,6 @@ class Subscription(QWidget):
                     self.fname.setText(client[1])
                     self.lname.setText(client[2])
                     self.phone.setText(client[3])
-                    # self.minutes.setText(str(client[5]))
 
     def buy_subscription(self):
         clients = self.load_clients()
@@ -44,9 +63,16 @@ class Subscription(QWidget):
         phone = self.phone.text()
         minutes = self.minutes.text()
 
+        checked_phone = check_integer(phone)
+        checked_minutes = check_integer(minutes)
+
         if first_name == "" or last_name == "" or phone == "" or minutes == "":
             QMessageBox.information(self, 'შეცდომა',
                                     f"ყველა ველის შევსება სავალდებულოა")
+        elif not checked_phone:
+            QMessageBox.warning(self, 'შეცდომა', "ტელეფონის ველში მხოლოდ ციფრებია დაშვებული!")
+        elif not checked_minutes:
+            QMessageBox.warning(self, 'შეცდომა', "წუთების ველში მხოლოდ ციფრებია დაშვებული!")
         else:
             cursor2 = self.conn.cursor()
             cursor2.execute("SELECT * FROM clients")
@@ -62,6 +88,10 @@ class Subscription(QWidget):
                     cursor3.execute("INSERT INTO clients (fname, lname, phone, minutes) "
                                     "VALUES (?, ?, ?, ?)", (first_name, last_name, phone, minutes))
                     self.conn.commit()
+                    QMessageBox.information(self, 'აბონემენტის შეძენა',
+                                            f"აბონემენტი დარეგისტრირდა:\nსახელი, გვარი: {first_name} {last_name}"
+                                            f"\nწუთი: {minutes}")
+                    self.clear_fields()
                 else:
                     cursor4 = self.conn.cursor()
                     cursor4.execute("SELECT * FROM clients WHERE phone=%s", (phone,))
@@ -70,12 +100,7 @@ class Subscription(QWidget):
                     updated_minutes = existing_minutes + int(minutes)
                     cursor5 = self.conn.cursor()
                     cursor5.execute("UPDATE clients SET minutes=%s WHERE phone=%s", (updated_minutes, phone,))
-                    self.conn.commit()
-                    self.fname.clear()
-                    self.lname.clear()
-                    self.phone.clear()
-                    self.minutes.clear()
-                    self.search.clear()
                     QMessageBox.information(self, 'აბონემენტის შეძენა',
                                             f"აბონემენტი დარეგისტრირდა:\nსახელი, გვარი: {first_name} {last_name}"
                                             f"\nწუთი: {minutes}")
+                    self.clear_fields()
