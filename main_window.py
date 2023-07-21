@@ -9,6 +9,7 @@ from connection import Database
 from settings import Settings
 from subscription import Subscription
 from funds import Funds
+from payments_table import TimeTable
 
 locale.setlocale(locale.LC_ALL, "ka_GE.utf-8")
 today = datetime.now().date().strftime("%d.%m.%Y")
@@ -75,9 +76,11 @@ class MainWindow(QMainWindow):
         self.settings_window_open = Settings()
         self.subs_window = Subscription()
         self.funds_window = Funds()
+        self.timetable_window_open = TimeTable()
         # Menu items
         self.close_application.triggered.connect(close_main_application)
         self.change_settings.triggered.connect(self.settings_window)
+        self.daily_report.triggered.connect(self.timetable_window)
         # Cosmetics
         self.cos_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
         self.cos_new_date.dateChanged.connect(self.change_date_cos)
@@ -193,6 +196,8 @@ class MainWindow(QMainWindow):
             QMessageBox.information(self, "დრო დაკავებულია", "ეს დრო დაკავებულია, აირჩიეთ სხვა დრო.")
 
     def make_an_appointment_cos(self):
+        doctors = [doctor[1] for doctor in load_doctors("კოსმეტოლოგია")]
+        procedures = [procedure[1] for procedure in load_procedures()]
         conn = db.connect()
         first_name = self.cos_fname.text()
         last_name = self.cos_lname.text()
@@ -223,9 +228,11 @@ class MainWindow(QMainWindow):
             self.cos_lname.clear()
             self.cos_phone.clear()
             self.cos_doctor.clear()
-            for doctor_cos in self.settings["კოსმეტოლოგია"]["ექიმები"]:
+            self.cos_zone.clear()
+            self.cos_time.setText("")
+            for doctor_cos in doctors:
                 self.cos_doctor.addItem(doctor_cos)
-            for zone_cos in self.settings["კოსმეტოლოგია"]["პროცედურები"]:
+            for zone_cos in procedures:
                 self.cos_zone.addItem(zone_cos)
             conn.commit()
 
@@ -249,9 +256,6 @@ class MainWindow(QMainWindow):
                     conn.commit()
             conn.close()
 
-            self.cos_fname.clear()
-            self.cos_lname.clear()
-            self.cos_phone.clear()
             self.cos_zone.setCurrentText("აირჩიეთ პროცედურა")
             self.cos_doctor.setCurrentText("აირჩიეთ ექიმი")
 
@@ -310,6 +314,9 @@ class MainWindow(QMainWindow):
             QMessageBox.information(self, "დრო დაკავებულია", "ეს დრო დაკავებულია, აირჩიეთ სხვა დრო.")
 
     def make_an_appointment_las(self):
+        doctors = [doctor[1] for doctor in load_doctors("ლაზერი")]
+        types = [las_type for las_type in load_types()]
+        zones = [zone for zone in load_zones()]
         conn = db.connect()
         first_name = self.las_fname.text()
         last_name = self.las_lname.text()
@@ -344,12 +351,16 @@ class MainWindow(QMainWindow):
             self.las_fname.clear()
             self.las_lname.clear()
             self.las_phone.clear()
-            for doctor_las in self.settings["ლაზერი"]["ექიმები"]:
+            self.las_type.clear()
+            self.las_zone.clear()
+            self.las_doctor.clear()
+            self.las_time.setText("")
+            for doctor_las in doctors:
                 self.las_doctor.addItem(doctor_las)
-            for type_las in self.settings["ლაზერი"]["ლაზერის ტიპები"]:
-                self.las_type.addItem(type_las)
-            for zone_las in self.settings["ლაზერი"]["ზონები"]:
-                self.las_zone.addItem(zone_las)
+            for type_las in types:
+                self.las_type.addItem(type_las[1])
+            for zone_las in zones:
+                self.las_zone.addItem(zone_las[1])
 
             balance = 0
             init_minutes = 0
@@ -371,9 +382,6 @@ class MainWindow(QMainWindow):
                     conn.commit()
             conn.close()
 
-            self.las_fname.clear()
-            self.las_lname.clear()
-            self.las_phone.clear()
             self.las_type.setCurrentText("აირჩიეთ ლაზერის ტიპი")
             self.las_zone.setCurrentText("აირჩიეთ ზონა")
             self.las_doctor.setCurrentText("აირჩიეთ ექიმი")
@@ -459,6 +467,7 @@ class MainWindow(QMainWindow):
             self.sol_1_lname.clear()
             self.sol_1_phone.clear()
             self.sol_1_minutes.clear()
+            self.sol_1_time.setText("")
 
             balance = 0
             init_minutes = 0
@@ -562,6 +571,7 @@ class MainWindow(QMainWindow):
             self.sol_2_lname.clear()
             self.sol_2_phone.clear()
             self.sol_2_minutes.clear()
+            self.sol_2_time.setText("")
             conn.commit()
 
             balance = 0
@@ -600,3 +610,7 @@ class MainWindow(QMainWindow):
     def settings_window(self):
         self.settings_window_open.setWindowTitle("პარამეტრები")
         self.settings_window_open.show()
+
+    def timetable_window(self):
+        self.timetable_window_open.setWindowTitle("მიმდინარე დღის რეპორტი")
+        self.timetable_window_open.show()

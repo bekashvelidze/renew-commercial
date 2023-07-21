@@ -1,9 +1,18 @@
-from connection import Database
+from datetime import datetime
 from PyQt6.QtWidgets import QWidget, QMessageBox
 from PyQt6.uic import loadUi
+from connection import Database
 
 
 db = Database()
+today = datetime.now().date().strftime("%d.%m.%Y")
+
+def load_categories():
+    conn = db.connect()
+    cursor_cats = conn.cursor()
+    cursor_cats.execute("SELECT * FROM categories")
+
+    return cursor_cats
 
 def load_payment_methods():
     conn = db.connect()
@@ -19,10 +28,17 @@ class Funds(QWidget):
         loadUi("ui/pay.ui", self)
         self.conn = db.connect()
         self.search_button.clicked.connect(self.search_client)
+
+        self.categories = load_categories()
+        for category in self.categories:
+            self.category.addItem(category[1])
+        self.category.setCurrentText("კატეგორია")
+
         self.payment_methods = load_payment_methods()
         for method in self.payment_methods:
             self.payment_method.addItem(method[1])
         self.payment_method.setCurrentText("გადახდის მეთოდი")
+
         self.pay_button.clicked.connect(self.pay)
 
 
@@ -50,6 +66,7 @@ class Funds(QWidget):
         self.amount.clear()
         self.search_by_phone.clear()
         self.balance.setText("0 წუთი")
+        self.category.setCurrentText("კატეგორია")
         self.payment_method.setCurrentText("გადახდის მეთოდი")
 
     def load_clients(self):
@@ -82,10 +99,13 @@ class Funds(QWidget):
         last_name = self.lname.text()
         phone = self.phone.text()
         amount = self.amount.text()
+        category = self.category.currentText()
         method = self.payment_method.currentText()
 
         if self.payment_method.currentText() == "გადახდის მეთოდი":
-            QMessageBox.information(self, "შეცდომა", "აირჩიეთ გადახდის მეთოდი")
+            QMessageBox.warning(self, "შეცდომა", "აირჩიეთ გადახდის მეთოდი")
+        elif self.category.currentText() == "კატეგორია":
+            QMessageBox.warning(self, "შეცდომა", "აირჩიეთ კატეგორია")
         elif method == "წუთები":
             cursor16 = self.conn.cursor()
             cursor16.execute("SELECT * FROM clients WHERE phone=%s", (phone,))
@@ -99,7 +119,7 @@ class Funds(QWidget):
             else:
                 updated_minutes = existing_minutes - int(amount)
                 cursor17 = self.conn.cursor()
-                cursor17.execute("UPDATE clients SET minutes=%s WHERE phone=%s", (updated_minutes, phone,))
+                cursor17.execute("UPDATE clients SET minutes=%s, date=% WHERE phone=%s", (updated_minutes, today, phone,))
                 self.conn.commit()
                 self.clear_fields()
                 QMessageBox.information(self, "წარმატებული გადახდა", "გადახდა წარმატებით განხორციელდა!")
@@ -115,8 +135,8 @@ class Funds(QWidget):
                 client_phones = [client[3] for client in clients]
                 if phone not in client_phones:
                     cursor13 = self.conn.cursor()
-                    cursor13.execute("INSERT INTO payments (fname, lname, phone, payment_method, amount) "
-                                     "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, method, amount))
+                    cursor13.execute("INSERT INTO payments (fname, lname, phone, category, payment_method, date, amount) "
+                                     "VALUES (?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category, method, today, amount))
                     self.conn.commit()
                     balance = 0
                     init_minutes = 0
@@ -127,8 +147,8 @@ class Funds(QWidget):
                     self.clear_fields()
                 else:
                     cursor15 = self.conn.cursor()
-                    cursor15.execute("INSERT INTO payments (fname, lname, phone, payment_method, amount) "
-                                     "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, method, amount))
+                    cursor15.execute("INSERT INTO payments (fname, lname, phone, category, payment_method, date, amount) "
+                                     "VALUES (?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category, method, today, amount))
                     self.conn.commit()
                     QMessageBox.information(self, "წარმატებული გადახდა", "გადახდა წარმატებით განხორციელდა!")
                     self.clear_fields()

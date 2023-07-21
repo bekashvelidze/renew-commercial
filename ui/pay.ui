@@ -188,8 +188,8 @@ QComboBox:hover {
   <widget class="QComboBox" name="payment_method">
    <property name="geometry">
     <rect>
-     <x>235</x>
-     <y>230</y>
+     <x>55</x>
+     <y>270</y>
      <width>170</width>
      <height>35</height>
     </rect>
@@ -213,7 +213,7 @@ QComboBox:hover {
   <widget class="QLineEdit" name="amount">
    <property name="geometry">
     <rect>
-     <x>145</x>
+     <x>235</x>
      <y>270</y>
      <width>170</width>
      <height>35</height>
@@ -384,7 +384,43 @@ QComboBox:hover {
     <string/>
    </property>
   </widget>
+  <widget class="QComboBox" name="category">
+   <property name="geometry">
+    <rect>
+     <x>235</x>
+     <y>230</y>
+     <width>170</width>
+     <height>35</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>BPG Nino Mtavruli</family>
+     <pointsize>12</pointsize>
+     <weight>9</weight>
+     <italic>false</italic>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 75 12pt &quot;BPG Nino Mtavruli&quot;;</string>
+   </property>
+   <property name="editable">
+    <bool>true</bool>
+   </property>
+  </widget>
  </widget>
+ <tabstops>
+  <tabstop>search_by_phone</tabstop>
+  <tabstop>search_button</tabstop>
+  <tabstop>fname</tabstop>
+  <tabstop>lname</tabstop>
+  <tabstop>phone</tabstop>
+  <tabstop>category</tabstop>
+  <tabstop>payment_method</tabstop>
+  <tabstop>amount</tabstop>
+  <tabstop>pay_button</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
