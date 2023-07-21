@@ -44,6 +44,7 @@ class Subscription(QWidget):
         self.lname.clear()
         self.phone.clear()
         self.minutes.clear()
+        self.cur_balance.setText("")
         self.search.clear()
 
     def load_clients(self):
@@ -67,6 +68,7 @@ class Subscription(QWidget):
                     self.fname.setText(client[1])
                     self.lname.setText(client[2])
                     self.phone.setText(client[3])
+                    self.cur_balance.setText(f"{str(client[5])} წუთი")
 
     def buy_subscription(self):
         clients = self.load_clients()
@@ -88,17 +90,18 @@ class Subscription(QWidget):
         else:
             cursor2 = self.conn.cursor()
             cursor2.execute("SELECT * FROM clients")
+            balance = 0
             if cursor2.rowcount == 0:
                 cursor3 = self.conn.cursor()
-                cursor3.execute("INSERT INTO clients (fname, lname, phone, minutes) "
-                                "VALUES (?, ?, ?, ?)", (first_name, last_name, phone, minutes))
+                cursor3.execute("INSERT INTO clients (fname, lname, phone, balance, minutes) "
+                                "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, minutes))
                 self.conn.commit()
             else:
                 client_phones = [client[3] for client in clients]
                 if phone not in client_phones:
                     cursor3 = self.conn.cursor()
-                    cursor3.execute("INSERT INTO clients (fname, lname, phone, minutes) "
-                                    "VALUES (?, ?, ?, ?)", (first_name, last_name, phone, minutes))
+                    cursor3.execute("INSERT INTO clients (fname, lname, phone, balance, minutes) "
+                                    "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, minutes))
                     self.conn.commit()
                     QMessageBox.information(self, 'აბონემენტის შეძენა',
                                             f"აბონემენტი დარეგისტრირდა:\nსახელი, გვარი: {first_name} {last_name}"

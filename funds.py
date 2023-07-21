@@ -119,7 +119,7 @@ class Funds(QWidget):
             else:
                 updated_minutes = existing_minutes - int(amount)
                 cursor17 = self.conn.cursor()
-                cursor17.execute("UPDATE clients SET minutes=%s, date=% WHERE phone=%s", (updated_minutes, today, phone,))
+                cursor17.execute("UPDATE clients SET minutes=%s WHERE phone=%s", (updated_minutes, phone,))
                 self.conn.commit()
                 self.clear_fields()
                 QMessageBox.information(self, "წარმატებული გადახდა", "გადახდა წარმატებით განხორციელდა!")

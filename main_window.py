@@ -9,7 +9,7 @@ from connection import Database
 from settings import Settings
 from subscription import Subscription
 from funds import Funds
-from payments_table import TimeTable
+from payments_table import PaymentsTable
 
 locale.setlocale(locale.LC_ALL, "ka_GE.utf-8")
 today = datetime.now().date().strftime("%d.%m.%Y")
@@ -76,11 +76,11 @@ class MainWindow(QMainWindow):
         self.settings_window_open = Settings()
         self.subs_window = Subscription()
         self.funds_window = Funds()
-        self.timetable_window_open = TimeTable()
+        self.payments_table_window_open = PaymentsTable()
         # Menu items
         self.close_application.triggered.connect(close_main_application)
         self.change_settings.triggered.connect(self.settings_window)
-        self.daily_report.triggered.connect(self.timetable_window)
+        self.daily_report.triggered.connect(self.payments_table_window)
         # Cosmetics
         self.cos_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
         self.cos_new_date.dateChanged.connect(self.change_date_cos)
@@ -611,6 +611,6 @@ class MainWindow(QMainWindow):
         self.settings_window_open.setWindowTitle("პარამეტრები")
         self.settings_window_open.show()
 
-    def timetable_window(self):
-        self.timetable_window_open.setWindowTitle("მიმდინარე დღის რეპორტი")
-        self.timetable_window_open.show()
+    def payments_table_window(self):
+        self.payments_table_window_open.setWindowTitle("მიმდინარე დღის რეპორტი")
+        self.payments_table_window_open.show()
