@@ -5,7 +5,6 @@ import locale
 from datetime import datetime
 from PyQt6.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem
 from PyQt6.uic import loadUi
-from PyQt6.QtCore import Qt
 from connection import Database
 from settings import Settings
 from subscription import Subscription
@@ -14,7 +13,6 @@ from funds import Funds
 locale.setlocale(locale.LC_ALL, "ka_GE.utf-8")
 today = datetime.now().date().strftime("%d.%m.%Y")
 db = Database()
-
 
 def check_integer(number):
     try:
@@ -147,7 +145,6 @@ class MainWindow(QMainWindow):
             self.solarium_2()
 
     # კოსმეტოლოგია
-
     def change_date_cos(self):
         global today
 
@@ -247,7 +244,8 @@ class MainWindow(QMainWindow):
                 if phone not in client_phones:
                     cursor3 = conn.cursor()
                     cursor3.execute("INSERT INTO clients (fname, lname, phone, balance, minutes) "
-                                    "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, init_minutes))
+                                    "VALUES (?, ?, ?, ?, ?)",
+                                    (first_name, last_name, phone, balance, init_minutes))
                     conn.commit()
             conn.close()
 
@@ -260,6 +258,7 @@ class MainWindow(QMainWindow):
             QMessageBox.information(self, 'პაციენტი ჩაწერილია',
                                     f"პაციენტი ჩაწერილია:\nსახელი, გვარი: {first_name} {last_name}"
                                     f"\nდრო: {time}")
+
             self.load_data()
 
     # ლაზერი
