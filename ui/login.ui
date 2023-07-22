@@ -14,8 +14,7 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QMainWindow {background-color: #FFF7D4;}
-QPushButton {
+   <string notr="true">QPushButton {
 	border: 1px solid #C07F00;
 	background: #FFF7D4;
 	border-radius: 6px;

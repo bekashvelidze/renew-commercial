@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>460</width>
-    <height>420</height>
+    <width>920</width>
+    <height>543</height>
    </rect>
   </property>
   <property name="font">
@@ -22,24 +22,38 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QWidget  {background-color: #FFF7D4;}
-
-QPushButton {
-	border: 1px solid #C07F00;
-	background: #FFF7D4;
-	border-radius: 6px;
-
+   <string notr="true">QTabWidget::tab-bar {
+    left: 5px; /* move to the right by 5px */
 }
 
-QPushButton:hover {
-	border: 1px solid black;
-	background-color: #FFD95A;
+/* Style the tab using the tab sub-control. Note that
+    it reads QTabBar _not_ QTabWidget */
+QTabBar::tab {
+    background: #FFF7D4;
+	border: 1px solid #4C3D3D;
+    border-bottom-color: #C2C7CB; /* same as the pane color */
+	border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    min-width: 8ex;
+    padding: 4px;
 }
+
+QTabBar::tab:selected, QTabBar::tab:hover {
+    background: #FFD95A;
+	color: #4C3D3D;
+}
+
+QTabBar::tab:selected {
+    border-color: #9B9B9B;
+    border-bottom-color: #C2C7CB; /* same as pane color */
+}
+
+QTabBar::tab:!selected {
+    margin-top: 2px; /* make non-selected tabs look smaller */
+}
+
 QLineEdit {
-	border: 1px solid #C07F00;
-	border-radius: 6px;	
-	padding: 6px;
-	background: white;
+	border: 0.5px solid #C07F00;
 }
 
 QLineEdit:focus {
@@ -57,370 +71,717 @@ QComboBox {
 QComboBox:hover {
 	background-color: #FFD95A;
 }
-</string>
+
+QPushButton {
+	border: 1px solid #C07F00;
+	background: #FFF7D4;
+	border-radius: 6px;
+
+}
+
+QPushButton:hover {
+	border: 1px solid black;
+	background-color: #FFD95A;
+}</string>
   </property>
-  <widget class="QLineEdit" name="search_by_phone">
+  <widget class="QTabWidget" name="tabWidget">
    <property name="geometry">
     <rect>
-     <x>130</x>
-     <y>90</y>
-     <width>150</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>BPG Nino Mtavruli</family>
-     <pointsize>12</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QLineEdit {
-	border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
-	border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
-}</string>
-   </property>
-   <property name="placeholderText">
-    <string>ტელეფონი</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="main_label">
-   <property name="geometry">
-    <rect>
-     <x>109</x>
-     <y>20</y>
-     <width>231</width>
-     <height>28</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>BPG Nino Mtavruli</family>
-     <pointsize>18</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="text">
-    <string>საფასურის გადახდა</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="searchbyphon_label">
-   <property name="geometry">
-    <rect>
-     <x>125</x>
-     <y>60</y>
-     <width>201</width>
-     <height>18</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>BPG Nino Mtavruli</family>
-     <pointsize>12</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="text">
-    <string>ძებნა ტელეფონის ნომრით</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="fname">
-   <property name="geometry">
-    <rect>
-     <x>55</x>
-     <y>191</y>
-     <width>170</width>
-     <height>35</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>BPG Nino Mtavruli</family>
-     <pointsize>12</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="placeholderText">
-    <string>სახელი</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="lname">
-   <property name="geometry">
-    <rect>
-     <x>235</x>
-     <y>190</y>
-     <width>170</width>
-     <height>35</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>BPG Nino Mtavruli</family>
-     <pointsize>12</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="placeholderText">
-    <string>გვარი</string>
-   </property>
-  </widget>
-  <widget class="Line" name="line">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>130</y>
-     <width>400</width>
-     <height>3</height>
-    </rect>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Horizontal</enum>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="payment_method">
-   <property name="geometry">
-    <rect>
-     <x>55</x>
-     <y>270</y>
-     <width>170</width>
-     <height>35</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>BPG Nino Mtavruli</family>
-     <pointsize>12</pointsize>
-     <weight>9</weight>
-     <italic>false</italic>
-     <bold>false</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">font: 75 12pt &quot;BPG Nino Mtavruli&quot;;</string>
-   </property>
-   <property name="editable">
-    <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="amount">
-   <property name="geometry">
-    <rect>
-     <x>235</x>
-     <y>270</y>
-     <width>170</width>
-     <height>35</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>BPG Nino Mtavruli</family>
-     <pointsize>12</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="echoMode">
-    <enum>QLineEdit::Normal</enum>
-   </property>
-   <property name="placeholderText">
-    <string>თანხა / წუთი</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pay_button">
-   <property name="geometry">
-    <rect>
-     <x>149</x>
-     <y>354</y>
-     <width>152</width>
-     <height>35</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>BPG Nino Mtavruli</family>
-     <pointsize>12</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="text">
-    <string>გადახდა</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="search_button">
-   <property name="geometry">
-    <rect>
-     <x>280</x>
-     <y>90</y>
-     <width>40</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QPushButton {
-	border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-	border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-}</string>
-   </property>
-   <property name="text">
-    <string>🔍</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="if_not_in_db">
-   <property name="geometry">
-    <rect>
-     <x>59</x>
-     <y>144</y>
-     <width>341</width>
-     <height>18</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>BPG Nino Mtavruli</family>
-     <pointsize>12</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="text">
-    <string>თუ კლიენტი არაა ბაზაში შეავსეთ მონაცემები</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="warning">
-   <property name="geometry">
-    <rect>
-     <x>92</x>
-     <y>167</y>
-     <width>282</width>
-     <height>17</height>
+     <x>0</x>
+     <y>0</y>
+     <width>921</width>
+     <height>531</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>BPG Nino Mtavruli</family>
      <pointsize>11</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
     </font>
    </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgb(255, 0, 0);</string>
+   <property name="currentIndex">
+    <number>0</number>
    </property>
-   <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;ყველა ველის შევსება სავალდებულოა!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="phone">
-   <property name="geometry">
-    <rect>
-     <x>55</x>
-     <y>230</y>
-     <width>170</width>
-     <height>35</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>BPG Nino Mtavruli</family>
-     <pointsize>12</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="placeholderText">
-    <string>ტელეფონი</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="balanc_label">
-   <property name="geometry">
-    <rect>
-     <x>110</x>
-     <y>320</y>
-     <width>157</width>
-     <height>18</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>BPG Nino Mtavruli</family>
-     <pointsize>12</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="text">
-    <string>მიმდინარე ბალანსი: </string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="balance">
-   <property name="geometry">
-    <rect>
-     <x>290</x>
-     <y>320</y>
-     <width>71</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>BPG Nino Mtavruli</family>
-     <pointsize>12</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="category">
-   <property name="geometry">
-    <rect>
-     <x>235</x>
-     <y>230</y>
-     <width>170</width>
-     <height>35</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>BPG Nino Mtavruli</family>
-     <pointsize>12</pointsize>
-     <weight>9</weight>
-     <italic>false</italic>
-     <bold>false</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">font: 75 12pt &quot;BPG Nino Mtavruli&quot;;</string>
-   </property>
-   <property name="editable">
-    <bool>true</bool>
-   </property>
+   <widget class="QWidget" name="tab">
+    <attribute name="title">
+     <string>გადახდა</string>
+    </attribute>
+    <widget class="QComboBox" name="payment_method">
+     <property name="geometry">
+      <rect>
+       <x>276</x>
+       <y>308</y>
+       <width>170</width>
+       <height>35</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>BPG Nino Mtavruli</family>
+       <pointsize>12</pointsize>
+       <weight>9</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 75 12pt &quot;BPG Nino Mtavruli&quot;;</string>
+     </property>
+     <property name="editable">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="if_not_in_db">
+     <property name="geometry">
+      <rect>
+       <x>280</x>
+       <y>182</y>
+       <width>341</width>
+       <height>18</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>BPG Nino Mtavruli</family>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>თუ კლიენტი არაა ბაზაში შეავსეთ მონაცემები</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="search_button">
+     <property name="geometry">
+      <rect>
+       <x>501</x>
+       <y>128</y>
+       <width>40</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+	border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+	border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}</string>
+     </property>
+     <property name="text">
+      <string>🔍</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="main_label">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>58</y>
+       <width>231</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>BPG Nino Mtavruli</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>საფასურის გადახდა</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="amount">
+     <property name="geometry">
+      <rect>
+       <x>456</x>
+       <y>308</y>
+       <width>170</width>
+       <height>35</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>BPG Nino Mtavruli</family>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="echoMode">
+      <enum>QLineEdit::Normal</enum>
+     </property>
+     <property name="placeholderText">
+      <string>თანხა / წუთი</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pay_button">
+     <property name="geometry">
+      <rect>
+       <x>370</x>
+       <y>392</y>
+       <width>152</width>
+       <height>35</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>BPG Nino Mtavruli</family>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>გადახდა</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="warning">
+     <property name="geometry">
+      <rect>
+       <x>313</x>
+       <y>205</y>
+       <width>282</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>BPG Nino Mtavruli</family>
+       <pointsize>11</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 0, 0);</string>
+     </property>
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;ყველა ველის შევსება სავალდებულოა!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="category">
+     <property name="geometry">
+      <rect>
+       <x>456</x>
+       <y>268</y>
+       <width>170</width>
+       <height>35</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>BPG Nino Mtavruli</family>
+       <pointsize>12</pointsize>
+       <weight>9</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 75 12pt &quot;BPG Nino Mtavruli&quot;;</string>
+     </property>
+     <property name="editable">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="fname">
+     <property name="geometry">
+      <rect>
+       <x>276</x>
+       <y>229</y>
+       <width>170</width>
+       <height>35</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>BPG Nino Mtavruli</family>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="placeholderText">
+      <string>სახელი</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="phone">
+     <property name="geometry">
+      <rect>
+       <x>276</x>
+       <y>268</y>
+       <width>170</width>
+       <height>35</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>BPG Nino Mtavruli</family>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="placeholderText">
+      <string>ტელეფონი</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="balanc_label">
+     <property name="geometry">
+      <rect>
+       <x>331</x>
+       <y>358</y>
+       <width>157</width>
+       <height>18</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>BPG Nino Mtavruli</family>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>მიმდინარე ბალანსი: </string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="balance">
+     <property name="geometry">
+      <rect>
+       <x>511</x>
+       <y>358</y>
+       <width>71</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>BPG Nino Mtavruli</family>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="search_by_phone">
+     <property name="geometry">
+      <rect>
+       <x>351</x>
+       <y>128</y>
+       <width>150</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>BPG Nino Mtavruli</family>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit {
+	border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+	border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}</string>
+     </property>
+     <property name="placeholderText">
+      <string>ტელეფონი</string>
+     </property>
+    </widget>
+    <widget class="Line" name="line">
+     <property name="geometry">
+      <rect>
+       <x>248</x>
+       <y>166</y>
+       <width>400</width>
+       <height>3</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="searchbyphon_label">
+     <property name="geometry">
+      <rect>
+       <x>346</x>
+       <y>98</y>
+       <width>201</width>
+       <height>18</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>BPG Nino Mtavruli</family>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>ძებნა ტელეფონის ნომრით</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lname">
+     <property name="geometry">
+      <rect>
+       <x>456</x>
+       <y>228</y>
+       <width>170</width>
+       <height>35</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>BPG Nino Mtavruli</family>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="placeholderText">
+      <string>გვარი</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_2">
+    <attribute name="title">
+     <string>დღის რეპორტი</string>
+    </attribute>
+    <widget class="QLabel" name="cash">
+     <property name="geometry">
+      <rect>
+       <x>308</x>
+       <y>429</y>
+       <width>121</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>BPG Nino Mtavruli</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="pay_by_minutes">
+     <property name="geometry">
+      <rect>
+       <x>308</x>
+       <y>477</y>
+       <width>151</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>BPG Nino Mtavruli</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QTableWidget" name="all_payments">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>2</y>
+       <width>911</width>
+       <height>391</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>1001</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="baseSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>BPG Nino Mtavruli</family>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="sortingEnabled">
+      <bool>true</bool>
+     </property>
+     <attribute name="horizontalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <column>
+      <property name="text">
+       <string>სახელი</string>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>11</pointsize>
+       </font>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>გვარი</string>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>11</pointsize>
+       </font>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>ტელეფონი</string>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>11</pointsize>
+       </font>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>მომსახურება</string>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>11</pointsize>
+       </font>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>გადახდის მეთოდი</string>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>11</pointsize>
+       </font>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>თარიღი</string>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>11</pointsize>
+       </font>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>თანხა / წუთი</string>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>11</pointsize>
+       </font>
+      </property>
+     </column>
+    </widget>
+    <widget class="QLabel" name="pay_by_minutes_label">
+     <property name="geometry">
+      <rect>
+       <x>38</x>
+       <y>477</y>
+       <width>238</width>
+       <height>19</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>BPG Nino Mtavruli</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>გადახდა აბონემენტის წუთებით:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="total_daily">
+     <property name="geometry">
+      <rect>
+       <x>308</x>
+       <y>405</y>
+       <width>141</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>BPG Nino Mtavruli</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="card_label">
+     <property name="geometry">
+      <rect>
+       <x>38</x>
+       <y>453</y>
+       <width>62</width>
+       <height>19</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>BPG Nino Mtavruli</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>უნაღდო</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="cash_label">
+     <property name="geometry">
+      <rect>
+       <x>38</x>
+       <y>429</y>
+       <width>52</width>
+       <height>19</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>BPG Nino Mtavruli</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>ნაღდი:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="total_label">
+     <property name="geometry">
+      <rect>
+       <x>38</x>
+       <y>405</y>
+       <width>264</width>
+       <height>19</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>BPG Nino Mtavruli</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>მიმდინარე დღის შემოსავალი სულ: </string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="card">
+     <property name="geometry">
+      <rect>
+       <x>308</x>
+       <y>453</y>
+       <width>121</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>BPG Nino Mtavruli</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QDateEdit" name="new_date">
+     <property name="geometry">
+      <rect>
+       <x>758</x>
+       <y>400</y>
+       <width>151</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>BPG Nino Mtavruli</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="calendarPopup">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="new_date_label">
+     <property name="geometry">
+      <rect>
+       <x>640</x>
+       <y>410</y>
+       <width>99</width>
+       <height>19</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>BPG Nino Mtavruli</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>სხვა თარიღი</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_3">
+    <attribute name="title">
+     <string>თვის რეპორტი</string>
+    </attribute>
+   </widget>
   </widget>
  </widget>
- <tabstops>
-  <tabstop>search_by_phone</tabstop>
-  <tabstop>search_button</tabstop>
-  <tabstop>fname</tabstop>
-  <tabstop>lname</tabstop>
-  <tabstop>phone</tabstop>
-  <tabstop>category</tabstop>
-  <tabstop>payment_method</tabstop>
-  <tabstop>amount</tabstop>
-  <tabstop>pay_button</tabstop>
- </tabstops>
  <resources/>
  <connections/>
 </ui>

@@ -1,8 +1,7 @@
 from datetime import datetime
-from PyQt6.QtWidgets import QWidget, QMessageBox
+from PyQt6.QtWidgets import QWidget, QTableWidgetItem, QMessageBox
 from PyQt6.uic import loadUi
 from connection import Database
-from payments_table import PaymentsTable
 
 db = Database()
 today = datetime.now().date().strftime("%d.%m.%Y")
@@ -31,6 +30,10 @@ class Funds(QWidget):
         loadUi("ui/pay.ui", self)
         self.conn = db.connect()
         self.search_button.clicked.connect(self.search_client)
+        cursor_init = self.conn.cursor()
+        cursor_init.execute("SELECT * from payments WHERE date=%s", (today,))
+        self.load_payments_table(cursor_init)
+        self.new_date.dateChanged.connect(self.change_date_daily)
 
         self.categories = load_categories()
         for category in self.categories:
@@ -59,6 +62,15 @@ class Funds(QWidget):
             self.search_by_phone.setFocus()
         else:
             event.ignore()
+
+    def change_date_daily(self):
+        global today
+
+        today = self.new_date.text()
+        self.all_payments.clearContents()
+        cursor20 = self.conn.cursor()
+        cursor20.execute("SELECT * from payments WHERE date=%s", (today,))
+        self.load_payments_table(cursor20)
 
     def clear_fields(self):
         self.conn.commit()
@@ -89,7 +101,6 @@ class Funds(QWidget):
         else:
             for client in cursor11:
                 if search == client[3]:
-                    print(type(client[3]))
                     self.fname.setText(client[1])
                     self.lname.setText(client[2])
                     self.phone.setText(client[3])
@@ -129,6 +140,9 @@ class Funds(QWidget):
                                      "amount) VALUES (?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category,
                                                                               method, today, amount))
                     self.conn.commit()
+                    cursor20 = self.conn.cursor()
+                    cursor20.execute("SELECT * from payments WHERE date=%s", (today,))
+                    self.load_payments_table(cursor20)
                     updated_minutes = existing_minutes - int(amount)
                     cursor17 = self.conn.cursor()
                     cursor17.execute("UPDATE clients SET minutes=%s WHERE phone=%s", (updated_minutes, phone,))
@@ -151,6 +165,9 @@ class Funds(QWidget):
                                      "amount) VALUES (?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category,
                                                                               method, today, amount))
                     self.conn.commit()
+                    cursor20 = self.conn.cursor()
+                    cursor20.execute("SELECT * from payments WHERE date=%s", (today,))
+                    self.load_payments_table(cursor20)
                     balance = 0
                     init_minutes = 0
                     cursor14 = self.conn.cursor()
@@ -158,6 +175,9 @@ class Funds(QWidget):
                                      "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, init_minutes))
                     self.conn.commit()
                     self.clear_fields()
+                    cursor20 = self.conn.cursor()
+                    cursor20.execute("SELECT * from payments WHERE date=%s", (today,))
+                    self.load_payments_table(cursor20)
 
                 else:
                     cursor15 = self.conn.cursor()
@@ -165,7 +185,45 @@ class Funds(QWidget):
                                      "amount) VALUES (?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category,
                                                                               method, today, amount))
                     self.conn.commit()
+                    cursor20 = self.conn.cursor()
+                    cursor20.execute("SELECT * from payments WHERE date=%s", (today,))
                     QMessageBox.information(self, "წარმატებული გადახდა", "გადახდა წარმატებით განხორციელდა!")
                     self.clear_fields()
-        pay_table = PaymentsTable()
-        pay_table.load_payments_table()
+                    self.load_payments_table(cursor20)
+
+    def load_payments_table(self, data):
+
+        # self.all_payments.sortItems(5)
+        self.all_payments.setRowCount(data.rowcount)
+        self.all_payments.setColumnCount(7)
+
+        self.all_payments.setColumnWidth(0, 100)
+        self.all_payments.setColumnWidth(1, 160)
+        self.all_payments.setColumnWidth(2, 90)
+        self.all_payments.setColumnWidth(3, 150)
+        self.all_payments.setColumnWidth(4, 160)
+        self.all_payments.setColumnWidth(5, 100)
+        self.all_payments.setColumnWidth(6, 100)
+
+        self.all_payments.clearContents()
+        payments = [payment for payment in data]
+        total_cash = [pay[7] for pay in payments if pay[5] == "ნაღდი"]
+        total_card = [pay[7] for pay in payments if pay[5] == "უნაღდო"]
+        total_by_minutes = [pay[7] for pay in payments if pay[5] == "წუთები"]
+        self.total_daily.setText(str(sum(total_cash) + sum(total_card)))
+        self.cash.setText(str(sum(total_cash)))
+        self.card.setText(str(sum(total_card)))
+        self.new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
+        self.pay_by_minutes.setText(str(sum(total_by_minutes)))
+        self.all_payments.horizontalHeader().setVisible(True)
+        self.all_payments.verticalHeader().setVisible(True)
+        row = 0
+        for item in payments:
+            self.all_payments.setItem(row, 0, QTableWidgetItem(item[1]))
+            self.all_payments.setItem(row, 1, QTableWidgetItem(item[2]))
+            self.all_payments.setItem(row, 2, QTableWidgetItem(item[3]))
+            self.all_payments.setItem(row, 3, QTableWidgetItem(item[4]))
+            self.all_payments.setItem(row, 4, QTableWidgetItem(item[5]))
+            self.all_payments.setItem(row, 5, QTableWidgetItem(item[6]))
+            self.all_payments.setItem(row, 6, QTableWidgetItem(str(item[7])))
+            row += 1

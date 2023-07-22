@@ -3008,18 +3008,6 @@ QPushButton:hover {
     </property>
     <addaction name="close_application"/>
    </widget>
-   <widget class="QMenu" name="finances">
-    <property name="font">
-     <font>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <property name="title">
-     <string>ფინანსები</string>
-    </property>
-    <addaction name="daily_report"/>
-    <addaction name="monthlyreport"/>
-   </widget>
    <widget class="QMenu" name="settings">
     <property name="font">
      <font>
@@ -3044,7 +3032,6 @@ QPushButton:hover {
     <addaction name="action_2"/>
    </widget>
    <addaction name="menu"/>
-   <addaction name="finances"/>
    <addaction name="settings"/>
    <addaction name="help"/>
   </widget>

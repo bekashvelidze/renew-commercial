@@ -98,12 +98,10 @@ class Settings(QWidget):
             QMessageBox.warning(self, 'შეცდომა', 'ჩაწერეთ ზონის სახელი.')
         else:
             cursor5 = self.conn.cursor()
-            cursor5.execute("INSERT INTO zones (zone) "
-                            "VALUES (?)", (new_zone,))
+            cursor5.execute("INSERT INTO zones (zone) VALUES (?)", (new_zone,))
             self.conn.commit()
 
             self.zone_name.clear()
-
             QMessageBox.information(self, 'ახალი ზონის დამატება', 'ახალი ზონა დაემატა ბაზაში.')
             self.zone_name.clear()
             self.zones.clearContents()
