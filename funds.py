@@ -1,11 +1,12 @@
 from datetime import datetime
+import calendar
 from PyQt6.QtWidgets import QWidget, QTableWidgetItem, QMessageBox
 from PyQt6.uic import loadUi
 from connection import Database
 
 db = Database()
 today = datetime.now().date().strftime("%d.%m.%Y")
-
+month_name = calendar.month_name[int(today.split(".")[1][1])]
 
 def load_categories():
     conn = db.connect()
@@ -30,10 +31,14 @@ class Funds(QWidget):
         loadUi("ui/pay.ui", self)
         self.conn = db.connect()
         self.search_button.clicked.connect(self.search_client)
+        # Daily report data
         cursor_init = self.conn.cursor()
         cursor_init.execute("SELECT * from payments WHERE date=%s", (today,))
         self.load_payments_table(cursor_init)
-        self.new_date.dateChanged.connect(self.change_date_daily)
+        # Monthly report data
+        cursor_init_month = self.conn.cursor()
+        cursor_init_month.execute(f"SELECT * FROM `payments` WHERE monthname(date)=%s", (month_name, ))
+        self.new_date.dateChanged.connect(cursor_init_month)
 
         self.categories = load_categories()
         for category in self.categories:
@@ -194,6 +199,42 @@ class Funds(QWidget):
     def load_payments_table(self, data):
 
         # self.all_payments.sortItems(5)
+        self.all_payments.setRowCount(data.rowcount)
+        self.all_payments.setColumnCount(7)
+
+        self.all_payments.setColumnWidth(0, 100)
+        self.all_payments.setColumnWidth(1, 160)
+        self.all_payments.setColumnWidth(2, 90)
+        self.all_payments.setColumnWidth(3, 150)
+        self.all_payments.setColumnWidth(4, 160)
+        self.all_payments.setColumnWidth(5, 100)
+        self.all_payments.setColumnWidth(6, 100)
+
+        self.all_payments.clearContents()
+        payments = [payment for payment in data]
+        total_cash = [pay[7] for pay in payments if pay[5] == "ნაღდი"]
+        total_card = [pay[7] for pay in payments if pay[5] == "უნაღდო"]
+        total_by_minutes = [pay[7] for pay in payments if pay[5] == "წუთები"]
+        self.total_daily.setText(str(sum(total_cash) + sum(total_card)))
+        self.cash.setText(str(sum(total_cash)))
+        self.card.setText(str(sum(total_card)))
+        self.new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
+        self.pay_by_minutes.setText(str(sum(total_by_minutes)))
+        self.all_payments.horizontalHeader().setVisible(True)
+        self.all_payments.verticalHeader().setVisible(True)
+        row = 0
+        for item in payments:
+            self.all_payments.setItem(row, 0, QTableWidgetItem(item[1]))
+            self.all_payments.setItem(row, 1, QTableWidgetItem(item[2]))
+            self.all_payments.setItem(row, 2, QTableWidgetItem(item[3]))
+            self.all_payments.setItem(row, 3, QTableWidgetItem(item[4]))
+            self.all_payments.setItem(row, 4, QTableWidgetItem(item[5]))
+            self.all_payments.setItem(row, 5, QTableWidgetItem(item[6]))
+            self.all_payments.setItem(row, 6, QTableWidgetItem(str(item[7])))
+            row += 1
+
+    def load_payments_table_monthly(self, data, month):
+
         self.all_payments.setRowCount(data.rowcount)
         self.all_payments.setColumnCount(7)
 
