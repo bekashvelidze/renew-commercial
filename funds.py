@@ -2,10 +2,11 @@ from datetime import datetime
 from PyQt6.QtWidgets import QWidget, QMessageBox
 from PyQt6.uic import loadUi
 from connection import Database
-
+from payments_table import PaymentsTable
 
 db = Database()
 today = datetime.now().date().strftime("%d.%m.%Y")
+
 
 def load_categories():
     conn = db.connect()
@@ -14,12 +15,14 @@ def load_categories():
 
     return cursor_cats
 
+
 def load_payment_methods():
     conn = db.connect()
     cursor_methods = conn.cursor()
     cursor_methods.execute("SELECT * FROM payment_methods")
 
     return cursor_methods
+
 
 class Funds(QWidget):
 
@@ -40,7 +43,6 @@ class Funds(QWidget):
         self.payment_method.setCurrentText("გადახდის მეთოდი")
 
         self.pay_button.clicked.connect(self.pay)
-
 
     def closeEvent(self, event):
         reply = QMessageBox.question(
@@ -109,20 +111,30 @@ class Funds(QWidget):
         elif method == "წუთები":
             cursor16 = self.conn.cursor()
             cursor16.execute("SELECT * FROM clients WHERE phone=%s", (phone,))
-            existing = [minute[5] for minute in cursor16]
-            existing_minutes = sum(existing)
-            if existing_minutes < int(amount):
-                QMessageBox.warning(self, "არასაკმარისი წუთები",
-                                    f"აბონემენტი ნომრით: {phone} არ აქვს საკმარისი წუთები ბალანსზე,"
-                                    f"\nბალანსი: {existing_minutes} წუთი.")
-                self.clear_fields()
+            if cursor16.rowcount == 0:
+                QMessageBox.warning(self, "შეცდომა",
+                                    f"პაციენტი ნომრით: {phone} არ მოიძებნა ბაზაში, გთხოვთ შეავსეთ შესაბამისი ველები "
+                                    f"გადახდის დასაფიქსირებლად.")
             else:
-                updated_minutes = existing_minutes - int(amount)
-                cursor17 = self.conn.cursor()
-                cursor17.execute("UPDATE clients SET minutes=%s WHERE phone=%s", (updated_minutes, phone,))
-                self.conn.commit()
-                self.clear_fields()
-                QMessageBox.information(self, "წარმატებული გადახდა", "გადახდა წარმატებით განხორციელდა!")
+                existing = [minute[5] for minute in cursor16]
+                existing_minutes = sum(existing)
+                if existing_minutes < int(amount):
+                    QMessageBox.warning(self, "არასაკმარისი წუთები",
+                                        f"აბონემენტი ნომრით: {phone} არ აქვს საკმარისი წუთები ბალანსზე,"
+                                        f"\nბალანსი: {existing_minutes} წუთი.")
+                    self.clear_fields()
+                else:
+                    cursor18 = self.conn.cursor()
+                    cursor18.execute("INSERT INTO payments (fname, lname, phone, category, payment_method, date, "
+                                     "amount) VALUES (?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category,
+                                                                              method, today, amount))
+                    self.conn.commit()
+                    updated_minutes = existing_minutes - int(amount)
+                    cursor17 = self.conn.cursor()
+                    cursor17.execute("UPDATE clients SET minutes=%s WHERE phone=%s", (updated_minutes, phone,))
+                    self.conn.commit()
+                    self.clear_fields()
+                    QMessageBox.information(self, "წარმატებული გადახდა", "გადახდა წარმატებით განხორციელდა!")
 
         else:
             if first_name == "" or last_name == "" or phone == "" or amount == "":
@@ -135,8 +147,9 @@ class Funds(QWidget):
                 client_phones = [client[3] for client in clients]
                 if phone not in client_phones:
                     cursor13 = self.conn.cursor()
-                    cursor13.execute("INSERT INTO payments (fname, lname, phone, category, payment_method, date, amount) "
-                                     "VALUES (?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category, method, today, amount))
+                    cursor13.execute("INSERT INTO payments (fname, lname, phone, category, payment_method, date, "
+                                     "amount) VALUES (?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category,
+                                                                              method, today, amount))
                     self.conn.commit()
                     balance = 0
                     init_minutes = 0
@@ -145,11 +158,14 @@ class Funds(QWidget):
                                      "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, init_minutes))
                     self.conn.commit()
                     self.clear_fields()
+
                 else:
                     cursor15 = self.conn.cursor()
-                    cursor15.execute("INSERT INTO payments (fname, lname, phone, category, payment_method, date, amount) "
-                                     "VALUES (?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category, method, today, amount))
+                    cursor15.execute("INSERT INTO payments (fname, lname, phone, category, payment_method, date, "
+                                     "amount) VALUES (?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category,
+                                                                              method, today, amount))
                     self.conn.commit()
                     QMessageBox.information(self, "წარმატებული გადახდა", "გადახდა წარმატებით განხორციელდა!")
                     self.clear_fields()
-
+        pay_table = PaymentsTable()
+        pay_table.load_payments_table()

@@ -25,10 +25,12 @@ class Database:
                 user=self.database_data["USER"],
                 password=self.database_data["PASSWORD"]
             )
-        except mariadb.Error:
+        except mariadb.Error as e:
             msgbox = QMessageBox()
             msgbox.setWindowTitle("კავშირის შეცდომა")
-            msgbox.setText("მონაცემთა ბაზასთან დაკავშირება ვერ მოხერხდა,\nგადაამოწმეთ ინტერნეთან კავშირი ან სცადეთ მოგვიანებით")
+            # msgbox.setText("მონაცემთა ბაზასთან დაკავშირება ვერ მოხერხდა,"
+            #                "\nგადაამოწმეთ ინტერნეთან კავშირი ან სცადეთ მოგვიანებით")
+            msgbox.setText(str(e))
             msgbox.exec()
 
             sys.exit(1)

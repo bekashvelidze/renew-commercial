@@ -15,6 +15,7 @@ locale.setlocale(locale.LC_ALL, "ka_GE.utf-8")
 today = datetime.now().date().strftime("%d.%m.%Y")
 db = Database()
 
+
 def check_integer(number):
     try:
         if int(number):
@@ -29,6 +30,7 @@ def load_procedures():
     cursor_procedures.execute("SELECT * FROM procedures")
 
     return cursor_procedures
+
 
 def load_doctors(category):
     conn = db.connect()
@@ -130,7 +132,6 @@ class MainWindow(QMainWindow):
         self.las_type.setCurrentText("აირჩიეთ ლაზერის ტიპი")
         self.las_zone.setCurrentText("აირჩიეთ ზონა")
         self.las_doctor.setCurrentText("აირჩიეთ ექიმი")
-
 
     def load_data(self):
         self.cos_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
@@ -613,4 +614,6 @@ class MainWindow(QMainWindow):
 
     def payments_table_window(self):
         self.payments_table_window_open.setWindowTitle("მიმდინარე დღის რეპორტი")
+        self.payments_table_window_open.setFixedWidth(900)
+        self.payments_table_window_open.setFixedHeight(580)
         self.payments_table_window_open.show()
