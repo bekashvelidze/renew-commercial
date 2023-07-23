@@ -1,7 +1,6 @@
 import sys
 import json
 import datetime
-import locale
 import webbrowser
 from datetime import datetime
 from PyQt6.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem
@@ -13,7 +12,7 @@ from subscription import Subscription
 from funds import Funds
 from about import About
 
-# locale.setlocale(locale.LC_ALL, "ka_GE.utf-8")
+
 today = datetime.now().date().strftime("%d.%m.%Y")
 db = Database()
 
