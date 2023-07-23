@@ -11,6 +11,7 @@ from connection import Database
 from settings import Settings
 from subscription import Subscription
 from funds import Funds
+from about import About
 
 locale.setlocale(locale.LC_ALL, "ka_GE.utf-8")
 today = datetime.now().date().strftime("%d.%m.%Y")
@@ -83,10 +84,12 @@ class MainWindow(QMainWindow):
         self.settings_window_open = Settings()
         self.subs_window = Subscription()
         self.funds_window = Funds()
+        self.about = About()
         # Menu items
         self.close_application.triggered.connect(close_main_application)
         self.change_settings.triggered.connect(self.settings_window)
         self.documentation.triggered.connect(open_documentation)
+        self.about_menu.triggered.connect(self.about_window)
         # Cosmetics
         self.cos_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
         self.cos_new_date.dateChanged.connect(self.change_date_cos)
@@ -618,3 +621,8 @@ class MainWindow(QMainWindow):
         self.settings_window_open.setWindowTitle("პარამეტრები")
         self.settings_window_open.setWindowIcon(QIcon("ui/renew.ico"))
         self.settings_window_open.show()
+
+    def about_window(self):
+        self.about.setWindowTitle("პროგრამის შესახებ")
+        self.about.setWindowIcon(QIcon("ui/renew.ico"))
+        self.about.show()
