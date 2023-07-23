@@ -2,6 +2,7 @@ import sys
 import json
 import datetime
 import locale
+import webbrowser
 from datetime import datetime
 from PyQt6.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem
 from PyQt6.uic import loadUi
@@ -14,6 +15,10 @@ from funds import Funds
 locale.setlocale(locale.LC_ALL, "ka_GE.utf-8")
 today = datetime.now().date().strftime("%d.%m.%Y")
 db = Database()
+
+
+def open_documentation():
+    webbrowser.open('https://nextcloud.org.ge/renew_documentation')
 
 
 def check_integer(number):
@@ -81,6 +86,7 @@ class MainWindow(QMainWindow):
         # Menu items
         self.close_application.triggered.connect(close_main_application)
         self.change_settings.triggered.connect(self.settings_window)
+        self.documentation.triggered.connect(open_documentation)
         # Cosmetics
         self.cos_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
         self.cos_new_date.dateChanged.connect(self.change_date_cos)

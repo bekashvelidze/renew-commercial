@@ -3037,8 +3037,8 @@ QPushButton:hover {
     <property name="title">
      <string>დახმარება</string>
     </property>
-    <addaction name="action"/>
-    <addaction name="action_2"/>
+    <addaction name="documentation"/>
+    <addaction name="about"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="settings"/>
@@ -3116,12 +3116,12 @@ QPushButton:hover {
     <string>პროგრამის პარამეტრები</string>
    </property>
   </action>
-  <action name="action">
+  <action name="documentation">
    <property name="text">
     <string>პროგრამის სახელმძღვანელო</string>
    </property>
   </action>
-  <action name="action_2">
+  <action name="about">
    <property name="text">
     <string>პროგრამის შესახებ</string>
    </property>
