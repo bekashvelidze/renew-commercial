@@ -13,7 +13,7 @@ from subscription import Subscription
 from funds import Funds
 from about import About
 
-locale.setlocale(locale.LC_ALL, "ka_GE.utf-8")
+# locale.setlocale(locale.LC_ALL, "ka_GE.utf-8")
 today = datetime.now().date().strftime("%d.%m.%Y")
 db = Database()
 
@@ -67,6 +67,13 @@ def load_times():
         times = json.load(file)
 
     return times
+
+
+def load_days():
+    with open("days.json", "r", encoding="utf-8") as file:
+        days = json.load(file)
+
+    return days
 
 
 def close_main_application():
@@ -173,7 +180,7 @@ class MainWindow(QMainWindow):
         self.cos_date.setText(self.cos_new_date.text())
 
         self.cos_patients.setText(str(cursor.rowcount))
-        self.cos_current_day.setText(datetime.now().strftime("%A"))
+        self.cos_current_day.setText(load_days()[datetime.now().strftime("%A")])
         self.current_date.setText(datetime.now().date().strftime("%d.%m.%Y"))
 
         self.cos_appointments.setColumnWidth(0, 300)
@@ -290,7 +297,7 @@ class MainWindow(QMainWindow):
         self.las_date.setText(self.las_new_date.text())
 
         self.las_patients.setText(str(cursor.rowcount))
-        self.las_current_day.setText(datetime.now().strftime("%A"))
+        self.las_current_day.setText(load_days()[datetime.now().strftime("%A")])
         self.las_current_date.setText(datetime.now().date().strftime("%d.%m.%Y"))
 
         self.las_appointments.setColumnWidth(0, 160)
@@ -416,7 +423,7 @@ class MainWindow(QMainWindow):
         self.sol_1_date.setText(self.sol_1_new_date.text())
 
         self.sol_1_patients.setText(str(cursor.rowcount))
-        self.sol_1_current_day.setText(datetime.now().strftime("%A"))
+        self.sol_1_current_day.setText(load_days()[datetime.now().strftime("%A")])
         self.sol_1_current_date.setText(datetime.now().date().strftime("%d.%m.%Y"))
 
         self.sol_1_appointments.setColumnWidth(0, 230)
@@ -520,7 +527,7 @@ class MainWindow(QMainWindow):
         self.sol_2_date.setText(self.sol_2_new_date.text())
 
         self.sol_2_patients.setText(str(cursor.rowcount))
-        self.sol_2_current_day.setText(datetime.now().strftime("%A"))
+        self.sol_2_current_day.setText(load_days()[datetime.now().strftime("%A")])
         self.sol_2_current_date.setText(datetime.now().date().strftime("%d.%m.%Y"))
 
         self.sol_2_appointments.setColumnWidth(0, 230)
