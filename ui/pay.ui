@@ -535,6 +535,12 @@ QPushButton:hover {
      <property name="styleSheet">
       <string notr="true"/>
      </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOn</enum>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAsNeeded</enum>
+     </property>
      <property name="sortingEnabled">
       <bool>true</bool>
      </property>
@@ -801,7 +807,7 @@ QPushButton:hover {
     <widget class="QLabel" name="new_month_label_mon">
      <property name="geometry">
       <rect>
-       <x>640</x>
+       <x>639</x>
        <y>410</y>
        <width>100</width>
        <height>19</height>
@@ -986,6 +992,9 @@ QPushButton:hover {
      <property name="styleSheet">
       <string notr="true"/>
      </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOn</enum>
+     </property>
      <property name="sortingEnabled">
       <bool>true</bool>
      </property>
@@ -1078,6 +1087,44 @@ QPushButton:hover {
       <rect>
        <x>750</x>
        <y>400</y>
+       <width>151</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>BPG Nino Mtavruli</family>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
+     <property name="editable">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="new_year_label">
+     <property name="geometry">
+      <rect>
+       <x>627</x>
+       <y>440</y>
+       <width>117</width>
+       <height>19</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>BPG Nino Mtavruli</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>აირჩიეთ წელი</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="years_combo">
+     <property name="geometry">
+      <rect>
+       <x>750</x>
+       <y>433</y>
        <width>151</width>
        <height>30</height>
       </rect>

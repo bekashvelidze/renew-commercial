@@ -5,6 +5,7 @@ import locale
 from datetime import datetime
 from PyQt6.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem
 from PyQt6.uic import loadUi
+from PyQt6.QtGui import QIcon
 from connection import Database
 from settings import Settings
 from subscription import Subscription
@@ -599,12 +600,15 @@ class MainWindow(QMainWindow):
 
     def buy_subscription(self):
         self.subs_window.setWindowTitle("აბონემენტის შეძენა")
+        self.subs_window.setWindowIcon(QIcon("ui/renew.ico"))
         self.subs_window.show()
 
     def funds(self):
         self.funds_window.setWindowTitle("საფასურის გადახდა")
+        self.funds_window.setWindowIcon(QIcon("ui/renew.ico"))
         self.funds_window.show()
 
     def settings_window(self):
         self.settings_window_open.setWindowTitle("პარამეტრები")
+        self.settings_window_open.setWindowIcon(QIcon("ui/renew.ico"))
         self.settings_window_open.show()

@@ -3,6 +3,7 @@ import json
 from PyQt6 import QtWidgets
 from PyQt6.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PyQt6.uic import loadUi
+from PyQt6.QtGui import QIcon
 from main_window import MainWindow
 
 
@@ -39,6 +40,7 @@ loginwindow = Login()
 widget = QtWidgets.QStackedWidget()
 widget.addWidget(loginwindow)
 widget.setWindowTitle('მრავალპროფილური ესთეტიკური მედიცინის ცენტრი "რენიუ"')
+widget.setWindowIcon(QIcon("ui/renew.ico"))
 widget.setFixedWidth(600)
 widget.setFixedHeight(280)
 widget.show()

@@ -1,12 +1,13 @@
 import json
 import calendar
 from datetime import datetime
-from PyQt6.QtWidgets import QWidget, QTableWidgetItem, QMessageBox
+from PyQt6.QtWidgets import QWidget, QTableWidgetItem, QMessageBox, QComboBox
 from PyQt6.uic import loadUi
 from connection import Database
 
 db = Database()
 today = datetime.now().date().strftime("%d.%m.%Y")
+year = datetime.now().year
 month_name = calendar.month_name[int(today.split(".")[1][1])]
 
 def load_months():
@@ -14,6 +15,15 @@ def load_months():
         months = json.load(file)
 
     return months
+
+
+def load_years():
+    conn = db.connect()
+    cursor_years = conn.cursor()
+    cursor_years.execute("SELECT * FROM payments")
+    years = [year_num[6].split(".")[2] for year_num in cursor_years]
+
+    return years
 
 def load_categories():
     conn = db.connect()
@@ -36,6 +46,7 @@ class Funds(QWidget):
     def __init__(self):
         super().__init__()
         loadUi("ui/pay.ui", self)
+        self.tabWidget.currentChanged.connect(self.load_current_date)
         self.conn = db.connect()
         self.search_button.clicked.connect(self.search_client)
         cursor_init = self.conn.cursor()
@@ -45,10 +56,14 @@ class Funds(QWidget):
         # Monthly report
         for key, value in load_months()[1].items():
             self.months_combo.addItem(value)
+        years_num = sorted({year_num for year_num in load_years()})
+        for year_num in years_num:
+            self.years_combo.addItem(year_num)
         cursor_months = self.conn.cursor()
         cursor_months.execute("SELECT * FROM `payments` WHERE monthname(date)=%s", (month_name, ))
-        self.load_payments_months(cursor_months, month_name)
+        self.load_payments_months(cursor_months, month_name, year)
         self.months_combo.currentTextChanged.connect(self.change_month)
+        self.years_combo.currentTextChanged.connect(self.change_year)
 
         self.categories = load_categories()
         for category in self.categories:
@@ -78,14 +93,21 @@ class Funds(QWidget):
         else:
             event.ignore()
 
+    def load_current_date(self):
+        global today
+        today = datetime.now().date().strftime("%d.%m.%Y")
+        self.change_month()
+        self.months_combo.setCurrentText(month_name)
+        self.years_combo.setCurrentText(str(year))
+
     def change_date_daily(self):
         global today
 
         today = self.new_date.text()
         self.all_payments.clearContents()
-        cursor20 = self.conn.cursor()
-        cursor20.execute("SELECT * from payments WHERE date=%s", (today,))
-        self.load_payments_table(cursor20)
+        cursor23 = self.conn.cursor()
+        cursor23.execute("SELECT * from payments WHERE date=%s", (today,))
+        self.load_payments_table(cursor23)
 
     def change_month(self):
         global month_name
@@ -94,7 +116,16 @@ class Funds(QWidget):
         self.all_payments_mon.clearContents()
         cursor21 = self.conn.cursor()
         cursor21.execute("SELECT * FROM `payments` WHERE monthname(date)=%s", (load_months()[0][month_name], ))
-        self.load_payments_months(cursor21, load_months()[0][month_name])
+        self.load_payments_months(cursor21, load_months()[0][month_name], year)
+
+    def change_year(self):
+        global year
+
+        self.all_payments_mon.clearContents()
+        cursor22 = self.conn.cursor()
+        cursor22.execute("SELECT * FROM `payments` WHERE monthname(date)=%s", (load_months()[0][month_name], ))
+        year = self.years_combo.currentText()
+        self.load_payments_months(cursor22, load_months()[0][month_name], year)
 
     def clear_fields(self):
         self.conn.commit()
@@ -189,9 +220,9 @@ class Funds(QWidget):
                                      "amount) VALUES (?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category,
                                                                               method, today, amount))
                     self.conn.commit()
-                    cursor20 = self.conn.cursor()
-                    cursor20.execute("SELECT * from payments WHERE date=%s", (today,))
-                    self.load_payments_table(cursor20)
+                    cursor24 = self.conn.cursor()
+                    cursor24.execute("SELECT * from payments WHERE date=%s", (today,))
+                    self.load_payments_table(cursor24)
                     balance = 0
                     init_minutes = 0
                     cursor14 = self.conn.cursor()
@@ -199,9 +230,9 @@ class Funds(QWidget):
                                      "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, init_minutes))
                     self.conn.commit()
                     self.clear_fields()
-                    cursor20 = self.conn.cursor()
-                    cursor20.execute("SELECT * from payments WHERE date=%s", (today,))
-                    self.load_payments_table(cursor20)
+                    cursor25 = self.conn.cursor()
+                    cursor25.execute("SELECT * from payments WHERE date=%s", (today,))
+                    self.load_payments_table(cursor25)
 
                 else:
                     cursor15 = self.conn.cursor()
@@ -209,11 +240,11 @@ class Funds(QWidget):
                                      "amount) VALUES (?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category,
                                                                               method, today, amount))
                     self.conn.commit()
-                    cursor20 = self.conn.cursor()
-                    cursor20.execute("SELECT * from payments WHERE date=%s", (today,))
+                    cursor26 = self.conn.cursor()
+                    cursor26.execute("SELECT * from payments WHERE date=%s", (today,))
                     QMessageBox.information(self, "წარმატებული გადახდა", "გადახდა წარმატებით განხორციელდა!")
                     self.clear_fields()
-                    self.load_payments_table(cursor20)
+                    self.load_payments_table(cursor26)
 
     def load_payments_table(self, data):
         self.all_payments.setRowCount(data.rowcount)
@@ -250,7 +281,7 @@ class Funds(QWidget):
             self.all_payments.setItem(row, 6, QTableWidgetItem(str(item[7])))
             row += 1
 
-    def load_payments_months(self, data, month):
+    def load_payments_months(self, data, month, year_num):
         self.all_payments_mon.setRowCount(data.rowcount)
         self.all_payments_mon.setColumnCount(7)
 
@@ -263,7 +294,8 @@ class Funds(QWidget):
         self.all_payments_mon.setColumnWidth(6, 100)
 
         self.all_payments_mon.clearContents()
-        payments = [payment for payment in data]
+        payments = [payment for payment in data if (payment[6].split(".")[2] == str(year_num))]
+        self.all_payments_mon.setRowCount(len(payments))
         total_cash = [pay[7] for pay in payments if pay[5] == "ნაღდი"]
         total_card = [pay[7] for pay in payments if pay[5] == "უნაღდო"]
         total_by_minutes = [pay[7] for pay in payments if pay[5] == "წუთები"]
