@@ -87,7 +87,6 @@ class MainWindow(QMainWindow):
         self.load_data()
         self.tabWidget.currentChanged.connect(self.load_data)
         self.settings_window_open = Settings()
-        self.subs_window = Subscription()
         self.funds_window = Funds()
         self.about = About()
         # Menu items
