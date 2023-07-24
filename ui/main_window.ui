@@ -670,7 +670,7 @@ QPushButton:hover {
      <widget class="Line" name="cos_line">
       <property name="geometry">
        <rect>
-        <x>660</x>
+        <x>730</x>
         <y>380</y>
         <width>5</width>
         <height>110</height>
@@ -683,8 +683,8 @@ QPushButton:hover {
      <widget class="QPushButton" name="cos_pay_button">
       <property name="geometry">
        <rect>
-        <x>670</x>
-        <y>390</y>
+        <x>780</x>
+        <y>415</y>
         <width>170</width>
         <height>45</height>
        </rect>
@@ -696,14 +696,14 @@ QPushButton:hover {
        </font>
       </property>
       <property name="text">
-       <string>გადახდა</string>
+       <string>გადახდები</string>
       </property>
      </widget>
      <widget class="QLabel" name="cos_patients_label">
       <property name="geometry">
        <rect>
-        <x>670</x>
-        <y>450</y>
+        <x>446</x>
+        <y>461</y>
         <width>171</width>
         <height>19</height>
        </rect>
@@ -721,8 +721,8 @@ QPushButton:hover {
      <widget class="QLabel" name="cos_patients">
       <property name="geometry">
        <rect>
-        <x>860</x>
-        <y>447</y>
+        <x>635</x>
+        <y>458</y>
         <width>66</width>
         <height>25</height>
        </rect>
@@ -967,8 +967,8 @@ QPushButton:hover {
      <widget class="QPushButton" name="las_pay_button">
       <property name="geometry">
        <rect>
-        <x>670</x>
-        <y>390</y>
+        <x>705</x>
+        <y>399</y>
         <width>170</width>
         <height>45</height>
        </rect>
@@ -980,7 +980,7 @@ QPushButton:hover {
        </font>
       </property>
       <property name="text">
-       <string>გადახდა</string>
+       <string>გადახდები</string>
       </property>
      </widget>
      <widget class="QLabel" name="las_date_label">
@@ -1448,8 +1448,8 @@ QPushButton:hover {
      <widget class="QLabel" name="las_patients_label">
       <property name="geometry">
        <rect>
-        <x>670</x>
-        <y>450</y>
+        <x>705</x>
+        <y>459</y>
         <width>171</width>
         <height>19</height>
        </rect>
@@ -1467,8 +1467,8 @@ QPushButton:hover {
      <widget class="QLabel" name="las_patients">
       <property name="geometry">
        <rect>
-        <x>853</x>
-        <y>447</y>
+        <x>888</x>
+        <y>456</y>
         <width>66</width>
         <height>25</height>
        </rect>
@@ -1624,8 +1624,8 @@ QPushButton:hover {
      <widget class="QLabel" name="sol_1_date">
       <property name="geometry">
        <rect>
-        <x>450</x>
-        <y>398</y>
+        <x>90</x>
+        <y>460</y>
         <width>90</width>
         <height>20</height>
        </rect>
@@ -1989,8 +1989,8 @@ QPushButton:hover {
      <widget class="QPushButton" name="sol_1_pay_button">
       <property name="geometry">
        <rect>
-        <x>670</x>
-        <y>390</y>
+        <x>740</x>
+        <y>399</y>
         <width>170</width>
         <height>45</height>
        </rect>
@@ -2002,14 +2002,14 @@ QPushButton:hover {
        </font>
       </property>
       <property name="text">
-       <string>გადახდა</string>
+       <string>გადახდები</string>
       </property>
      </widget>
      <widget class="QPushButton" name="sol_1_make_an_appointment_button">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>454</y>
+        <x>380</x>
+        <y>390</y>
         <width>170</width>
         <height>30</height>
        </rect>
@@ -2027,8 +2027,8 @@ QPushButton:hover {
      <widget class="QLabel" name="sol_1_patients">
       <property name="geometry">
        <rect>
-        <x>852</x>
-        <y>446</y>
+        <x>561</x>
+        <y>430</y>
         <width>66</width>
         <height>25</height>
        </rect>
@@ -2065,8 +2065,8 @@ QPushButton:hover {
      <widget class="QLabel" name="sol_1_patients_label">
       <property name="geometry">
        <rect>
-        <x>670</x>
-        <y>450</y>
+        <x>379</x>
+        <y>434</y>
         <width>171</width>
         <height>19</height>
        </rect>
@@ -2103,8 +2103,8 @@ QPushButton:hover {
      <widget class="QLabel" name="sol_1_time_label">
       <property name="geometry">
        <rect>
-        <x>370</x>
-        <y>430</y>
+        <x>188</x>
+        <y>462</y>
         <width>42</width>
         <height>19</height>
        </rect>
@@ -2160,8 +2160,8 @@ QPushButton:hover {
      <widget class="QLabel" name="sol_1_date_label">
       <property name="geometry">
        <rect>
-        <x>370</x>
-        <y>398</y>
+        <x>10</x>
+        <y>460</y>
         <width>70</width>
         <height>19</height>
        </rect>
@@ -2217,8 +2217,8 @@ QPushButton:hover {
      <widget class="QLabel" name="sol_1_time">
       <property name="geometry">
        <rect>
-        <x>432</x>
-        <y>428</y>
+        <x>250</x>
+        <y>460</y>
         <width>90</width>
         <height>16</height>
        </rect>
@@ -2265,25 +2265,6 @@ QPushButton:hover {
        <string>წუთი</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="sol_1_buy_subscription_button">
-      <property name="geometry">
-       <rect>
-        <x>186</x>
-        <y>454</y>
-        <width>170</width>
-        <height>30</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>BPG Nino Mtavruli</family>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>აბონემენტის შეძენა</string>
-      </property>
-     </widget>
     </widget>
     <widget class="QWidget" name="sol_2">
      <attribute name="title">
@@ -2292,8 +2273,8 @@ QPushButton:hover {
      <widget class="QLabel" name="sol_2_time">
       <property name="geometry">
        <rect>
-        <x>432</x>
-        <y>428</y>
+        <x>250</x>
+        <y>460</y>
         <width>90</width>
         <height>16</height>
        </rect>
@@ -2311,8 +2292,8 @@ QPushButton:hover {
      <widget class="QPushButton" name="sol_2_make_an_appointment_button">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>454</y>
+        <x>380</x>
+        <y>390</y>
         <width>170</width>
         <height>30</height>
        </rect>
@@ -2330,8 +2311,8 @@ QPushButton:hover {
      <widget class="QLabel" name="sol_2_patients">
       <property name="geometry">
        <rect>
-        <x>852</x>
-        <y>446</y>
+        <x>561</x>
+        <y>430</y>
         <width>66</width>
         <height>25</height>
        </rect>
@@ -2387,8 +2368,8 @@ QPushButton:hover {
      <widget class="QLabel" name="sol_2_date_label">
       <property name="geometry">
        <rect>
-        <x>370</x>
-        <y>398</y>
+        <x>10</x>
+        <y>460</y>
         <width>70</width>
         <height>19</height>
        </rect>
@@ -2406,8 +2387,8 @@ QPushButton:hover {
      <widget class="QLabel" name="sol_2_patients_label">
       <property name="geometry">
        <rect>
-        <x>670</x>
-        <y>450</y>
+        <x>379</x>
+        <y>434</y>
         <width>171</width>
         <height>19</height>
        </rect>
@@ -2469,8 +2450,8 @@ QPushButton:hover {
      <widget class="QPushButton" name="sol_2_pay_button">
       <property name="geometry">
        <rect>
-        <x>670</x>
-        <y>390</y>
+        <x>740</x>
+        <y>399</y>
         <width>170</width>
         <height>45</height>
        </rect>
@@ -2482,7 +2463,7 @@ QPushButton:hover {
        </font>
       </property>
       <property name="text">
-       <string>გადახდა</string>
+       <string>გადახდები</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="sol_2_minutes">
@@ -2872,8 +2853,8 @@ QPushButton:hover {
      <widget class="QLabel" name="sol_2_time_label">
       <property name="geometry">
        <rect>
-        <x>370</x>
-        <y>430</y>
+        <x>188</x>
+        <y>462</y>
         <width>42</width>
         <height>19</height>
        </rect>
@@ -2948,8 +2929,8 @@ QPushButton:hover {
      <widget class="QLabel" name="sol_2_date">
       <property name="geometry">
        <rect>
-        <x>450</x>
-        <y>398</y>
+        <x>90</x>
+        <y>460</y>
         <width>90</width>
         <height>20</height>
        </rect>
@@ -2964,23 +2945,17 @@ QPushButton:hover {
        <string/>
       </property>
      </widget>
-     <widget class="QPushButton" name="sol_2_buy_subscription_button">
+     <widget class="Line" name="las_line_3">
       <property name="geometry">
        <rect>
-        <x>186</x>
-        <y>454</y>
-        <width>170</width>
-        <height>30</height>
+        <x>660</x>
+        <y>380</y>
+        <width>5</width>
+        <height>110</height>
        </rect>
       </property>
-      <property name="font">
-       <font>
-        <family>BPG Nino Mtavruli</family>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>აბონემენტის შეძენა</string>
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
       </property>
      </widget>
     </widget>

@@ -8,7 +8,6 @@ from PyQt6.uic import loadUi
 from PyQt6.QtGui import QIcon
 from connection import Database
 from settings import Settings
-from subscription import Subscription
 from funds import Funds
 from about import About
 
@@ -128,8 +127,6 @@ class MainWindow(QMainWindow):
         self.las_make_an_appointment_button.clicked.connect(self.make_an_appointment_las)
         self.sol_1_make_an_appointment_button.clicked.connect(self.make_an_appointment_sol_1)
         self.sol_2_make_an_appointment_button.clicked.connect(self.make_an_appointment_sol_2)
-        self.sol_1_buy_subscription_button.clicked.connect(self.buy_subscription)
-        self.sol_2_buy_subscription_button.clicked.connect(self.buy_subscription)
         self.cos_pay_button.clicked.connect(self.funds)
         self.las_pay_button.clicked.connect(self.funds)
         self.sol_1_pay_button.clicked.connect(self.funds)

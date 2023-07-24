@@ -1,7 +1,7 @@
 import json
 import calendar
 from datetime import datetime
-from PyQt6.QtWidgets import QWidget, QTableWidgetItem, QMessageBox, QComboBox
+from PyQt6.QtWidgets import QWidget, QTableWidgetItem, QMessageBox
 from PyQt6.uic import loadUi
 from connection import Database
 
@@ -9,6 +9,15 @@ db = Database()
 today = datetime.now().date().strftime("%d.%m.%Y")
 year = datetime.now().year
 month_name = calendar.month_name[int(today.split(".")[1][1])]
+
+
+def check_integer(number):
+    try:
+        if int(number):
+            return True
+    except ValueError:
+        return False
+
 
 def load_months():
     with open("months.json", "r", encoding="utf-8") as file:
@@ -24,6 +33,7 @@ def load_years():
     years = [year_num[6].split(".")[2] for year_num in cursor_years]
 
     return years
+
 
 def load_categories():
     conn = db.connect()
@@ -60,7 +70,7 @@ class Funds(QWidget):
         for year_num in years_num:
             self.years_combo.addItem(year_num)
         cursor_months = self.conn.cursor()
-        cursor_months.execute("SELECT * FROM `payments` WHERE monthname(date)=%s", (month_name, ))
+        cursor_months.execute("SELECT * FROM `payments` WHERE monthname(date)=%s", (month_name,))
         self.load_payments_months(cursor_months, month_name, year)
         self.months_combo.currentTextChanged.connect(self.change_month)
         self.years_combo.currentTextChanged.connect(self.change_year)
@@ -76,6 +86,12 @@ class Funds(QWidget):
         self.payment_method.setCurrentText("გადახდის მეთოდი")
 
         self.pay_button.clicked.connect(self.pay)
+        # Subscription
+        for method in load_payment_methods():
+            self.pay_method.addItem(method[1])
+        self.pay_method.setCurrentText("გადახდის მეთოდი")
+        self.search_button_sub.clicked.connect(self.search_client_sub)
+        self.buy.clicked.connect(self.buy_subscription)
 
     def closeEvent(self, event):
         reply = QMessageBox.question(
@@ -115,7 +131,7 @@ class Funds(QWidget):
         month_name = self.months_combo.currentText()
         self.all_payments_mon.clearContents()
         cursor21 = self.conn.cursor()
-        cursor21.execute("SELECT * FROM `payments` WHERE monthname(date)=%s", (load_months()[0][month_name], ))
+        cursor21.execute("SELECT * FROM `payments` WHERE monthname(date)=%s", (load_months()[0][month_name],))
         self.load_payments_months(cursor21, load_months()[0][month_name], year)
 
     def change_year(self):
@@ -123,7 +139,7 @@ class Funds(QWidget):
 
         self.all_payments_mon.clearContents()
         cursor22 = self.conn.cursor()
-        cursor22.execute("SELECT * FROM `payments` WHERE monthname(date)=%s", (load_months()[0][month_name], ))
+        cursor22.execute("SELECT * FROM `payments` WHERE monthname(date)=%s", (load_months()[0][month_name],))
         year = self.years_combo.currentText()
         self.load_payments_months(cursor22, load_months()[0][month_name], year)
 
@@ -316,3 +332,116 @@ class Funds(QWidget):
             self.all_payments_mon.setItem(row, 5, QTableWidgetItem(item[6]))
             self.all_payments_mon.setItem(row, 6, QTableWidgetItem(str(item[7])))
             row += 1
+
+    def clear_fields_sub(self):
+        self.conn.commit()
+        self.fname_sub.clear()
+        self.lname_sub.clear()
+        self.phone_sub.clear()
+        self.minutes.clear()
+        self.cur_balance.setText("")
+        self.pay_method.setCurrentText("გადახდის მეთოდი")
+        self.search.clear()
+
+    def load_clients_sub(self):
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT * FROM clients")
+        clients = [client for client in cursor]
+        return clients
+
+    def search_client_sub(self):
+        search = self.search.text()
+        cursor6 = self.conn.cursor()
+        cursor6.execute("SELECT * FROM clients WHERE phone=%s", (search,))
+
+        if cursor6.rowcount == 0:
+            QMessageBox.warning(self, 'შეცდომა',
+                                f"პაციენტი ნომრით: {search} არ მოიძებნა ბაზაში"
+                                f"\nგთხოვთ შეავსეთ შესაბამისი ველები აბონემენტის დასარეგისტრირებლად.")
+        else:
+            for client in cursor6:
+                if search == client[3]:
+                    self.fname_sub.setText(client[1])
+                    self.lname_sub.setText(client[2])
+                    self.phone_sub.setText(client[3])
+                    self.cur_balance.setText(f"{str(client[5])} წუთი")
+
+    def buy_subscription(self):
+        category = "აბონემენტი"
+        clients = self.load_clients_sub()
+        first_name = self.fname_sub.text()
+        last_name = self.lname_sub.text()
+        phone = self.phone_sub.text()
+        minutes = self.minutes.text()
+        method = self.pay_method.currentText()
+
+        checked_phone = check_integer(phone)
+        checked_minutes = check_integer(minutes)
+
+        if first_name == "" or last_name == "" or phone == "" or minutes == "":
+            QMessageBox.warning(self, 'შეცდომა',
+                                f'ყველა ველის შევსება სავალდებულოა')
+        elif self.pay_method.currentText() == "გადახდის მეთოდი":
+            QMessageBox.warning(self, 'შეცდომა',
+                                f'აირჩიეთ გადახდის მეთოდი')
+        elif not checked_phone:
+            QMessageBox.warning(self, 'შეცდომა', "ტელეფონის ველში მხოლოდ ციფრებია დაშვებული!")
+        elif not checked_minutes:
+            QMessageBox.warning(self, 'შეცდომა', "წუთების ველში მხოლოდ ციფრებია დაშვებული!")
+        else:
+            cursor2 = self.conn.cursor()
+            cursor2.execute("SELECT * FROM clients")
+            balance = 0
+            if cursor2.rowcount == 0:
+                cursor3 = self.conn.cursor()
+                cursor3.execute("INSERT INTO clients (fname, lname, phone, balance, minutes) "
+                                "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, minutes))
+                self.conn.commit()
+                cursor_buy = self.conn.cursor()
+                cursor_buy.execute("INSERT INTO payments (fname, lname, phone, category, payment_method, date, "
+                                   "amount) VALUES (?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category,
+                                                                            method, today, minutes))
+                self.conn.commit()
+                cursor30 = self.conn.cursor()
+                cursor30.execute("SELECT * from payments WHERE date=%s", (today,))
+                self.load_payments_table(cursor30)
+            else:
+                client_phones = [client[3] for client in clients]
+                if phone not in client_phones:
+                    cursor3 = self.conn.cursor()
+                    cursor3.execute("INSERT INTO clients (fname, lname, phone, balance, minutes) "
+                                    "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, minutes))
+                    self.conn.commit()
+                    cursor_buy = self.conn.cursor()
+                    cursor_buy.execute("INSERT INTO payments (fname, lname, phone, category, payment_method, date, "
+                                       "amount) VALUES (?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category,
+                                                                                method, today, minutes))
+                    self.conn.commit()
+                    cursor31 = self.conn.cursor()
+                    cursor31.execute("SELECT * from payments WHERE date=%s", (today,))
+                    self.load_payments_table(cursor31)
+                    QMessageBox.information(self, 'აბონემენტის შეძენა',
+                                            f"აბონემენტი დარეგისტრირდა:\nსახელი, გვარი: {first_name} {last_name}"
+                                            f"\nწუთი: {minutes}")
+                    self.clear_fields_sub()
+                else:
+                    cursor4 = self.conn.cursor()
+                    cursor4.execute("SELECT * FROM clients WHERE phone=%s", (phone,))
+                    existing = [minute[5] for minute in cursor4]
+                    existing_minutes = sum(existing)
+                    updated_minutes = existing_minutes + int(minutes)
+                    cursor5 = self.conn.cursor()
+                    cursor5.execute("UPDATE clients SET minutes=%s WHERE phone=%s", (updated_minutes, phone,))
+                    QMessageBox.information(self, 'აბონემენტის შეძენა',
+                                            f"აბონემენტი დარეგისტრირდა:\nსახელი, გვარი: {first_name} {last_name}"
+                                            f"\nწუთი: {minutes}")
+                    self.clear_fields_sub()
+                    self.conn.commit()
+                    cursor_buy = self.conn.cursor()
+                    cursor_buy.execute("INSERT INTO payments (fname, lname, phone, category, payment_method, date, "
+                                       "amount) VALUES (?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category,
+                                                                                method, today, minutes))
+                    self.conn.commit()
+                    cursor32 = self.conn.cursor()
+                    cursor32.execute("SELECT * from payments WHERE date=%s", (today,))
+                    self.load_payments_table(cursor32)
