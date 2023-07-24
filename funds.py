@@ -87,7 +87,7 @@ class Funds(QWidget):
 
         self.pay_button.clicked.connect(self.pay)
         # Subscription
-        for method in self.payment_methods:
+        for method in load_payment_methods():
             self.pay_method.addItem(method[1])
         self.pay_method.setCurrentText("გადახდის მეთოდი")
         self.search_button_sub.clicked.connect(self.search_client_sub)

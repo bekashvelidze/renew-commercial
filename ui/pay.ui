@@ -464,9 +464,9 @@ QPushButton:hover {
     <widget class="QPushButton" name="buy">
      <property name="geometry">
       <rect>
-       <x>368</x>
+       <x>373</x>
        <y>296</y>
-       <width>160</width>
+       <width>150</width>
        <height>35</height>
       </rect>
      </property>
@@ -483,9 +483,9 @@ QPushButton:hover {
     <widget class="QLineEdit" name="phone_sub">
      <property name="geometry">
       <rect>
-       <x>368</x>
+       <x>363</x>
        <y>191</y>
-       <width>160</width>
+       <width>170</width>
        <height>30</height>
       </rect>
      </property>
@@ -505,9 +505,9 @@ QPushButton:hover {
     <widget class="QLineEdit" name="minutes">
      <property name="geometry">
       <rect>
-       <x>368</x>
+       <x>363</x>
        <y>226</y>
-       <width>160</width>
+       <width>170</width>
        <height>30</height>
       </rect>
      </property>
@@ -586,9 +586,9 @@ QPushButton:hover {
     <widget class="QLineEdit" name="fname_sub">
      <property name="geometry">
       <rect>
-       <x>368</x>
+       <x>363</x>
        <y>121</y>
-       <width>160</width>
+       <width>170</width>
        <height>30</height>
       </rect>
      </property>
@@ -605,9 +605,9 @@ QPushButton:hover {
     <widget class="QLineEdit" name="lname_sub">
      <property name="geometry">
       <rect>
-       <x>368</x>
+       <x>363</x>
        <y>156</y>
-       <width>160</width>
+       <width>170</width>
        <height>30</height>
       </rect>
      </property>
@@ -718,9 +718,9 @@ QPushButton:hover {
     <widget class="QComboBox" name="pay_method">
      <property name="geometry">
       <rect>
-       <x>368</x>
+       <x>363</x>
        <y>261</y>
-       <width>160</width>
+       <width>170</width>
        <height>30</height>
       </rect>
      </property>
@@ -732,6 +732,9 @@ QPushButton:hover {
      </property>
      <property name="editable">
       <bool>true</bool>
+     </property>
+     <property name="currentText">
+      <string/>
      </property>
     </widget>
    </widget>
