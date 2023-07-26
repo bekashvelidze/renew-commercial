@@ -53,9 +53,16 @@ def load_payment_methods():
 
 class Funds(QWidget):
 
-    def __init__(self):
+    def __init__(self, *args):
         super().__init__()
         loadUi("ui/pay.ui", self)
+        self.category.setCurrentText("კატეგორია")
+        if args:
+            args_list = [arg for arg in args]
+            self.fname.setText(str(args_list[0]))
+            self.lname.setText(str(args_list[1]))
+            self.phone.setText(str(args_list[2]))
+            self.category.setCurrentText(str(args_list[3]))
         self.tabWidget.currentChanged.connect(self.load_current_date)
         self.conn = db.connect()
         self.search_button.clicked.connect(self.search_client)
@@ -78,7 +85,6 @@ class Funds(QWidget):
         self.categories = load_categories()
         for category in self.categories:
             self.category.addItem(category[1])
-        self.category.setCurrentText("კატეგორია")
 
         self.payment_methods = load_payment_methods()
         for method in self.payment_methods:

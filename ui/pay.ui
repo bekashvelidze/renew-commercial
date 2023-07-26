@@ -287,6 +287,11 @@ QPushButton:hover {
      <property name="editable">
       <bool>true</bool>
      </property>
+     <item>
+      <property name="text">
+       <string>კატეგორია</string>
+      </property>
+     </item>
     </widget>
     <widget class="QLineEdit" name="fname">
      <property name="geometry">

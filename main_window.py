@@ -83,6 +83,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         loadUi('ui/main_window.ui', self)
+        self.conn = db.connect()
         self.procedures = load_procedures()
         self.load_data()
         self.tabWidget.currentChanged.connect(self.load_data)
@@ -130,6 +131,10 @@ class MainWindow(QMainWindow):
         self.las_pay_button.clicked.connect(self.funds)
         self.sol_1_pay_button.clicked.connect(self.funds)
         self.sol_2_pay_button.clicked.connect(self.funds)
+        self.search_button_cos.clicked.connect(self.search_client_cos)
+        self.search_button_las.clicked.connect(self.search_client_las)
+        self.search_button_sol_1.clicked.connect(self.search_client_sol_1)
+        self.search_button_sol_2.clicked.connect(self.search_client_sol_2)
         # Cell click events
         self.cos_appointments.cellClicked.connect(self.get_cos_cell_information)
         self.las_appointments.cellClicked.connect(self.get_las_cell_information)
@@ -147,6 +152,18 @@ class MainWindow(QMainWindow):
         self.las_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
         self.sol_1_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
         self.sol_2_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
+        self.cos_fname.clear()
+        self.cos_lname.clear()
+        self.cos_phone.clear()
+        self.las_fname.clear()
+        self.las_lname.clear()
+        self.las_phone.clear()
+        self.sol_1_fname.clear()
+        self.sol_2_lname.clear()
+        self.sol_1_phone.clear()
+        self.sol_2_fname.clear()
+        self.sol_2_lname.clear()
+        self.sol_2_phone.clear()
         service = self.tabWidget.tabText(self.tabWidget.currentIndex())
         if service == "კოსმეტოლოგია":
             self.cosmetology()
@@ -203,7 +220,12 @@ class MainWindow(QMainWindow):
         self.cos_time.setText(time)
         self.cos_date.setText(date)
         if self.cos_appointments.item(current_row, current_column):
-            QMessageBox.information(self, "დრო დაკავებულია", "ეს დრო დაკავებულია, აირჩიეთ სხვა დრო.")
+            fname = str(self.cos_appointments.item(current_row, 0).text())
+            lname = str(self.cos_appointments.item(current_row, 1).text())
+            phone = str(self.cos_appointments.item(current_row, 2).text())
+            category = "კოსმეტოლოგია"
+            self.funds(fname, lname, phone, category)
+            # QMessageBox.information(self, "დრო დაკავებულია", "ეს დრო დაკავებულია, აირჩიეთ სხვა დრო.")
 
     def make_an_appointment_cos(self):
         doctors = [doctor[1] for doctor in load_doctors("კოსმეტოლოგია")]
@@ -321,7 +343,12 @@ class MainWindow(QMainWindow):
         self.las_time.setText(time)
         self.las_date.setText(date)
         if self.las_appointments.item(current_row, current_column):
-            QMessageBox.information(self, "დრო დაკავებულია", "ეს დრო დაკავებულია, აირჩიეთ სხვა დრო.")
+            fname = str(self.las_appointments.item(current_row, 0).text())
+            lname = str(self.las_appointments.item(current_row, 1).text())
+            phone = str(self.las_appointments.item(current_row, 2).text())
+            category = "ლაზერი"
+            self.funds(fname, lname, phone, category)
+            # QMessageBox.information(self, "დრო დაკავებულია", "ეს დრო დაკავებულია, აირჩიეთ სხვა დრო.")
 
     def make_an_appointment_las(self):
         doctors = [doctor[1] for doctor in load_doctors("ლაზერი")]
@@ -443,7 +470,12 @@ class MainWindow(QMainWindow):
         self.sol_1_time.setText(time)
         self.sol_1_date.setText(date)
         if self.sol_1_appointments.item(current_row, current_column):
-            QMessageBox.information(self, "დრო დაკავებულია", "ეს დრო დაკავებულია, აირჩიეთ სხვა დრო.")
+            fname = str(self.sol_1_appointments.item(current_row, 0).text())
+            lname = str(self.sol_1_appointments.item(current_row, 1).text())
+            phone = str(self.sol_1_appointments.item(current_row, 2).text())
+            category = "სოლარიუმი 1"
+            self.funds(fname, lname, phone, category)
+            # QMessageBox.information(self, "დრო დაკავებულია", "ეს დრო დაკავებულია, აირჩიეთ სხვა დრო.")
 
     def make_an_appointment_sol_1(self):
         conn = db.connect()
@@ -547,7 +579,12 @@ class MainWindow(QMainWindow):
         self.sol_2_time.setText(time)
         self.sol_2_date.setText(date)
         if self.sol_2_appointments.item(current_row, current_column):
-            QMessageBox.information(self, "დრო დაკავებულია", "ეს დრო დაკავებულია, აირჩიეთ სხვა დრო.")
+            fname = str(self.sol_2_appointments.item(current_row, 0).text())
+            lname = str(self.sol_2_appointments.item(current_row, 1).text())
+            phone = str(self.sol_2_appointments.item(current_row, 2).text())
+            category = "სოლარიუმი 2"
+            self.funds(fname, lname, phone, category)
+            # QMessageBox.information(self, "დრო დაკავებულია", "ეს დრო დაკავებულია, აირჩიეთ სხვა დრო.")
 
     def make_an_appointment_sol_2(self):
         conn = db.connect()
@@ -614,7 +651,16 @@ class MainWindow(QMainWindow):
         self.subs_window.setWindowIcon(QIcon("ui/renew.ico"))
         self.subs_window.show()
 
-    def funds(self):
+    def funds(self, *args):
+
+        if not args[0]:
+            self.funds_window = Funds()
+        else:
+            fname = args[0]
+            lname = args[1]
+            phone = args[2]
+            category = args[3]
+            self.funds_window = Funds(fname, lname, phone, category)
         self.funds_window.setWindowTitle("საფასურის გადახდა")
         self.funds_window.setWindowIcon(QIcon("ui/renew.ico"))
         self.funds_window.show()
@@ -628,3 +674,63 @@ class MainWindow(QMainWindow):
         self.about.setWindowTitle("პროგრამის შესახებ")
         self.about.setWindowIcon(QIcon("ui/renew.ico"))
         self.about.show()
+
+    def search_client_cos(self):
+        search = self.cos_phone.text()
+        cursor40 = self.conn.cursor()
+        cursor40.execute("SELECT * FROM clients WHERE phone=%s", (search,))
+
+        if cursor40.rowcount == 0:
+            QMessageBox.warning(self, "შეცდომა",
+                                f"პაციენტი ნომრით: {search} არ მოიძებნა ბაზაში, გთხოვთ შეავსეთ შესაბამისი ველები "
+                                f"გადახდის დასაფიქსირებლად.")
+        else:
+            for client in cursor40:
+                if search == client[3]:
+                    self.cos_fname.setText(client[1])
+                    self.cos_lname.setText(client[2])
+
+    def search_client_las(self):
+        search = self.las_phone.text()
+        cursor41 = self.conn.cursor()
+        cursor41.execute("SELECT * FROM clients WHERE phone=%s", (search,))
+
+        if cursor41.rowcount == 0:
+            QMessageBox.warning(self, "შეცდომა",
+                                f"პაციენტი ნომრით: {search} არ მოიძებნა ბაზაში, გთხოვთ შეავსეთ შესაბამისი ველები "
+                                f"გადახდის დასაფიქსირებლად.")
+        else:
+            for client in cursor41:
+                if search == client[3]:
+                    self.las_fname.setText(client[1])
+                    self.las_lname.setText(client[2])
+
+    def search_client_sol_1(self):
+        search = self.sol_1_phone.text()
+        cursor42 = self.conn.cursor()
+        cursor42.execute("SELECT * FROM clients WHERE phone=%s", (search,))
+
+        if cursor42.rowcount == 0:
+            QMessageBox.warning(self, "შეცდომა",
+                                f"პაციენტი ნომრით: {search} არ მოიძებნა ბაზაში, გთხოვთ შეავსეთ შესაბამისი ველები "
+                                f"გადახდის დასაფიქსირებლად.")
+        else:
+            for client in cursor42:
+                if search == client[3]:
+                    self.sol_1_fname.setText(client[1])
+                    self.sol_1_lname.setText(client[2])
+
+    def search_client_sol_2(self):
+        search = self.sol_2_phone.text()
+        cursor43 = self.conn.cursor()
+        cursor43.execute("SELECT * FROM clients WHERE phone=%s", (search,))
+
+        if cursor43.rowcount == 0:
+            QMessageBox.warning(self, "შეცდომა",
+                                f"პაციენტი ნომრით: {search} არ მოიძებნა ბაზაში, გთხოვთ შეავსეთ შესაბამისი ველები "
+                                f"გადახდის დასაფიქსირებლად.")
+        else:
+            for client in cursor43:
+                if search == client[3]:
+                    self.sol_2_fname.setText(client[1])
+                    self.sol_2_lname.setText(client[2])
