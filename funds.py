@@ -59,11 +59,14 @@ class Funds(QWidget):
         self.category.setCurrentText("კატეგორია")
         if args:
             args_list = [arg for arg in args]
-            self.fname.setText(str(args_list[0]))
-            self.lname.setText(str(args_list[1]))
-            self.phone.setText(str(args_list[2]))
-            self.category.setCurrentText(str(args_list[3]))
+            print(args_list)
+            self.appo_id = str(args_list[0])
+            self.fname.setText(str(args_list[1]))
+            self.lname.setText(str(args_list[2]))
+            self.phone.setText(str(args_list[3]))
+            self.category.setCurrentText(str(args_list[4]))
         self.tabWidget.currentChanged.connect(self.load_current_date)
+        self.load_sub_types()
         self.conn = db.connect()
         self.search_button.clicked.connect(self.search_client)
         cursor_init = self.conn.cursor()
@@ -85,6 +88,8 @@ class Funds(QWidget):
         self.categories = load_categories()
         for category in self.categories:
             self.category.addItem(category[1])
+
+        self.solarium_choose.currentTextChanged.connect(self.load_sub_types)
 
         self.payment_methods = load_payment_methods()
         for method in self.payment_methods:
@@ -121,6 +126,19 @@ class Funds(QWidget):
         self.change_month()
         self.months_combo.setCurrentText(month_name)
         self.years_combo.setCurrentText(str(year))
+
+    def load_sub_types(self):
+        solarium_name = self.solarium_choose.currentText()
+        solariums = {
+            "სოლარიუმი 1": "sub_types_sol_1",
+            "სოლარიუმი 2": "sub_types_sol_2"
+        }
+        conn = db.connect()
+        cursor_sub_types = conn.cursor()
+        cursor_sub_types.execute(f"SELECT * FROM {solariums[solarium_name]}")
+        self.minutes.clear()
+        for sub_type in cursor_sub_types:
+            self.minutes.addItem(sub_type[1])
 
     def change_date_daily(self):
         global today
@@ -183,7 +201,27 @@ class Funds(QWidget):
                     self.phone.setText(client[3])
                     self.balance.setText(f"{client[5]} წუთი")
 
+    def search_client_2(self):
+        search = self.phone.text()
+        cursor11 = self.conn.cursor()
+        cursor11.execute("SELECT * FROM clients WHERE phone=%s", (search,))
+
+        if cursor11.rowcount == 0:
+            QMessageBox.warning(self, "შეცდომა",
+                                f"პაციენტი ნომრით: {search} არ მოიძებნა ბაზაში, გთხოვთ შეავსეთ შესაბამისი ველები "
+                                f"გადახდის დასაფიქსირებლად.")
+        else:
+            for client in cursor11:
+                if search == client[3]:
+                    self.balance.setText(f"{client[5]} წუთი")
+
     def pay(self):
+        categories = {
+            "კოსმეტოლოგია": "cosmetology_appointments",
+            "ლაზერი": "laser_appointments",
+            "სოლარიუმი 1": "solarium_1_appointments",
+            "სოლარიუმი 2": "solarium_2_appointments"
+        }
         clients = self.load_clients()
         first_name = self.fname.text()
         last_name = self.lname.text()
@@ -191,6 +229,8 @@ class Funds(QWidget):
         amount = self.amount.text()
         category = self.category.currentText()
         method = self.payment_method.currentText()
+        appo_id = self.appo_id
+        status = "paid"
 
         if self.payment_method.currentText() == "გადახდის მეთოდი":
             QMessageBox.warning(self, "შეცდომა", "აირჩიეთ გადახდის მეთოდი")
@@ -214,8 +254,12 @@ class Funds(QWidget):
                 else:
                     cursor18 = self.conn.cursor()
                     cursor18.execute("INSERT INTO payments (fname, lname, phone, category, payment_method, date, "
-                                     "amount) VALUES (?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category,
-                                                                              method, today, amount))
+                                     "minutes) VALUES (?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category,
+                                                                               method, today, amount))
+                    self.conn.commit()
+                    cursor44 = self.conn.cursor()
+                    print(categories[category])
+                    cursor44.execute(f"UPDATE {categories[category]} SET status=%s WHERE id=%s", (status, appo_id))
                     self.conn.commit()
                     cursor20 = self.conn.cursor()
                     cursor20.execute("SELECT * from payments WHERE date=%s", (today,))
@@ -242,6 +286,10 @@ class Funds(QWidget):
                                      "amount) VALUES (?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category,
                                                                               method, today, amount))
                     self.conn.commit()
+                    cursor44 = self.conn.cursor()
+                    print(categories[category])
+                    cursor44.execute(f"UPDATE {categories[category]} SET status=%s WHERE id=%s", (status, appo_id))
+                    self.conn.commit()
                     cursor24 = self.conn.cursor()
                     cursor24.execute("SELECT * from payments WHERE date=%s", (today,))
                     self.load_payments_table(cursor24)
@@ -262,6 +310,9 @@ class Funds(QWidget):
                                      "amount) VALUES (?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category,
                                                                               method, today, amount))
                     self.conn.commit()
+                    cursor44 = self.conn.cursor()
+                    cursor44.execute(f"UPDATE {categories[category]} SET status=%s WHERE id=%s", (status, appo_id))
+                    self.conn.commit()
                     cursor26 = self.conn.cursor()
                     cursor26.execute("SELECT * from payments WHERE date=%s", (today,))
                     QMessageBox.information(self, "წარმატებული გადახდა", "გადახდა წარმატებით განხორციელდა!")
@@ -270,20 +321,21 @@ class Funds(QWidget):
 
     def load_payments_table(self, data):
         self.all_payments.setRowCount(data.rowcount)
-        self.all_payments.setColumnCount(7)
+        self.all_payments.setColumnCount(8)
 
         self.all_payments.setColumnWidth(0, 100)
-        self.all_payments.setColumnWidth(1, 160)
+        self.all_payments.setColumnWidth(1, 180)
         self.all_payments.setColumnWidth(2, 90)
-        self.all_payments.setColumnWidth(3, 150)
+        self.all_payments.setColumnWidth(3, 130)
         self.all_payments.setColumnWidth(4, 160)
-        self.all_payments.setColumnWidth(5, 100)
-        self.all_payments.setColumnWidth(6, 100)
+        self.all_payments.setColumnWidth(5, 90)
+        self.all_payments.setColumnWidth(6, 60)
+        self.all_payments.setColumnWidth(7, 60)
 
         self.all_payments.clearContents()
         payments = [payment for payment in data]
-        total_cash = [pay[7] for pay in payments if pay[5] == "ნაღდი"]
-        total_card = [pay[7] for pay in payments if pay[5] == "უნაღდო"]
+        total_cash = [pay[8] for pay in payments if pay[5] == "ნაღდი"]
+        total_card = [pay[8] for pay in payments if pay[5] == "უნაღდო"]
         total_by_minutes = [pay[7] for pay in payments if pay[5] == "წუთები"]
         self.total_daily.setText(str(sum(total_cash) + sum(total_card)))
         self.cash.setText(str(sum(total_cash)))
@@ -301,25 +353,27 @@ class Funds(QWidget):
             self.all_payments.setItem(row, 4, QTableWidgetItem(item[5]))
             self.all_payments.setItem(row, 5, QTableWidgetItem(item[6]))
             self.all_payments.setItem(row, 6, QTableWidgetItem(str(item[7])))
+            self.all_payments.setItem(row, 7, QTableWidgetItem(str(item[8])))
             row += 1
 
     def load_payments_months(self, data, month, year_num):
         self.all_payments_mon.setRowCount(data.rowcount)
-        self.all_payments_mon.setColumnCount(7)
+        self.all_payments_mon.setColumnCount(8)
 
         self.all_payments_mon.setColumnWidth(0, 100)
-        self.all_payments_mon.setColumnWidth(1, 160)
+        self.all_payments_mon.setColumnWidth(1, 180)
         self.all_payments_mon.setColumnWidth(2, 90)
-        self.all_payments_mon.setColumnWidth(3, 150)
+        self.all_payments_mon.setColumnWidth(3, 130)
         self.all_payments_mon.setColumnWidth(4, 160)
-        self.all_payments_mon.setColumnWidth(5, 100)
-        self.all_payments_mon.setColumnWidth(6, 100)
+        self.all_payments_mon.setColumnWidth(5, 90)
+        self.all_payments_mon.setColumnWidth(6, 60)
+        self.all_payments_mon.setColumnWidth(7, 60)
 
         self.all_payments_mon.clearContents()
         payments = [payment for payment in data if (payment[6].split(".")[2] == str(year_num))]
         self.all_payments_mon.setRowCount(len(payments))
-        total_cash = [pay[7] for pay in payments if pay[5] == "ნაღდი"]
-        total_card = [pay[7] for pay in payments if pay[5] == "უნაღდო"]
+        total_cash = [pay[8] for pay in payments if pay[5] == "ნაღდი"]
+        total_card = [pay[8] for pay in payments if pay[5] == "უნაღდო"]
         total_by_minutes = [pay[7] for pay in payments if pay[5] == "წუთები"]
         self.total_daily_mon.setText(str(sum(total_cash) + sum(total_card)))
         self.cash_mon.setText(str(sum(total_cash)))
@@ -337,6 +391,7 @@ class Funds(QWidget):
             self.all_payments_mon.setItem(row, 4, QTableWidgetItem(item[5]))
             self.all_payments_mon.setItem(row, 5, QTableWidgetItem(item[6]))
             self.all_payments_mon.setItem(row, 6, QTableWidgetItem(str(item[7])))
+            self.all_payments_mon.setItem(row, 7, QTableWidgetItem(str(item[8])))
             row += 1
 
     def clear_fields_sub(self):
@@ -378,8 +433,14 @@ class Funds(QWidget):
         first_name = self.fname_sub.text()
         last_name = self.lname_sub.text()
         phone = self.phone_sub.text()
-        minutes = self.minutes.text()
+        minutes = self.minutes.currentText()
+        solarium = self.solarium_choose.currentText()
         method = self.pay_method.currentText()
+
+        solariums = {
+            "სოლარიუმი 1": "sub_types_sol_1",
+            "სოლარიუმი 2": "sub_types_sol_2"
+        }
 
         checked_phone = check_integer(phone)
         checked_minutes = check_integer(minutes)
@@ -403,10 +464,20 @@ class Funds(QWidget):
                 cursor3.execute("INSERT INTO clients (fname, lname, phone, balance, minutes) "
                                 "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, minutes))
                 self.conn.commit()
+                cursor50 = self.conn.cursor()
+                cursor50.execute(f"SELECT * FROM {solariums[solarium]} WHERE sub_type=%s", (minutes,))
+                money = [money[2] for money in cursor50]
                 cursor_buy = self.conn.cursor()
-                cursor_buy.execute("INSERT INTO payments (fname, lname, phone, category, payment_method, date, "
-                                   "amount) VALUES (?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category,
-                                                                            method, today, minutes))
+                cursor_buy.execute("INSERT INTO payments (fname, lname, phone, category, payment_method, date, minutes,"
+                                   "amount) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category,
+                                                                               method, today, minutes, money[0]))
+                self.conn.commit()
+
+                cursor51 = self.conn.cursor()
+                cursor51.execute(
+                    "INSERT INTO subscriptions (fname, lname, phone, solarium, minutes, money, payment_method) "
+                    "VALUES (?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, solarium, minutes, money[0], method)
+                )
                 self.conn.commit()
                 cursor30 = self.conn.cursor()
                 cursor30.execute("SELECT * from payments WHERE date=%s", (today,))
@@ -418,10 +489,21 @@ class Funds(QWidget):
                     cursor3.execute("INSERT INTO clients (fname, lname, phone, balance, minutes) "
                                     "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, minutes))
                     self.conn.commit()
+                    cursor50 = self.conn.cursor()
+                    cursor50.execute(f"SELECT * FROM {solariums[solarium]} WHERE sub_type=%s", (minutes,))
+                    money = [money[2] for money in cursor50]
                     cursor_buy = self.conn.cursor()
-                    cursor_buy.execute("INSERT INTO payments (fname, lname, phone, category, payment_method, date, "
-                                       "amount) VALUES (?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category,
-                                                                                method, today, minutes))
+                    cursor_buy.execute(
+                        "INSERT INTO payments (fname, lname, phone, category, payment_method, date, minutes,"
+                        "amount) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category,
+                                                                    method, today, minutes, money[0]))
+                    self.conn.commit()
+                    cursor50 = self.conn.cursor()
+                    cursor50.execute(
+                        "INSERT INTO subscriptions (fname, lname, phone, solarium, minutes, money, payment_method) "
+                        "VALUES (?, ?, ?, ?, ?, ?, ?)",
+                        (first_name, last_name, phone, solarium, minutes, money[0], method)
+                    )
                     self.conn.commit()
                     cursor31 = self.conn.cursor()
                     cursor31.execute("SELECT * from payments WHERE date=%s", (today,))
@@ -443,10 +525,22 @@ class Funds(QWidget):
                                             f"\nწუთი: {minutes}")
                     self.clear_fields_sub()
                     self.conn.commit()
+                    cursor50 = self.conn.cursor()
+                    cursor50.execute(f"SELECT * FROM {solariums[solarium]} WHERE sub_type=%s", (minutes,))
+                    money = [money[2] for money in cursor50]
                     cursor_buy = self.conn.cursor()
-                    cursor_buy.execute("INSERT INTO payments (fname, lname, phone, category, payment_method, date, "
-                                       "amount) VALUES (?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category,
-                                                                                method, today, minutes))
+                    cursor_buy.execute(
+                        "INSERT INTO payments (fname, lname, phone, category, payment_method, date, minutes,"
+                        "amount) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category,
+                                                                    method, today, minutes, money[0])
+                    )
+                    self.conn.commit()
+                    cursor50 = self.conn.cursor()
+                    cursor50.execute(
+                        "INSERT INTO subscriptions (fname, lname, phone, solarium, minutes, money, payment_method) "
+                        "VALUES (?, ?, ?, ?, ?, ?, ?)",
+                        (first_name, last_name, phone, solarium, minutes, money[0], method)
+                    )
                     self.conn.commit()
                     cursor32 = self.conn.cursor()
                     cursor32.execute("SELECT * from payments WHERE date=%s", (today,))

@@ -134,10 +134,10 @@ QPushButton:hover {
     <widget class="QLabel" name="if_not_in_db">
      <property name="geometry">
       <rect>
-       <x>280</x>
+       <x>265</x>
        <y>182</y>
-       <width>341</width>
-       <height>18</height>
+       <width>379</width>
+       <height>19</height>
       </rect>
      </property>
      <property name="font">
@@ -176,9 +176,9 @@ QPushButton:hover {
     <widget class="QLabel" name="main_label">
      <property name="geometry">
       <rect>
-       <x>330</x>
+       <x>328</x>
        <y>58</y>
-       <width>231</width>
+       <width>241</width>
        <height>28</height>
       </rect>
      </property>
@@ -215,7 +215,7 @@ QPushButton:hover {
       <enum>QLineEdit::Normal</enum>
      </property>
      <property name="placeholderText">
-      <string>თანხა / წუთი</string>
+      <string>რაოდენობა</string>
      </property>
     </widget>
     <widget class="QPushButton" name="pay_button">
@@ -242,10 +242,10 @@ QPushButton:hover {
     <widget class="QLabel" name="warning">
      <property name="geometry">
       <rect>
-       <x>313</x>
+       <x>300</x>
        <y>205</y>
-       <width>282</width>
-       <height>17</height>
+       <width>301</width>
+       <height>19</height>
       </rect>
      </property>
      <property name="font">
@@ -409,7 +409,7 @@ QPushButton:hover {
     <widget class="Line" name="line">
      <property name="geometry">
       <rect>
-       <x>248</x>
+       <x>252</x>
        <y>166</y>
        <width>400</width>
        <height>3</height>
@@ -422,10 +422,10 @@ QPushButton:hover {
     <widget class="QLabel" name="searchbyphon_label">
      <property name="geometry">
       <rect>
-       <x>346</x>
+       <x>337</x>
        <y>98</y>
-       <width>201</width>
-       <height>18</height>
+       <width>222</width>
+       <height>19</height>
       </rect>
      </property>
      <property name="font">
@@ -470,7 +470,7 @@ QPushButton:hover {
      <property name="geometry">
       <rect>
        <x>373</x>
-       <y>296</y>
+       <y>300</y>
        <width>150</width>
        <height>35</height>
       </rect>
@@ -489,7 +489,7 @@ QPushButton:hover {
      <property name="geometry">
       <rect>
        <x>363</x>
-       <y>191</y>
+       <y>160</y>
        <width>170</width>
        <height>30</height>
       </rect>
@@ -505,28 +505,6 @@ QPushButton:hover {
      </property>
      <property name="placeholderText">
       <string>ტელეფონი</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="minutes">
-     <property name="geometry">
-      <rect>
-       <x>363</x>
-       <y>226</y>
-       <width>170</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>BPG Nino Mtavruli</family>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="placeholderText">
-      <string>წუთი</string>
      </property>
     </widget>
     <widget class="QPushButton" name="search_button_sub">
@@ -545,10 +523,10 @@ QPushButton:hover {
     <widget class="QLabel" name="warning_sub">
      <property name="geometry">
       <rect>
-       <x>307</x>
-       <y>96</y>
-       <width>282</width>
-       <height>17</height>
+       <x>297</x>
+       <y>65</y>
+       <width>301</width>
+       <height>19</height>
       </rect>
      </property>
      <property name="font">
@@ -592,7 +570,7 @@ QPushButton:hover {
      <property name="geometry">
       <rect>
        <x>363</x>
-       <y>121</y>
+       <y>90</y>
        <width>170</width>
        <height>30</height>
       </rect>
@@ -611,7 +589,7 @@ QPushButton:hover {
      <property name="geometry">
       <rect>
        <x>363</x>
-       <y>156</y>
+       <y>125</y>
        <width>170</width>
        <height>30</height>
       </rect>
@@ -683,9 +661,9 @@ QPushButton:hover {
     <widget class="QLabel" name="subscription_title">
      <property name="geometry">
       <rect>
-       <x>338</x>
-       <y>56</y>
-       <width>222</width>
+       <x>334</x>
+       <y>25</y>
+       <width>230</width>
        <height>28</height>
       </rect>
      </property>
@@ -724,7 +702,61 @@ QPushButton:hover {
      <property name="geometry">
       <rect>
        <x>363</x>
-       <y>261</y>
+       <y>265</y>
+       <width>170</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>BPG Nino Mtavruli</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="editable">
+      <bool>true</bool>
+     </property>
+     <property name="currentText">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="solarium_choose">
+     <property name="geometry">
+      <rect>
+       <x>363</x>
+       <y>195</y>
+       <width>170</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>BPG Nino Mtavruli</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="editable">
+      <bool>false</bool>
+     </property>
+     <property name="currentText">
+      <string>სოლარიუმი 1</string>
+     </property>
+     <item>
+      <property name="text">
+       <string>სოლარიუმი 1</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>სოლარიუმი 2</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QComboBox" name="minutes">
+     <property name="geometry">
+      <rect>
+       <x>363</x>
+       <y>230</y>
        <width>170</width>
        <height>30</height>
       </rect>
@@ -904,12 +936,23 @@ QPushButton:hover {
      </column>
      <column>
       <property name="text">
-       <string>თანხა / წუთი</string>
+       <string>წუთი</string>
       </property>
       <property name="font">
        <font>
         <family>BPG Nino Mtavruli</family>
         <pointsize>11</pointsize>
+       </font>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>თანხა</string>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
        </font>
       </property>
      </column>
@@ -1358,12 +1401,23 @@ QPushButton:hover {
      </column>
      <column>
       <property name="text">
-       <string>თანხა / წუთი</string>
+       <string>წუთი</string>
       </property>
       <property name="font">
        <font>
         <family>BPG Nino Mtavruli</family>
         <pointsize>11</pointsize>
+       </font>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>თანხა</string>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>12</pointsize>
        </font>
       </property>
      </column>
@@ -1441,7 +1495,6 @@ QPushButton:hover {
   <tabstop>fname_sub</tabstop>
   <tabstop>lname_sub</tabstop>
   <tabstop>phone_sub</tabstop>
-  <tabstop>minutes</tabstop>
   <tabstop>pay_method</tabstop>
   <tabstop>buy</tabstop>
   <tabstop>search</tabstop>

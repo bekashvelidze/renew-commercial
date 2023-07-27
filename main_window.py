@@ -6,6 +6,7 @@ from datetime import datetime
 from PyQt6.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem
 from PyQt6.uic import loadUi
 from PyQt6.QtGui import QIcon
+from PyQt6.QtGui import QColor
 from connection import Database
 from settings import Settings
 from funds import Funds
@@ -195,20 +196,28 @@ class MainWindow(QMainWindow):
         self.cos_current_day.setText(load_days()[datetime.now().strftime("%A")])
         self.current_date.setText(datetime.now().date().strftime("%d.%m.%Y"))
 
-        self.cos_appointments.setColumnWidth(0, 300)
-        self.cos_appointments.setColumnWidth(1, 120)
-        self.cos_appointments.setColumnWidth(2, 180)
-        self.cos_appointments.setColumnWidth(3, 120)
-        self.cos_appointments.setColumnWidth(4, 220)
+        self.cos_appointments.setColumnWidth(0, 30)
+        self.cos_appointments.setColumnWidth(1, 270)
+        self.cos_appointments.setColumnWidth(2, 120)
+        self.cos_appointments.setColumnWidth(3, 180)
+        self.cos_appointments.setColumnWidth(4, 120)
+        self.cos_appointments.setColumnWidth(5, 210)
 
         row = 0
         for cos in cursor:
-            self.cos_appointments.setItem(int(times[cos[7]]), 0, QTableWidgetItem(cos[1]))
-            self.cos_appointments.setItem(int(times[cos[7]]), 1, QTableWidgetItem(cos[2]))
-            self.cos_appointments.setItem(int(times[cos[7]]), 2, QTableWidgetItem(cos[3]))
-            self.cos_appointments.setItem(int(times[cos[7]]), 3, QTableWidgetItem(cos[4]))
-            self.cos_appointments.setItem(int(times[cos[7]]), 4, QTableWidgetItem(cos[5]))
-
+            self.cos_appointments.setItem(int(times[cos[7]]), 0, QTableWidgetItem(str(cos[0])))
+            self.cos_appointments.setItem(int(times[cos[7]]), 1, QTableWidgetItem(cos[1]))
+            self.cos_appointments.setItem(int(times[cos[7]]), 2, QTableWidgetItem(cos[2]))
+            self.cos_appointments.setItem(int(times[cos[7]]), 3, QTableWidgetItem(cos[3]))
+            self.cos_appointments.setItem(int(times[cos[7]]), 4, QTableWidgetItem(cos[4]))
+            self.cos_appointments.setItem(int(times[cos[7]]), 5, QTableWidgetItem(cos[5]))
+            if cos[8] == "paid":
+                self.cos_appointments.item(int(times[cos[7]]), 0).setBackground(QColor(34, 139, 34))
+                self.cos_appointments.item(int(times[cos[7]]), 1).setBackground(QColor(34, 139, 34))
+                self.cos_appointments.item(int(times[cos[7]]), 2).setBackground(QColor(34, 139, 34))
+                self.cos_appointments.item(int(times[cos[7]]), 3).setBackground(QColor(34, 139, 34))
+                self.cos_appointments.item(int(times[cos[7]]), 4).setBackground(QColor(34, 139, 34))
+                self.cos_appointments.item(int(times[cos[7]]), 5).setBackground(QColor(34, 139, 34))
             row += 1
         conn.close()
 
@@ -220,11 +229,13 @@ class MainWindow(QMainWindow):
         self.cos_time.setText(time)
         self.cos_date.setText(date)
         if self.cos_appointments.item(current_row, current_column):
-            fname = str(self.cos_appointments.item(current_row, 0).text())
-            lname = str(self.cos_appointments.item(current_row, 1).text())
-            phone = str(self.cos_appointments.item(current_row, 2).text())
+            appo_id = str(self.cos_appointments.item(current_row, 0).text())
+            fname = str(self.cos_appointments.item(current_row, 2).text())
+            lname = str(self.cos_appointments.item(current_row, 3).text())
+            phone = str(self.cos_appointments.item(current_row, 4).text())
             category = "კოსმეტოლოგია"
-            self.funds(fname, lname, phone, category)
+            print(appo_id, fname, lname, phone, category)
+            self.funds(appo_id, fname, lname, phone, category)
             # QMessageBox.information(self, "დრო დაკავებულია", "ეს დრო დაკავებულია, აირჩიეთ სხვა დრო.")
 
     def make_an_appointment_cos(self):
@@ -317,21 +328,31 @@ class MainWindow(QMainWindow):
         self.las_current_day.setText(load_days()[datetime.now().strftime("%A")])
         self.las_current_date.setText(datetime.now().date().strftime("%d.%m.%Y"))
 
-        self.las_appointments.setColumnWidth(0, 160)
-        self.las_appointments.setColumnWidth(1, 170)
-        self.las_appointments.setColumnWidth(2, 120)
-        self.las_appointments.setColumnWidth(3, 180)
-        self.las_appointments.setColumnWidth(4, 120)
-        self.las_appointments.setColumnWidth(5, 190)
+        self.las_appointments.setColumnWidth(0, 30)
+        self.las_appointments.setColumnWidth(1, 150)
+        self.las_appointments.setColumnWidth(2, 170)
+        self.las_appointments.setColumnWidth(3, 120)
+        self.las_appointments.setColumnWidth(4, 170)
+        self.las_appointments.setColumnWidth(5, 120)
+        self.las_appointments.setColumnWidth(6, 170)
 
         row = 0
         for las in cursor:
-            self.las_appointments.setItem(int(times[las[8]]), 0, QTableWidgetItem(las[1]))
-            self.las_appointments.setItem(int(times[las[8]]), 1, QTableWidgetItem(las[2]))
-            self.las_appointments.setItem(int(times[las[8]]), 2, QTableWidgetItem(las[3]))
-            self.las_appointments.setItem(int(times[las[8]]), 3, QTableWidgetItem(las[4]))
-            self.las_appointments.setItem(int(times[las[8]]), 4, QTableWidgetItem(las[5]))
-            self.las_appointments.setItem(int(times[las[8]]), 5, QTableWidgetItem(las[6]))
+            self.las_appointments.setItem(int(times[las[8]]), 0, QTableWidgetItem(str(las[0])))
+            self.las_appointments.setItem(int(times[las[8]]), 1, QTableWidgetItem(las[1]))
+            self.las_appointments.setItem(int(times[las[8]]), 2, QTableWidgetItem(las[2]))
+            self.las_appointments.setItem(int(times[las[8]]), 3, QTableWidgetItem(las[3]))
+            self.las_appointments.setItem(int(times[las[8]]), 4, QTableWidgetItem(las[4]))
+            self.las_appointments.setItem(int(times[las[8]]), 5, QTableWidgetItem(las[5]))
+            self.las_appointments.setItem(int(times[las[8]]), 6, QTableWidgetItem(las[6]))
+            if las[9] == "paid":
+                self.las_appointments.item(int(times[las[8]]), 0).setBackground(QColor(34, 139, 34))
+                self.las_appointments.item(int(times[las[8]]), 1).setBackground(QColor(34, 139, 34))
+                self.las_appointments.item(int(times[las[8]]), 2).setBackground(QColor(34, 139, 34))
+                self.las_appointments.item(int(times[las[8]]), 3).setBackground(QColor(34, 139, 34))
+                self.las_appointments.item(int(times[las[8]]), 4).setBackground(QColor(34, 139, 34))
+                self.las_appointments.item(int(times[las[8]]), 5).setBackground(QColor(34, 139, 34))
+                self.las_appointments.item(int(times[las[8]]), 6).setBackground(QColor(34, 139, 34))
 
             row += 1
 
@@ -343,11 +364,12 @@ class MainWindow(QMainWindow):
         self.las_time.setText(time)
         self.las_date.setText(date)
         if self.las_appointments.item(current_row, current_column):
-            fname = str(self.las_appointments.item(current_row, 0).text())
-            lname = str(self.las_appointments.item(current_row, 1).text())
-            phone = str(self.las_appointments.item(current_row, 2).text())
+            appo_id = str(self.las_appointments.item(current_row, 0).text())
+            fname = str(self.las_appointments.item(current_row, 3).text())
+            lname = str(self.las_appointments.item(current_row, 4).text())
+            phone = str(self.las_appointments.item(current_row, 5).text())
             category = "ლაზერი"
-            self.funds(fname, lname, phone, category)
+            self.funds(appo_id, fname, lname, phone, category)
             # QMessageBox.information(self, "დრო დაკავებულია", "ეს დრო დაკავებულია, აირჩიეთ სხვა დრო.")
 
     def make_an_appointment_las(self):
@@ -448,18 +470,25 @@ class MainWindow(QMainWindow):
         self.sol_1_current_day.setText(load_days()[datetime.now().strftime("%A")])
         self.sol_1_current_date.setText(datetime.now().date().strftime("%d.%m.%Y"))
 
-        self.sol_1_appointments.setColumnWidth(0, 230)
-        self.sol_1_appointments.setColumnWidth(1, 230)
+        self.sol_1_appointments.setColumnWidth(0, 30)
+        self.sol_1_appointments.setColumnWidth(1, 210)
         self.sol_1_appointments.setColumnWidth(2, 230)
         self.sol_1_appointments.setColumnWidth(3, 230)
+        self.sol_1_appointments.setColumnWidth(4, 230)
 
         row = 0
         for sol_1 in cursor:
-            self.sol_1_appointments.setItem(int(times[sol_1[6]]), 0, QTableWidgetItem(sol_1[1]))
-            self.sol_1_appointments.setItem(int(times[sol_1[6]]), 1, QTableWidgetItem(sol_1[2]))
-            self.sol_1_appointments.setItem(int(times[sol_1[6]]), 2, QTableWidgetItem(sol_1[3]))
-            self.sol_1_appointments.setItem(int(times[sol_1[6]]), 3, QTableWidgetItem(str(sol_1[4])))
-
+            self.sol_1_appointments.setItem(int(times[sol_1[6]]), 0, QTableWidgetItem(str(sol_1[0])))
+            self.sol_1_appointments.setItem(int(times[sol_1[6]]), 1, QTableWidgetItem(sol_1[1]))
+            self.sol_1_appointments.setItem(int(times[sol_1[6]]), 2, QTableWidgetItem(sol_1[2]))
+            self.sol_1_appointments.setItem(int(times[sol_1[6]]), 3, QTableWidgetItem(sol_1[3]))
+            self.sol_1_appointments.setItem(int(times[sol_1[6]]), 4, QTableWidgetItem(str(sol_1[4])))
+            if sol_1[7] == "paid":
+                self.sol_1_appointments.item(int(times[sol_1[6]]), 0).setBackground(QColor(34, 139, 34))
+                self.sol_1_appointments.item(int(times[sol_1[6]]), 1).setBackground(QColor(34, 139, 34))
+                self.sol_1_appointments.item(int(times[sol_1[6]]), 2).setBackground(QColor(34, 139, 34))
+                self.sol_1_appointments.item(int(times[sol_1[6]]), 3).setBackground(QColor(34, 139, 34))
+                self.sol_1_appointments.item(int(times[sol_1[6]]), 4).setBackground(QColor(34, 139, 34))
             row += 1
 
     def get_sol_1_cell_information(self):
@@ -470,11 +499,12 @@ class MainWindow(QMainWindow):
         self.sol_1_time.setText(time)
         self.sol_1_date.setText(date)
         if self.sol_1_appointments.item(current_row, current_column):
-            fname = str(self.sol_1_appointments.item(current_row, 0).text())
-            lname = str(self.sol_1_appointments.item(current_row, 1).text())
-            phone = str(self.sol_1_appointments.item(current_row, 2).text())
+            appo_id = str(self.sol_1_appointments.item(current_row, 0).text())
+            fname = str(self.sol_1_appointments.item(current_row, 1).text())
+            lname = str(self.sol_1_appointments.item(current_row, 2).text())
+            phone = str(self.sol_1_appointments.item(current_row, 3).text())
             category = "სოლარიუმი 1"
-            self.funds(fname, lname, phone, category)
+            self.funds(appo_id, fname, lname, phone, category)
             # QMessageBox.information(self, "დრო დაკავებულია", "ეს დრო დაკავებულია, აირჩიეთ სხვა დრო.")
 
     def make_an_appointment_sol_1(self):
@@ -557,17 +587,25 @@ class MainWindow(QMainWindow):
         self.sol_2_current_day.setText(load_days()[datetime.now().strftime("%A")])
         self.sol_2_current_date.setText(datetime.now().date().strftime("%d.%m.%Y"))
 
-        self.sol_2_appointments.setColumnWidth(0, 230)
-        self.sol_2_appointments.setColumnWidth(1, 230)
+        self.sol_2_appointments.setColumnWidth(0, 30)
+        self.sol_2_appointments.setColumnWidth(1, 210)
         self.sol_2_appointments.setColumnWidth(2, 230)
         self.sol_2_appointments.setColumnWidth(3, 230)
+        self.sol_2_appointments.setColumnWidth(4, 230)
 
         row = 0
         for sol_2 in cursor:
-            self.sol_2_appointments.setItem(int(times[sol_2[6]]), 0, QTableWidgetItem(sol_2[1]))
-            self.sol_2_appointments.setItem(int(times[sol_2[6]]), 1, QTableWidgetItem(sol_2[2]))
-            self.sol_2_appointments.setItem(int(times[sol_2[6]]), 2, QTableWidgetItem(sol_2[3]))
-            self.sol_2_appointments.setItem(int(times[sol_2[6]]), 3, QTableWidgetItem(str(sol_2[4])))
+            self.sol_2_appointments.setItem(int(times[sol_2[6]]), 0, QTableWidgetItem(str(sol_2[0])))
+            self.sol_2_appointments.setItem(int(times[sol_2[6]]), 1, QTableWidgetItem(sol_2[1]))
+            self.sol_2_appointments.setItem(int(times[sol_2[6]]), 2, QTableWidgetItem(sol_2[2]))
+            self.sol_2_appointments.setItem(int(times[sol_2[6]]), 3, QTableWidgetItem(sol_2[3]))
+            self.sol_2_appointments.setItem(int(times[sol_2[6]]), 4, QTableWidgetItem(str(sol_2[4])))
+            if sol_2[7] == "paid":
+                self.sol_2_appointments.item(int(times[sol_2[6]]), 0).setBackground(QColor(34, 139, 34))
+                self.sol_2_appointments.item(int(times[sol_2[6]]), 1).setBackground(QColor(34, 139, 34))
+                self.sol_2_appointments.item(int(times[sol_2[6]]), 2).setBackground(QColor(34, 139, 34))
+                self.sol_2_appointments.item(int(times[sol_2[6]]), 3).setBackground(QColor(34, 139, 34))
+                self.sol_2_appointments.item(int(times[sol_2[6]]), 4).setBackground(QColor(34, 139, 34))
 
             row += 1
 
@@ -579,11 +617,12 @@ class MainWindow(QMainWindow):
         self.sol_2_time.setText(time)
         self.sol_2_date.setText(date)
         if self.sol_2_appointments.item(current_row, current_column):
-            fname = str(self.sol_2_appointments.item(current_row, 0).text())
-            lname = str(self.sol_2_appointments.item(current_row, 1).text())
-            phone = str(self.sol_2_appointments.item(current_row, 2).text())
+            appo_id = str(self.sol_2_appointments.item(current_row, 0).text())
+            fname = str(self.sol_2_appointments.item(current_row, 1).text())
+            lname = str(self.sol_2_appointments.item(current_row, 2).text())
+            phone = str(self.sol_2_appointments.item(current_row, 3).text())
             category = "სოლარიუმი 2"
-            self.funds(fname, lname, phone, category)
+            self.funds(appo_id, fname, lname, phone, category)
             # QMessageBox.information(self, "დრო დაკავებულია", "ეს დრო დაკავებულია, აირჩიეთ სხვა დრო.")
 
     def make_an_appointment_sol_2(self):
@@ -656,11 +695,13 @@ class MainWindow(QMainWindow):
         if not args[0]:
             self.funds_window = Funds()
         else:
-            fname = args[0]
-            lname = args[1]
-            phone = args[2]
-            category = args[3]
-            self.funds_window = Funds(fname, lname, phone, category)
+            appo_id = args[0]
+            fname = args[1]
+            lname = args[2]
+            phone = args[3]
+            category = args[4]
+            self.funds_window = Funds(appo_id, fname, lname, phone, category)
+            self.funds_window.search_client_2()
         self.funds_window.setWindowTitle("საფასურის გადახდა")
         self.funds_window.setWindowIcon(QIcon("ui/renew.ico"))
         self.funds_window.show()
