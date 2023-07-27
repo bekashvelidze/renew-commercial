@@ -599,6 +599,22 @@ QPushButton:hover {
         <set>AlignCenter</set>
        </property>
       </column>
+      <column>
+       <property name="text">
+        <string>X</string>
+       </property>
+       <property name="font">
+        <font>
+         <family>BPG Nino Mtavruli</family>
+         <pointsize>12</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="textAlignment">
+        <set>AlignCenter</set>
+       </property>
+      </column>
       <item row="4" column="4">
        <property name="text">
         <string/>
@@ -1412,6 +1428,22 @@ QPushButton:hover {
         <set>AlignCenter</set>
        </property>
       </column>
+      <column>
+       <property name="text">
+        <string>X</string>
+       </property>
+       <property name="font">
+        <font>
+         <family>BPG Nino Mtavruli</family>
+         <pointsize>12</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="textAlignment">
+        <set>AlignCenter</set>
+       </property>
+      </column>
       <item row="4" column="5">
        <property name="text">
         <string/>
@@ -2053,6 +2085,22 @@ QPushButton:hover {
         <font>
          <family>BPG Nino Mtavruli</family>
          <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="textAlignment">
+        <set>AlignCenter</set>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>X</string>
+       </property>
+       <property name="font">
+        <font>
+         <family>BPG Nino Mtavruli</family>
+         <pointsize>12</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
         </font>
        </property>
        <property name="textAlignment">
@@ -2952,6 +3000,22 @@ QPushButton:hover {
         <font>
          <family>BPG Nino Mtavruli</family>
          <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="textAlignment">
+        <set>AlignCenter</set>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>X</string>
+       </property>
+       <property name="font">
+        <font>
+         <family>BPG Nino Mtavruli</family>
+         <pointsize>12</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
         </font>
        </property>
        <property name="textAlignment">

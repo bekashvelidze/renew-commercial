@@ -343,7 +343,7 @@ class Funds(QWidget):
         self.all_payments.horizontalHeader().setVisible(True)
         self.all_payments.verticalHeader().setVisible(True)
         row = 0
-        for item in payments:
+        for item in payments: #rgb(184, 231, 225)
             self.all_payments.setItem(row, 0, QTableWidgetItem(item[1]))
             self.all_payments.setItem(row, 1, QTableWidgetItem(item[2]))
             self.all_payments.setItem(row, 2, QTableWidgetItem(item[3]))
@@ -371,14 +371,14 @@ class Funds(QWidget):
                 self.all_payments.item(row, 6).setBackground(QColor(226, 246, 202))
                 self.all_payments.item(row, 7).setBackground(QColor(226, 246, 202))
             elif item[5] == "წუთები":
-                self.all_payments.item(row, 0).setBackground(QColor(160, 191, 224))
-                self.all_payments.item(row, 1).setBackground(QColor(160, 191, 224))
-                self.all_payments.item(row, 2).setBackground(QColor(160, 191, 224))
-                self.all_payments.item(row, 3).setBackground(QColor(160, 191, 224))
-                self.all_payments.item(row, 4).setBackground(QColor(160, 191, 224))
-                self.all_payments.item(row, 5).setBackground(QColor(160, 191, 224))
-                self.all_payments.item(row, 6).setBackground(QColor(160, 191, 224))
-                self.all_payments.item(row, 7).setBackground(QColor(160, 191, 224))
+                self.all_payments.item(row, 0).setBackground(QColor(184, 231, 225))
+                self.all_payments.item(row, 1).setBackground(QColor(184, 231, 225))
+                self.all_payments.item(row, 2).setBackground(QColor(184, 231, 225))
+                self.all_payments.item(row, 3).setBackground(QColor(184, 231, 225))
+                self.all_payments.item(row, 4).setBackground(QColor(184, 231, 225))
+                self.all_payments.item(row, 5).setBackground(QColor(184, 231, 225))
+                self.all_payments.item(row, 6).setBackground(QColor(184, 231, 225))
+                self.all_payments.item(row, 7).setBackground(QColor(184, 231, 225))
 
             row += 1
 
@@ -437,14 +437,14 @@ class Funds(QWidget):
                 self.all_payments_mon.item(row, 6).setBackground(QColor(226, 246, 202))
                 self.all_payments_mon.item(row, 7).setBackground(QColor(226, 246, 202))
             elif item[5] == "წუთები":
-                self.all_payments_mon.item(row, 0).setBackground(QColor(160, 191, 224))
-                self.all_payments_mon.item(row, 1).setBackground(QColor(160, 191, 224))
-                self.all_payments_mon.item(row, 2).setBackground(QColor(160, 191, 224))
-                self.all_payments_mon.item(row, 3).setBackground(QColor(160, 191, 224))
-                self.all_payments_mon.item(row, 4).setBackground(QColor(160, 191, 224))
-                self.all_payments_mon.item(row, 5).setBackground(QColor(160, 191, 224))
-                self.all_payments_mon.item(row, 6).setBackground(QColor(160, 191, 224))
-                self.all_payments_mon.item(row, 7).setBackground(QColor(160, 191, 224))
+                self.all_payments_mon.item(row, 0).setBackground(QColor(184, 231, 225))
+                self.all_payments_mon.item(row, 1).setBackground(QColor(184, 231, 225))
+                self.all_payments_mon.item(row, 2).setBackground(QColor(184, 231, 225))
+                self.all_payments_mon.item(row, 3).setBackground(QColor(184, 231, 225))
+                self.all_payments_mon.item(row, 4).setBackground(QColor(184, 231, 225))
+                self.all_payments_mon.item(row, 5).setBackground(QColor(184, 231, 225))
+                self.all_payments_mon.item(row, 6).setBackground(QColor(184, 231, 225))
+                self.all_payments_mon.item(row, 7).setBackground(QColor(184, 231, 225))
             row += 1
 
     def clear_fields_sub(self):

@@ -3,7 +3,7 @@ import json
 import datetime
 import webbrowser
 from datetime import datetime
-from PyQt6.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem
+from PyQt6.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem, QPushButton
 from PyQt6.uic import loadUi
 from PyQt6.QtGui import QIcon
 from PyQt6.QtGui import QColor
@@ -186,6 +186,7 @@ class MainWindow(QMainWindow):
         self.cosmetology()
 
     def cosmetology(self):
+        self.cos_appointments.clearContents()
         conn = db.connect()
         cursor = conn.cursor()
         cursor.execute(f"SELECT * FROM `cosmetology_appointments` WHERE date=%s", (today,))
@@ -197,20 +198,26 @@ class MainWindow(QMainWindow):
         self.current_date.setText(datetime.now().date().strftime("%d.%m.%Y"))
 
         self.cos_appointments.setColumnWidth(0, 30)
-        self.cos_appointments.setColumnWidth(1, 270)
+        self.cos_appointments.setColumnWidth(1, 250)
         self.cos_appointments.setColumnWidth(2, 120)
         self.cos_appointments.setColumnWidth(3, 180)
         self.cos_appointments.setColumnWidth(4, 120)
-        self.cos_appointments.setColumnWidth(5, 210)
+        self.cos_appointments.setColumnWidth(5, 190)
+        self.cos_appointments.setColumnWidth(6, 20)
 
         row = 0
         for cos in cursor:
+            btn = QPushButton(self)
+            btn.setText("X")
+            btn.setStyleSheet("color: red; font-weight: bold;")
+            btn.pressed.connect(self.cancel_cos)
             self.cos_appointments.setItem(int(times[cos[7]]), 0, QTableWidgetItem(str(cos[0])))
             self.cos_appointments.setItem(int(times[cos[7]]), 1, QTableWidgetItem(cos[1]))
             self.cos_appointments.setItem(int(times[cos[7]]), 2, QTableWidgetItem(cos[2]))
             self.cos_appointments.setItem(int(times[cos[7]]), 3, QTableWidgetItem(cos[3]))
             self.cos_appointments.setItem(int(times[cos[7]]), 4, QTableWidgetItem(cos[4]))
             self.cos_appointments.setItem(int(times[cos[7]]), 5, QTableWidgetItem(cos[5]))
+            self.cos_appointments.setCellWidget(int(times[cos[7]]), 6, btn)
             if cos[8] == "paid":
                 self.cos_appointments.item(int(times[cos[7]]), 0).setBackground(QColor(142, 172, 80))
                 self.cos_appointments.item(int(times[cos[7]]), 1).setBackground(QColor(142, 172, 80))
@@ -319,6 +326,7 @@ class MainWindow(QMainWindow):
         self.laser()
 
     def laser(self):
+        self.las_appointments.clearContents()
         conn = db.connect()
         cursor = conn.cursor()
         cursor.execute(f"SELECT * FROM `laser_appointments` WHERE date=%s", (today,))
@@ -330,15 +338,20 @@ class MainWindow(QMainWindow):
         self.las_current_date.setText(datetime.now().date().strftime("%d.%m.%Y"))
 
         self.las_appointments.setColumnWidth(0, 30)
-        self.las_appointments.setColumnWidth(1, 150)
+        self.las_appointments.setColumnWidth(1, 140)
         self.las_appointments.setColumnWidth(2, 170)
-        self.las_appointments.setColumnWidth(3, 120)
+        self.las_appointments.setColumnWidth(3, 110)
         self.las_appointments.setColumnWidth(4, 170)
-        self.las_appointments.setColumnWidth(5, 120)
-        self.las_appointments.setColumnWidth(6, 170)
+        self.las_appointments.setColumnWidth(5, 110)
+        self.las_appointments.setColumnWidth(6, 160)
+        self.las_appointments.setColumnWidth(7, 20)
 
         row = 0
         for las in cursor:
+            btn = QPushButton(self)
+            btn.setText("X")
+            btn.setStyleSheet("color: red; font-weight: bold;")
+            btn.pressed.connect(self.cancel_las)
             self.las_appointments.setItem(int(times[las[8]]), 0, QTableWidgetItem(str(las[0])))
             self.las_appointments.setItem(int(times[las[8]]), 1, QTableWidgetItem(las[1]))
             self.las_appointments.setItem(int(times[las[8]]), 2, QTableWidgetItem(las[2]))
@@ -346,6 +359,7 @@ class MainWindow(QMainWindow):
             self.las_appointments.setItem(int(times[las[8]]), 4, QTableWidgetItem(las[4]))
             self.las_appointments.setItem(int(times[las[8]]), 5, QTableWidgetItem(las[5]))
             self.las_appointments.setItem(int(times[las[8]]), 6, QTableWidgetItem(las[6]))
+            self.las_appointments.setCellWidget(int(times[las[8]]), 7, btn)
             if las[9] == "paid":
                 self.las_appointments.item(int(times[las[8]]), 0).setBackground(QColor(142, 172, 80))
                 self.las_appointments.item(int(times[las[8]]), 1).setBackground(QColor(142, 172, 80))
@@ -463,6 +477,7 @@ class MainWindow(QMainWindow):
         self.solarium_1()
 
     def solarium_1(self):
+        self.sol_1_appointments.clearContents()
         conn = db.connect()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM `solarium_1_appointments` WHERE date=%s", (today,))
@@ -477,15 +492,21 @@ class MainWindow(QMainWindow):
         self.sol_1_appointments.setColumnWidth(1, 210)
         self.sol_1_appointments.setColumnWidth(2, 230)
         self.sol_1_appointments.setColumnWidth(3, 230)
-        self.sol_1_appointments.setColumnWidth(4, 230)
+        self.sol_1_appointments.setColumnWidth(4, 190)
+        self.sol_1_appointments.setColumnWidth(5, 20)
 
         row = 0
         for sol_1 in cursor:
+            btn = QPushButton()
+            btn.setText("X")
+            btn.setStyleSheet("color: red; font-weight: bold;")
+            btn.pressed.connect(self.cancel_sol_1)
             self.sol_1_appointments.setItem(int(times[sol_1[6]]), 0, QTableWidgetItem(str(sol_1[0])))
             self.sol_1_appointments.setItem(int(times[sol_1[6]]), 1, QTableWidgetItem(sol_1[1]))
             self.sol_1_appointments.setItem(int(times[sol_1[6]]), 2, QTableWidgetItem(sol_1[2]))
             self.sol_1_appointments.setItem(int(times[sol_1[6]]), 3, QTableWidgetItem(sol_1[3]))
             self.sol_1_appointments.setItem(int(times[sol_1[6]]), 4, QTableWidgetItem(str(sol_1[4])))
+            self.sol_1_appointments.setCellWidget(int(times[sol_1[6]]), 5, btn)
             if sol_1[7] == "paid":
                 self.sol_1_appointments.item(int(times[sol_1[6]]), 0).setBackground(QColor(142, 172, 80))
                 self.sol_1_appointments.item(int(times[sol_1[6]]), 1).setBackground(QColor(142, 172, 80))
@@ -582,6 +603,7 @@ class MainWindow(QMainWindow):
         self.solarium_2()
 
     def solarium_2(self):
+        self.sol_2_appointments.clearContents()
         conn = db.connect()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM `solarium_2_appointments` WHERE date=%s", (today,))
@@ -596,15 +618,21 @@ class MainWindow(QMainWindow):
         self.sol_2_appointments.setColumnWidth(1, 210)
         self.sol_2_appointments.setColumnWidth(2, 230)
         self.sol_2_appointments.setColumnWidth(3, 230)
-        self.sol_2_appointments.setColumnWidth(4, 230)
+        self.sol_2_appointments.setColumnWidth(4, 190)
+        self.sol_2_appointments.setColumnWidth(5, 20)
 
         row = 0
         for sol_2 in cursor:
+            btn = QPushButton()
+            btn.setText("X")
+            btn.setStyleSheet("color: red; font-weight: bold;")
+            btn.pressed.connect(self.cancel_sol_2)
             self.sol_2_appointments.setItem(int(times[sol_2[6]]), 0, QTableWidgetItem(str(sol_2[0])))
             self.sol_2_appointments.setItem(int(times[sol_2[6]]), 1, QTableWidgetItem(sol_2[1]))
             self.sol_2_appointments.setItem(int(times[sol_2[6]]), 2, QTableWidgetItem(sol_2[2]))
             self.sol_2_appointments.setItem(int(times[sol_2[6]]), 3, QTableWidgetItem(sol_2[3]))
             self.sol_2_appointments.setItem(int(times[sol_2[6]]), 4, QTableWidgetItem(str(sol_2[4])))
+            self.sol_2_appointments.setCellWidget(int(times[sol_2[6]]), 5, btn)
             if sol_2[7] == "paid":
                 self.sol_2_appointments.item(int(times[sol_2[6]]), 0).setBackground(QColor(142, 172, 80))
                 self.sol_2_appointments.item(int(times[sol_2[6]]), 1).setBackground(QColor(142, 172, 80))
@@ -782,3 +810,96 @@ class MainWindow(QMainWindow):
                 if search == client[3]:
                     self.sol_2_fname.setText(client[1])
                     self.sol_2_lname.setText(client[2])
+
+
+    def cancel_cos(self):
+        msg = QMessageBox(parent=self)
+        msg.setWindowTitle("ჩაწერის გაუქმება")
+        msg.setIcon(QMessageBox.Icon.Question)
+        msg.setStandardButtons(QMessageBox.StandardButton.Yes |
+                               QMessageBox.StandardButton.No)
+        msg.button(QMessageBox.StandardButton.Yes).setText("დიახ")
+        msg.button(QMessageBox.StandardButton.No).setText("არა")
+        msg.setInformativeText("დარწმუნებული ხართ, რომ გსურთ ჩაწერის გაუქმება?")
+        reply = msg.exec()
+        if reply == QMessageBox.StandardButton.Yes:
+            current_row = self.cos_appointments.currentRow()
+            cursor60 = self.conn.cursor()
+            cursor60.execute("DELETE FROM `cosmetology_appointments` WHERE id=%s",
+                             (int(self.cos_appointments.item(current_row, 0).text()), ))
+            self.conn.commit()
+            QMessageBox.information(self, "ჩაწერის გაუქმება",
+                                    f"ჩაწერა გაუქმებულია პაციენტისთვის {self.cos_appointments.item(current_row, 2).text()} "
+                                    f"{self.cos_appointments.item(current_row, 3).text()}.")
+            self.load_data()
+        else:
+            pass
+
+    def cancel_las(self):
+        msg = QMessageBox(parent=self)
+        msg.setWindowTitle("ჩაწერის გაუქმება")
+        msg.setIcon(QMessageBox.Icon.Question)
+        msg.setStandardButtons(QMessageBox.StandardButton.Yes |
+                               QMessageBox.StandardButton.No)
+        msg.button(QMessageBox.StandardButton.Yes).setText("დიახ")
+        msg.button(QMessageBox.StandardButton.No).setText("არა")
+        msg.setInformativeText("დარწმუნებული ხართ, რომ გსურთ ჩაწერის გაუქმება?")
+        reply = msg.exec()
+        if reply == QMessageBox.StandardButton.Yes:
+            current_row = self.las_appointments.currentRow()
+            cursor61 = self.conn.cursor()
+            cursor61.execute("DELETE FROM `laser_appointments` WHERE id=%s",
+                             (int(self.las_appointments.item(current_row, 0).text()), ))
+            self.conn.commit()
+            QMessageBox.information(self, "ჩაწერის გაუქმება",
+                                    f"ჩაწერა გაუქმებულია პაციენტისთვის {self.las_appointments.item(current_row, 3).text()} "
+                                    f"{self.las_appointments.item(current_row, 4).text()}.")
+            self.load_data()
+        else:
+            pass
+
+    def cancel_sol_1(self):
+        msg = QMessageBox(parent=self)
+        msg.setWindowTitle("ჩაწერის გაუქმება")
+        msg.setIcon(QMessageBox.Icon.Question)
+        msg.setStandardButtons(QMessageBox.StandardButton.Yes |
+                               QMessageBox.StandardButton.No)
+        msg.button(QMessageBox.StandardButton.Yes).setText("დიახ")
+        msg.button(QMessageBox.StandardButton.No).setText("არა")
+        msg.setInformativeText("დარწმუნებული ხართ, რომ გსურთ ჩაწერის გაუქმება?")
+        reply = msg.exec()
+        if reply == QMessageBox.StandardButton.Yes:
+            current_row = self.sol_1_appointments.currentRow()
+            cursor62 = self.conn.cursor()
+            cursor62.execute("DELETE FROM `solarium_1_appointments` WHERE id=%s",
+                             (int(self.sol_1_appointments.item(current_row, 0).text()), ))
+            self.conn.commit()
+            QMessageBox.information(self, "ჩაწერის გაუქმება",
+                                    f"ჩაწერა გაუქმებულია პაციენტისთვის {self.sol_1_appointments.item(current_row, 1).text()} "
+                                    f"{self.sol_1_appointments.item(current_row, 2).text()}.")
+            self.load_data()
+        else:
+            pass
+
+    def cancel_sol_2(self):
+        msg = QMessageBox(parent=self)
+        msg.setWindowTitle("ჩაწერის გაუქმება")
+        msg.setIcon(QMessageBox.Icon.Question)
+        msg.setStandardButtons(QMessageBox.StandardButton.Yes |
+                               QMessageBox.StandardButton.No)
+        msg.button(QMessageBox.StandardButton.Yes).setText("დიახ")
+        msg.button(QMessageBox.StandardButton.No).setText("არა")
+        msg.setInformativeText("დარწმუნებული ხართ, რომ გსურთ ჩაწერის გაუქმება?")
+        reply = msg.exec()
+        if reply == QMessageBox.StandardButton.Yes:
+            current_row = self.sol_2_appointments.currentRow()
+            cursor63 = self.conn.cursor()
+            cursor63.execute("DELETE FROM `solarium_2_appointments` WHERE id=%s",
+                             (int(self.sol_2_appointments.item(current_row, 0).text()), ))
+            self.conn.commit()
+            QMessageBox.information(self, "ჩაწერის გაუქმება",
+                                    f"ჩაწერა გაუქმებულია პაციენტისთვის {self.sol_2_appointments.item(current_row, 1).text()} "
+                                    f"{self.sol_2_appointments.item(current_row, 2).text()}.")
+            self.load_data()
+        else:
+            pass
