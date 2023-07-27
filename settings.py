@@ -14,9 +14,13 @@ class Settings(QWidget):
         self.load_doctors()
         self.load_zones()
         self.load_procedures()
+        self.load_sol_1_sub_types()
+        self.load_sol_2_sub_types()
         self.add_doctor_button.clicked.connect(self.add_doctor)
         self.add_zone_button.clicked.connect(self.add_zone)
         self.add_procedure_button.clicked.connect(self.add_procedure)
+        self.add_type_sol_1.clicked.connect(self.add_sub_type_sol_1)
+        self.add_type_sol_2.clicked.connect(self.add_sub_type_sol_2)
 
     def load_doctors(self):
         # Load doctors
@@ -67,6 +71,40 @@ class Settings(QWidget):
         for procedure in procedures:
             self.procedures.setItem(proc_row, 0, QTableWidgetItem(procedure[1]))
             proc_row += 1
+
+    def load_sol_1_sub_types(self):
+        # Load subscription_types_sol_1
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT * FROM sub_types_sol_1")
+        sub_types = []
+        if cursor.rowcount != 0:
+            sub_types = [sub_type for sub_type in cursor]
+        self.subscription_types_sol_1.setColumnWidth(0, 190)
+        self.subscription_types_sol_1.setColumnWidth(1, 190)
+        self.subscription_types_sol_1.setRowCount(len(sub_types))
+        self.subscription_types_sol_1.setColumnCount(2)
+        doc_row = 0
+        for sub_type in sub_types:
+            self.subscription_types_sol_1.setItem(doc_row, 0, QTableWidgetItem(f"{sub_type[1]} წუთიანი"))
+            self.subscription_types_sol_1.setItem(doc_row, 1, QTableWidgetItem(f"{str(sub_type[2])} ლარი"))
+            doc_row += 1
+
+    def load_sol_2_sub_types(self):
+        # Load subscription_types_sol_1
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT * FROM sub_types_sol_2")
+        sub_types = []
+        if cursor.rowcount != 0:
+            sub_types = [sub_type for sub_type in cursor]
+        self.subscription_types_sol_2.setColumnWidth(0, 190)
+        self.subscription_types_sol_2.setColumnWidth(1, 190)
+        self.subscription_types_sol_2.setRowCount(len(sub_types))
+        self.subscription_types_sol_2.setColumnCount(2)
+        doc_row = 0
+        for sub_type in sub_types:
+            self.subscription_types_sol_2.setItem(doc_row, 0, QTableWidgetItem(f"{sub_type[1]} წუთიანი"))
+            self.subscription_types_sol_2.setItem(doc_row, 1, QTableWidgetItem(f"{str(sub_type[2])} ლარი"))
+            doc_row += 1
 
     def add_doctor(self):
         new_doctor = self.doc_fname_lname.text()
@@ -124,3 +162,45 @@ class Settings(QWidget):
             self.procedure_name.clear()
             self.procedures.clearContents()
             self.load_procedures()
+
+    def add_sub_type_sol_1(self):
+        new_sub_type = self.subscription_type_sol_1.text()
+        price = self.price_sol_1.text()
+
+        if self.subscription_type_sol_1.text() == 0:
+            QMessageBox.warning(self, 'შეცდომა', 'ჩაწერეთ აბონემენტის ტიპი.')
+        elif self.price_sol_1.text() == 0:
+            QMessageBox.warning(self, 'შეცდომა', 'ჩაწერეთ აბონემენტის ფასი.')
+        else:
+            cursor55 = self.conn.cursor()
+            cursor55.execute("INSERT INTO sub_types_sol_1 (sub_type, price) "
+                            "VALUES (?, ?)", (new_sub_type, price))
+            self.conn.commit()
+
+            self.subscription_type_sol_1.clear()
+            self.price_sol_1.clear()
+
+            QMessageBox.information(self, 'ახალი აბონემენტის ტიპის დამატება', 'ახალი აბონემენტის ტიპი დაემატა ბაზაში.')
+            self.subscription_types_sol_1.clearContents()
+            self.load_sol_1_sub_types()
+
+    def add_sub_type_sol_2(self):
+        new_sub_type = self.subscription_type_sol_2.text()
+        price = self.price_sol_2.text()
+
+        if self.subscription_type_sol_2.text() == 0:
+            QMessageBox.warning(self, 'შეცდომა', 'ჩაწერეთ აბონემენტის ტიპი.')
+        elif self.price_sol_2.text() == 0:
+            QMessageBox.warning(self, 'შეცდომა', 'ჩაწერეთ აბონემენტის ფასი.')
+        else:
+            cursor56 = self.conn.cursor()
+            cursor56.execute("INSERT INTO sub_types_sol_2 (sub_type, price) "
+                            "VALUES (?, ?)", (new_sub_type, price))
+            self.conn.commit()
+
+            self.subscription_type_sol_2.clear()
+            self.price_sol_2.clear()
+
+            QMessageBox.information(self, 'ახალი აბონემენტის ტიპის დამატება', 'ახალი აბონემენტის ტიპი დაემატა ბაზაში.')
+            self.subscription_types_sol_2.clearContents()
+            self.load_sol_2_sub_types()

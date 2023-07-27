@@ -212,12 +212,12 @@ class MainWindow(QMainWindow):
             self.cos_appointments.setItem(int(times[cos[7]]), 4, QTableWidgetItem(cos[4]))
             self.cos_appointments.setItem(int(times[cos[7]]), 5, QTableWidgetItem(cos[5]))
             if cos[8] == "paid":
-                self.cos_appointments.item(int(times[cos[7]]), 0).setBackground(QColor(34, 139, 34))
-                self.cos_appointments.item(int(times[cos[7]]), 1).setBackground(QColor(34, 139, 34))
-                self.cos_appointments.item(int(times[cos[7]]), 2).setBackground(QColor(34, 139, 34))
-                self.cos_appointments.item(int(times[cos[7]]), 3).setBackground(QColor(34, 139, 34))
-                self.cos_appointments.item(int(times[cos[7]]), 4).setBackground(QColor(34, 139, 34))
-                self.cos_appointments.item(int(times[cos[7]]), 5).setBackground(QColor(34, 139, 34))
+                self.cos_appointments.item(int(times[cos[7]]), 0).setBackground(QColor(142, 172, 80))
+                self.cos_appointments.item(int(times[cos[7]]), 1).setBackground(QColor(142, 172, 80))
+                self.cos_appointments.item(int(times[cos[7]]), 2).setBackground(QColor(142, 172, 80))
+                self.cos_appointments.item(int(times[cos[7]]), 3).setBackground(QColor(142, 172, 80))
+                self.cos_appointments.item(int(times[cos[7]]), 4).setBackground(QColor(142, 172, 80))
+                self.cos_appointments.item(int(times[cos[7]]), 5).setBackground(QColor(142, 172, 80))
             row += 1
         conn.close()
 
@@ -229,14 +229,15 @@ class MainWindow(QMainWindow):
         self.cos_time.setText(time)
         self.cos_date.setText(date)
         if self.cos_appointments.item(current_row, current_column):
-            appo_id = str(self.cos_appointments.item(current_row, 0).text())
-            fname = str(self.cos_appointments.item(current_row, 2).text())
-            lname = str(self.cos_appointments.item(current_row, 3).text())
-            phone = str(self.cos_appointments.item(current_row, 4).text())
-            category = "კოსმეტოლოგია"
-            print(appo_id, fname, lname, phone, category)
-            self.funds(appo_id, fname, lname, phone, category)
-            # QMessageBox.information(self, "დრო დაკავებულია", "ეს დრო დაკავებულია, აირჩიეთ სხვა დრო.")
+            try:
+                appo_id = str(self.cos_appointments.item(current_row, 0).text())
+                fname = str(self.cos_appointments.item(current_row, 2).text())
+                lname = str(self.cos_appointments.item(current_row, 3).text())
+                phone = str(self.cos_appointments.item(current_row, 4).text())
+                category = "კოსმეტოლოგია"
+                self.funds(appo_id, fname, lname, phone, category)
+            except AttributeError:
+                pass
 
     def make_an_appointment_cos(self):
         doctors = [doctor[1] for doctor in load_doctors("კოსმეტოლოგია")]
@@ -346,13 +347,13 @@ class MainWindow(QMainWindow):
             self.las_appointments.setItem(int(times[las[8]]), 5, QTableWidgetItem(las[5]))
             self.las_appointments.setItem(int(times[las[8]]), 6, QTableWidgetItem(las[6]))
             if las[9] == "paid":
-                self.las_appointments.item(int(times[las[8]]), 0).setBackground(QColor(34, 139, 34))
-                self.las_appointments.item(int(times[las[8]]), 1).setBackground(QColor(34, 139, 34))
-                self.las_appointments.item(int(times[las[8]]), 2).setBackground(QColor(34, 139, 34))
-                self.las_appointments.item(int(times[las[8]]), 3).setBackground(QColor(34, 139, 34))
-                self.las_appointments.item(int(times[las[8]]), 4).setBackground(QColor(34, 139, 34))
-                self.las_appointments.item(int(times[las[8]]), 5).setBackground(QColor(34, 139, 34))
-                self.las_appointments.item(int(times[las[8]]), 6).setBackground(QColor(34, 139, 34))
+                self.las_appointments.item(int(times[las[8]]), 0).setBackground(QColor(142, 172, 80))
+                self.las_appointments.item(int(times[las[8]]), 1).setBackground(QColor(142, 172, 80))
+                self.las_appointments.item(int(times[las[8]]), 2).setBackground(QColor(142, 172, 80))
+                self.las_appointments.item(int(times[las[8]]), 3).setBackground(QColor(142, 172, 80))
+                self.las_appointments.item(int(times[las[8]]), 4).setBackground(QColor(142, 172, 80))
+                self.las_appointments.item(int(times[las[8]]), 5).setBackground(QColor(142, 172, 80))
+                self.las_appointments.item(int(times[las[8]]), 6).setBackground(QColor(142, 172, 80))
 
             row += 1
 
@@ -364,13 +365,15 @@ class MainWindow(QMainWindow):
         self.las_time.setText(time)
         self.las_date.setText(date)
         if self.las_appointments.item(current_row, current_column):
-            appo_id = str(self.las_appointments.item(current_row, 0).text())
-            fname = str(self.las_appointments.item(current_row, 3).text())
-            lname = str(self.las_appointments.item(current_row, 4).text())
-            phone = str(self.las_appointments.item(current_row, 5).text())
-            category = "ლაზერი"
-            self.funds(appo_id, fname, lname, phone, category)
-            # QMessageBox.information(self, "დრო დაკავებულია", "ეს დრო დაკავებულია, აირჩიეთ სხვა დრო.")
+            try:
+                appo_id = str(self.las_appointments.item(current_row, 0).text())
+                fname = str(self.las_appointments.item(current_row, 3).text())
+                lname = str(self.las_appointments.item(current_row, 4).text())
+                phone = str(self.las_appointments.item(current_row, 5).text())
+                category = "ლაზერი"
+                self.funds(appo_id, fname, lname, phone, category)
+            except AttributeError:
+                pass
 
     def make_an_appointment_las(self):
         doctors = [doctor[1] for doctor in load_doctors("ლაზერი")]
@@ -484,11 +487,11 @@ class MainWindow(QMainWindow):
             self.sol_1_appointments.setItem(int(times[sol_1[6]]), 3, QTableWidgetItem(sol_1[3]))
             self.sol_1_appointments.setItem(int(times[sol_1[6]]), 4, QTableWidgetItem(str(sol_1[4])))
             if sol_1[7] == "paid":
-                self.sol_1_appointments.item(int(times[sol_1[6]]), 0).setBackground(QColor(34, 139, 34))
-                self.sol_1_appointments.item(int(times[sol_1[6]]), 1).setBackground(QColor(34, 139, 34))
-                self.sol_1_appointments.item(int(times[sol_1[6]]), 2).setBackground(QColor(34, 139, 34))
-                self.sol_1_appointments.item(int(times[sol_1[6]]), 3).setBackground(QColor(34, 139, 34))
-                self.sol_1_appointments.item(int(times[sol_1[6]]), 4).setBackground(QColor(34, 139, 34))
+                self.sol_1_appointments.item(int(times[sol_1[6]]), 0).setBackground(QColor(142, 172, 80))
+                self.sol_1_appointments.item(int(times[sol_1[6]]), 1).setBackground(QColor(142, 172, 80))
+                self.sol_1_appointments.item(int(times[sol_1[6]]), 2).setBackground(QColor(142, 172, 80))
+                self.sol_1_appointments.item(int(times[sol_1[6]]), 3).setBackground(QColor(142, 172, 80))
+                self.sol_1_appointments.item(int(times[sol_1[6]]), 4).setBackground(QColor(142, 172, 80))
             row += 1
 
     def get_sol_1_cell_information(self):
@@ -499,13 +502,15 @@ class MainWindow(QMainWindow):
         self.sol_1_time.setText(time)
         self.sol_1_date.setText(date)
         if self.sol_1_appointments.item(current_row, current_column):
-            appo_id = str(self.sol_1_appointments.item(current_row, 0).text())
-            fname = str(self.sol_1_appointments.item(current_row, 1).text())
-            lname = str(self.sol_1_appointments.item(current_row, 2).text())
-            phone = str(self.sol_1_appointments.item(current_row, 3).text())
-            category = "სოლარიუმი 1"
-            self.funds(appo_id, fname, lname, phone, category)
-            # QMessageBox.information(self, "დრო დაკავებულია", "ეს დრო დაკავებულია, აირჩიეთ სხვა დრო.")
+            try:
+                appo_id = str(self.sol_1_appointments.item(current_row, 0).text())
+                fname = str(self.sol_1_appointments.item(current_row, 1).text())
+                lname = str(self.sol_1_appointments.item(current_row, 2).text())
+                phone = str(self.sol_1_appointments.item(current_row, 3).text())
+                category = "სოლარიუმი 1"
+                self.funds(appo_id, fname, lname, phone, category)
+            except AttributeError:
+                pass
 
     def make_an_appointment_sol_1(self):
         conn = db.connect()
@@ -601,11 +606,11 @@ class MainWindow(QMainWindow):
             self.sol_2_appointments.setItem(int(times[sol_2[6]]), 3, QTableWidgetItem(sol_2[3]))
             self.sol_2_appointments.setItem(int(times[sol_2[6]]), 4, QTableWidgetItem(str(sol_2[4])))
             if sol_2[7] == "paid":
-                self.sol_2_appointments.item(int(times[sol_2[6]]), 0).setBackground(QColor(34, 139, 34))
-                self.sol_2_appointments.item(int(times[sol_2[6]]), 1).setBackground(QColor(34, 139, 34))
-                self.sol_2_appointments.item(int(times[sol_2[6]]), 2).setBackground(QColor(34, 139, 34))
-                self.sol_2_appointments.item(int(times[sol_2[6]]), 3).setBackground(QColor(34, 139, 34))
-                self.sol_2_appointments.item(int(times[sol_2[6]]), 4).setBackground(QColor(34, 139, 34))
+                self.sol_2_appointments.item(int(times[sol_2[6]]), 0).setBackground(QColor(142, 172, 80))
+                self.sol_2_appointments.item(int(times[sol_2[6]]), 1).setBackground(QColor(142, 172, 80))
+                self.sol_2_appointments.item(int(times[sol_2[6]]), 2).setBackground(QColor(142, 172, 80))
+                self.sol_2_appointments.item(int(times[sol_2[6]]), 3).setBackground(QColor(142, 172, 80))
+                self.sol_2_appointments.item(int(times[sol_2[6]]), 4).setBackground(QColor(142, 172, 80))
 
             row += 1
 
@@ -617,13 +622,15 @@ class MainWindow(QMainWindow):
         self.sol_2_time.setText(time)
         self.sol_2_date.setText(date)
         if self.sol_2_appointments.item(current_row, current_column):
-            appo_id = str(self.sol_2_appointments.item(current_row, 0).text())
-            fname = str(self.sol_2_appointments.item(current_row, 1).text())
-            lname = str(self.sol_2_appointments.item(current_row, 2).text())
-            phone = str(self.sol_2_appointments.item(current_row, 3).text())
-            category = "სოლარიუმი 2"
-            self.funds(appo_id, fname, lname, phone, category)
-            # QMessageBox.information(self, "დრო დაკავებულია", "ეს დრო დაკავებულია, აირჩიეთ სხვა დრო.")
+            try:
+                appo_id = str(self.sol_2_appointments.item(current_row, 0).text())
+                fname = str(self.sol_2_appointments.item(current_row, 1).text())
+                lname = str(self.sol_2_appointments.item(current_row, 2).text())
+                phone = str(self.sol_2_appointments.item(current_row, 3).text())
+                category = "სოლარიუმი 2"
+                self.funds(appo_id, fname, lname, phone, category)
+            except AttributeError:
+                pass
 
     def make_an_appointment_sol_2(self):
         conn = db.connect()

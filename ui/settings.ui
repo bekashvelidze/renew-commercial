@@ -411,9 +411,9 @@ QComboBox:hover {
     <widget class="QLineEdit" name="price_sol_1">
      <property name="geometry">
       <rect>
-       <x>28</x>
+       <x>38</x>
        <y>110</y>
-       <width>220</width>
+       <width>241</width>
        <height>30</height>
       </rect>
      </property>
@@ -430,9 +430,9 @@ QComboBox:hover {
     <widget class="QLabel" name="sub_types_label">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>28</x>
        <y>30</y>
-       <width>256</width>
+       <width>263</width>
        <height>23</height>
       </rect>
      </property>
@@ -449,7 +449,7 @@ QComboBox:hover {
     <widget class="QPushButton" name="add_type_sol_1">
      <property name="geometry">
       <rect>
-       <x>30</x>
+       <x>48</x>
        <y>170</y>
        <width>220</width>
        <height>30</height>
@@ -468,9 +468,9 @@ QComboBox:hover {
     <widget class="QTableWidget" name="subscription_types_sol_1">
      <property name="geometry">
       <rect>
-       <x>279</x>
+       <x>318</x>
        <y>0</y>
-       <width>440</width>
+       <width>400</width>
        <height>260</height>
       </rect>
      </property>
@@ -506,9 +506,9 @@ QComboBox:hover {
     <widget class="QLineEdit" name="subscription_type_sol_1">
      <property name="geometry">
       <rect>
-       <x>28</x>
+       <x>38</x>
        <y>75</y>
-       <width>220</width>
+       <width>241</width>
        <height>30</height>
       </rect>
      </property>
@@ -530,9 +530,9 @@ QComboBox:hover {
     <widget class="QLineEdit" name="price_sol_2">
      <property name="geometry">
       <rect>
-       <x>28</x>
+       <x>38</x>
        <y>110</y>
-       <width>220</width>
+       <width>241</width>
        <height>30</height>
       </rect>
      </property>
@@ -549,9 +549,9 @@ QComboBox:hover {
     <widget class="QTableWidget" name="subscription_types_sol_2">
      <property name="geometry">
       <rect>
-       <x>279</x>
+       <x>318</x>
        <y>0</y>
-       <width>440</width>
+       <width>400</width>
        <height>260</height>
       </rect>
      </property>
@@ -587,9 +587,9 @@ QComboBox:hover {
     <widget class="QLabel" name="sub_type_label_sol_2">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>28</x>
        <y>30</y>
-       <width>256</width>
+       <width>263</width>
        <height>23</height>
       </rect>
      </property>
@@ -603,12 +603,12 @@ QComboBox:hover {
       <string>აბონემენტის ტიპის დამატება</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="subscription_type_sol_3">
+    <widget class="QLineEdit" name="subscription_type_sol_2">
      <property name="geometry">
       <rect>
-       <x>28</x>
+       <x>38</x>
        <y>75</y>
-       <width>220</width>
+       <width>241</width>
        <height>30</height>
       </rect>
      </property>
@@ -625,7 +625,7 @@ QComboBox:hover {
     <widget class="QPushButton" name="add_type_sol_2">
      <property name="geometry">
       <rect>
-       <x>30</x>
+       <x>48</x>
        <y>170</y>
        <width>220</width>
        <height>30</height>

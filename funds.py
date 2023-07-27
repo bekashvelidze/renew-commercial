@@ -3,6 +3,7 @@ import calendar
 from datetime import datetime
 from PyQt6.QtWidgets import QWidget, QTableWidgetItem, QMessageBox
 from PyQt6.uic import loadUi
+from PyQt6.QtGui import QColor
 from connection import Database
 
 db = Database()
@@ -59,13 +60,12 @@ class Funds(QWidget):
         self.category.setCurrentText("კატეგორია")
         if args:
             args_list = [arg for arg in args]
-            print(args_list)
             self.appo_id = str(args_list[0])
             self.fname.setText(str(args_list[1]))
             self.lname.setText(str(args_list[2]))
             self.phone.setText(str(args_list[3]))
             self.category.setCurrentText(str(args_list[4]))
-        self.tabWidget.currentChanged.connect(self.load_current_date)
+        # self.tabWidget.currentChanged.connect(self.load_current_date)
         self.load_sub_types()
         self.conn = db.connect()
         self.search_button.clicked.connect(self.search_client)
@@ -104,21 +104,21 @@ class Funds(QWidget):
         self.search_button_sub.clicked.connect(self.search_client_sub)
         self.buy.clicked.connect(self.buy_subscription)
 
-    def closeEvent(self, event):
-        reply = QMessageBox.question(
-            self,
-            "ფანჯრის დახურვა",
-            "დარწმუნებული ხართ, რომ გსურთ ფანჯრის დახურვა?",
-            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
-            QMessageBox.StandardButton.No,
-        )
-
-        if reply == QMessageBox.StandardButton.Yes:
-            event.accept()
-            self.clear_fields()
-            self.search_by_phone.setFocus()
-        else:
-            event.ignore()
+    # def closeEvent(self, event):
+    #     reply = QMessageBox.question(
+    #         self,
+    #         "ფანჯრის დახურვა",
+    #         "დარწმუნებული ხართ, რომ გსურთ ფანჯრის დახურვა?",
+    #         QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+    #         QMessageBox.StandardButton.No,
+    #     )
+    #
+    #     if reply == QMessageBox.StandardButton.Yes:
+    #         event.accept()
+    #         self.clear_fields()
+    #         self.search_by_phone.setFocus()
+    #     else:
+    #         event.ignore()
 
     def load_current_date(self):
         global today
@@ -258,7 +258,6 @@ class Funds(QWidget):
                                                                                method, today, amount))
                     self.conn.commit()
                     cursor44 = self.conn.cursor()
-                    print(categories[category])
                     cursor44.execute(f"UPDATE {categories[category]} SET status=%s WHERE id=%s", (status, appo_id))
                     self.conn.commit()
                     cursor20 = self.conn.cursor()
@@ -287,7 +286,6 @@ class Funds(QWidget):
                                                                               method, today, amount))
                     self.conn.commit()
                     cursor44 = self.conn.cursor()
-                    print(categories[category])
                     cursor44.execute(f"UPDATE {categories[category]} SET status=%s WHERE id=%s", (status, appo_id))
                     self.conn.commit()
                     cursor24 = self.conn.cursor()
@@ -354,6 +352,34 @@ class Funds(QWidget):
             self.all_payments.setItem(row, 5, QTableWidgetItem(item[6]))
             self.all_payments.setItem(row, 6, QTableWidgetItem(str(item[7])))
             self.all_payments.setItem(row, 7, QTableWidgetItem(str(item[8])))
+            if item[5] == "ნაღდი":
+                self.all_payments.item(row, 0).setBackground(QColor(255, 251, 193))
+                self.all_payments.item(row, 1).setBackground(QColor(255, 251, 193))
+                self.all_payments.item(row, 2).setBackground(QColor(255, 251, 193))
+                self.all_payments.item(row, 3).setBackground(QColor(255, 251, 193))
+                self.all_payments.item(row, 4).setBackground(QColor(255, 251, 193))
+                self.all_payments.item(row, 5).setBackground(QColor(255, 251, 193))
+                self.all_payments.item(row, 6).setBackground(QColor(255, 251, 193))
+                self.all_payments.item(row, 7).setBackground(QColor(255, 251, 193))
+            elif item[5] == "უნაღდო":
+                self.all_payments.item(row, 0).setBackground(QColor(226, 246, 202))
+                self.all_payments.item(row, 1).setBackground(QColor(226, 246, 202))
+                self.all_payments.item(row, 2).setBackground(QColor(226, 246, 202))
+                self.all_payments.item(row, 3).setBackground(QColor(226, 246, 202))
+                self.all_payments.item(row, 4).setBackground(QColor(226, 246, 202))
+                self.all_payments.item(row, 5).setBackground(QColor(226, 246, 202))
+                self.all_payments.item(row, 6).setBackground(QColor(226, 246, 202))
+                self.all_payments.item(row, 7).setBackground(QColor(226, 246, 202))
+            elif item[5] == "წუთები":
+                self.all_payments.item(row, 0).setBackground(QColor(160, 191, 224))
+                self.all_payments.item(row, 1).setBackground(QColor(160, 191, 224))
+                self.all_payments.item(row, 2).setBackground(QColor(160, 191, 224))
+                self.all_payments.item(row, 3).setBackground(QColor(160, 191, 224))
+                self.all_payments.item(row, 4).setBackground(QColor(160, 191, 224))
+                self.all_payments.item(row, 5).setBackground(QColor(160, 191, 224))
+                self.all_payments.item(row, 6).setBackground(QColor(160, 191, 224))
+                self.all_payments.item(row, 7).setBackground(QColor(160, 191, 224))
+
             row += 1
 
     def load_payments_months(self, data, month, year_num):
@@ -392,6 +418,33 @@ class Funds(QWidget):
             self.all_payments_mon.setItem(row, 5, QTableWidgetItem(item[6]))
             self.all_payments_mon.setItem(row, 6, QTableWidgetItem(str(item[7])))
             self.all_payments_mon.setItem(row, 7, QTableWidgetItem(str(item[8])))
+            if item[5] == "ნაღდი":
+                self.all_payments_mon.item(row, 0).setBackground(QColor(255, 251, 193))
+                self.all_payments_mon.item(row, 1).setBackground(QColor(255, 251, 193))
+                self.all_payments_mon.item(row, 2).setBackground(QColor(255, 251, 193))
+                self.all_payments_mon.item(row, 3).setBackground(QColor(255, 251, 193))
+                self.all_payments_mon.item(row, 4).setBackground(QColor(255, 251, 193))
+                self.all_payments_mon.item(row, 5).setBackground(QColor(255, 251, 193))
+                self.all_payments_mon.item(row, 6).setBackground(QColor(255, 251, 193))
+                self.all_payments_mon.item(row, 7).setBackground(QColor(255, 251, 193))
+            elif item[5] == "უნაღდო":
+                self.all_payments_mon.item(row, 0).setBackground(QColor(226, 246, 202))
+                self.all_payments_mon.item(row, 1).setBackground(QColor(226, 246, 202))
+                self.all_payments_mon.item(row, 2).setBackground(QColor(226, 246, 202))
+                self.all_payments_mon.item(row, 3).setBackground(QColor(226, 246, 202))
+                self.all_payments_mon.item(row, 4).setBackground(QColor(226, 246, 202))
+                self.all_payments_mon.item(row, 5).setBackground(QColor(226, 246, 202))
+                self.all_payments_mon.item(row, 6).setBackground(QColor(226, 246, 202))
+                self.all_payments_mon.item(row, 7).setBackground(QColor(226, 246, 202))
+            elif item[5] == "წუთები":
+                self.all_payments_mon.item(row, 0).setBackground(QColor(160, 191, 224))
+                self.all_payments_mon.item(row, 1).setBackground(QColor(160, 191, 224))
+                self.all_payments_mon.item(row, 2).setBackground(QColor(160, 191, 224))
+                self.all_payments_mon.item(row, 3).setBackground(QColor(160, 191, 224))
+                self.all_payments_mon.item(row, 4).setBackground(QColor(160, 191, 224))
+                self.all_payments_mon.item(row, 5).setBackground(QColor(160, 191, 224))
+                self.all_payments_mon.item(row, 6).setBackground(QColor(160, 191, 224))
+                self.all_payments_mon.item(row, 7).setBackground(QColor(160, 191, 224))
             row += 1
 
     def clear_fields_sub(self):
