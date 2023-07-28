@@ -813,14 +813,13 @@ class MainWindow(QMainWindow):
 
 
     def cancel_cos(self):
-        msg = QMessageBox(parent=self)
+        msg = QMessageBox(text="დარწმუნებული ხართ, რომ გსურთ ჩაწერის გაუქმება?", parent=self)
         msg.setWindowTitle("ჩაწერის გაუქმება")
         msg.setIcon(QMessageBox.Icon.Question)
         msg.setStandardButtons(QMessageBox.StandardButton.Yes |
                                QMessageBox.StandardButton.No)
         msg.button(QMessageBox.StandardButton.Yes).setText("დიახ")
         msg.button(QMessageBox.StandardButton.No).setText("არა")
-        msg.setInformativeText("დარწმუნებული ხართ, რომ გსურთ ჩაწერის გაუქმება?")
         reply = msg.exec()
         if reply == QMessageBox.StandardButton.Yes:
             current_row = self.cos_appointments.currentRow()
@@ -836,14 +835,13 @@ class MainWindow(QMainWindow):
             pass
 
     def cancel_las(self):
-        msg = QMessageBox(parent=self)
+        msg = QMessageBox(text="დარწმუნებული ხართ, რომ გსურთ ჩაწერის გაუქმება?", parent=self)
         msg.setWindowTitle("ჩაწერის გაუქმება")
         msg.setIcon(QMessageBox.Icon.Question)
         msg.setStandardButtons(QMessageBox.StandardButton.Yes |
                                QMessageBox.StandardButton.No)
         msg.button(QMessageBox.StandardButton.Yes).setText("დიახ")
         msg.button(QMessageBox.StandardButton.No).setText("არა")
-        msg.setInformativeText("დარწმუნებული ხართ, რომ გსურთ ჩაწერის გაუქმება?")
         reply = msg.exec()
         if reply == QMessageBox.StandardButton.Yes:
             current_row = self.las_appointments.currentRow()
@@ -859,14 +857,13 @@ class MainWindow(QMainWindow):
             pass
 
     def cancel_sol_1(self):
-        msg = QMessageBox(parent=self)
+        msg = QMessageBox(text="დარწმუნებული ხართ, რომ გსურთ ჩაწერის გაუქმება?", parent=self)
         msg.setWindowTitle("ჩაწერის გაუქმება")
         msg.setIcon(QMessageBox.Icon.Question)
         msg.setStandardButtons(QMessageBox.StandardButton.Yes |
                                QMessageBox.StandardButton.No)
         msg.button(QMessageBox.StandardButton.Yes).setText("დიახ")
         msg.button(QMessageBox.StandardButton.No).setText("არა")
-        msg.setInformativeText("დარწმუნებული ხართ, რომ გსურთ ჩაწერის გაუქმება?")
         reply = msg.exec()
         if reply == QMessageBox.StandardButton.Yes:
             current_row = self.sol_1_appointments.currentRow()
@@ -882,14 +879,13 @@ class MainWindow(QMainWindow):
             pass
 
     def cancel_sol_2(self):
-        msg = QMessageBox(parent=self)
+        msg = QMessageBox(text="დარწმუნებული ხართ, რომ გსურთ ჩაწერის გაუქმება?", parent=self)
         msg.setWindowTitle("ჩაწერის გაუქმება")
         msg.setIcon(QMessageBox.Icon.Question)
         msg.setStandardButtons(QMessageBox.StandardButton.Yes |
                                QMessageBox.StandardButton.No)
         msg.button(QMessageBox.StandardButton.Yes).setText("დიახ")
         msg.button(QMessageBox.StandardButton.No).setText("არა")
-        msg.setInformativeText("დარწმუნებული ხართ, რომ გსურთ ჩაწერის გაუქმება?")
         reply = msg.exec()
         if reply == QMessageBox.StandardButton.Yes:
             current_row = self.sol_2_appointments.currentRow()
