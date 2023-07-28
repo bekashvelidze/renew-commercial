@@ -58,6 +58,7 @@ class Funds(QWidget):
         super().__init__()
         loadUi("ui/pay.ui", self)
         self.category.setCurrentText("კატეგორია")
+        self.years_combo.setCurrentText(str(year))
         if args:
             args_list = [arg for arg in args]
             self.appo_id = str(args_list[0])

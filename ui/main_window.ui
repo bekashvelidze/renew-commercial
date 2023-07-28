@@ -2702,7 +2702,7 @@ QPushButton:hover {
        <enum>QFrame::Plain</enum>
       </property>
       <property name="verticalScrollBarPolicy">
-       <enum>Qt::ScrollBarAlwaysOff</enum>
+       <enum>Qt::ScrollBarAlwaysOn</enum>
       </property>
       <property name="alternatingRowColors">
        <bool>true</bool>
