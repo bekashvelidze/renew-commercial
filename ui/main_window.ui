@@ -3219,7 +3219,14 @@ QPushButton:hover {
     <addaction name="documentation"/>
     <addaction name="about_menu"/>
    </widget>
+   <widget class="QMenu" name="patient">
+    <property name="title">
+     <string>პაციენტი</string>
+    </property>
+    <addaction name="patient_history"/>
+   </widget>
    <addaction name="menu"/>
+   <addaction name="patient"/>
    <addaction name="settings"/>
    <addaction name="help"/>
   </widget>
@@ -3303,6 +3310,11 @@ QPushButton:hover {
   <action name="about_menu">
    <property name="text">
     <string>პროგრამის შესახებ</string>
+   </property>
+  </action>
+  <action name="patient_history">
+   <property name="text">
+    <string>პაციენტის ისტორია</string>
    </property>
   </action>
  </widget>

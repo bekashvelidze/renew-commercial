@@ -8,6 +8,7 @@ from PyQt6.uic import loadUi
 from PyQt6.QtGui import QIcon
 from PyQt6.QtGui import QColor
 from connection import Database
+from history import PatientHistory
 from settings import Settings
 from funds import Funds
 from about import About
@@ -88,11 +89,13 @@ class MainWindow(QMainWindow):
         self.procedures = load_procedures()
         self.load_data()
         self.tabWidget.currentChanged.connect(self.load_data)
+        self.history_window = PatientHistory()
         self.settings_window_open = Settings()
         self.funds_window = Funds()
         self.about = About()
         # Menu items
         self.close_application.triggered.connect(close_main_application)
+        self.patient_history.triggered.connect(self.patient_history_window)
         self.change_settings.triggered.connect(self.settings_window)
         self.documentation.triggered.connect(open_documentation)
         self.about_menu.triggered.connect(self.about_window)
@@ -811,7 +814,6 @@ class MainWindow(QMainWindow):
                     self.sol_2_fname.setText(client[1])
                     self.sol_2_lname.setText(client[2])
 
-
     def cancel_cos(self):
         msg = QMessageBox(text="დარწმუნებული ხართ, რომ გსურთ ჩაწერის გაუქმება?", parent=self)
         msg.setWindowTitle("ჩაწერის გაუქმება")
@@ -899,3 +901,18 @@ class MainWindow(QMainWindow):
             self.load_data()
         else:
             pass
+
+    def patient_history_window(self, *args):
+        if not args[0]:
+            self.history_window = PatientHistory()
+        else:
+            appo_id = args[0]
+            fname = args[1]
+            lname = args[2]
+            phone = args[3]
+            category = args[4]
+            self.history_window = PatientHistory(appo_id, fname, lname, phone, category)
+            self.history_window.search_client_2()
+        self.history_window = PatientHistory()
+        self.history_window.setWindowTitle("პაციენტის ისტორია")
+        self.history_window.show()
