@@ -343,7 +343,7 @@ class Funds(QWidget):
         self.all_payments.horizontalHeader().setVisible(True)
         self.all_payments.verticalHeader().setVisible(True)
         row = 0
-        for item in payments: #rgb(184, 231, 225)
+        for item in payments:
             self.all_payments.setItem(row, 0, QTableWidgetItem(item[1]))
             self.all_payments.setItem(row, 1, QTableWidgetItem(item[2]))
             self.all_payments.setItem(row, 2, QTableWidgetItem(item[3]))
