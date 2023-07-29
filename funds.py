@@ -59,6 +59,7 @@ class Funds(QWidget):
         loadUi("ui/pay.ui", self)
         self.category.setCurrentText("კატეგორია")
         self.years_combo.setCurrentText(str(year))
+        self.appo_id = None
         if args:
             args_list = [arg for arg in args]
             self.appo_id = str(args_list[0])
@@ -66,7 +67,6 @@ class Funds(QWidget):
             self.lname.setText(str(args_list[2]))
             self.phone.setText(str(args_list[3]))
             self.category.setCurrentText(str(args_list[4]))
-        # self.tabWidget.currentChanged.connect(self.load_current_date)
         self.load_sub_types()
         self.conn = db.connect()
         self.search_button.clicked.connect(self.search_client)
@@ -218,7 +218,6 @@ class Funds(QWidget):
         amount = self.amount.text()
         category = self.category.currentText()
         method = self.payment_method.currentText()
-        appo_id = self.appo_id
         status = "paid"
         time_now = datetime.now().time().strftime("%H:%M")
 
@@ -253,9 +252,11 @@ class Funds(QWidget):
                                      (f"{first_name} {last_name}", category, today, time_now, phone,
                                       f"განყოფილება: გადახდა | წუთი: {amount}, გადახდის მეთოდი: {method}"))
                     self.conn.commit()
-                    cursor44 = self.conn.cursor()
-                    cursor44.execute(f"UPDATE {categories[category]} SET status=%s WHERE id=%s", (status, appo_id))
-                    self.conn.commit()
+                    if self.appo_id is not None:
+                        cursor44 = self.conn.cursor()
+                        cursor44.execute(f"UPDATE {categories[category]} SET status=%s "
+                                         f"WHERE id=%s", (status, self.appo_id))
+                        self.conn.commit()
                     cursor20 = self.conn.cursor()
                     cursor20.execute("SELECT * from payments WHERE date=%s", (today,))
                     self.load_payments_table(cursor20)
@@ -285,11 +286,13 @@ class Funds(QWidget):
                     cursor80.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
                                      "VALUES (?, ?, ?, ?, ?, ?)",
                                      (f"{first_name} {last_name}", category, today, time_now, phone,
-                                      f"განყოფილება: გადახდა | გადახდის მეთოდი: {method}"))
+                                      f"განყოფილება: გადახდა | გადახდის მეთოდი: {method}, თანხა: {amount} ლარი"))
                     self.conn.commit()
-                    cursor44 = self.conn.cursor()
-                    cursor44.execute(f"UPDATE {categories[category]} SET status=%s WHERE id=%s", (status, appo_id))
-                    self.conn.commit()
+                    if self.appo_id is not  None:
+                        cursor44 = self.conn.cursor()
+                        cursor44.execute(f"UPDATE {categories[category]} SET status=%s "
+                                         f"WHERE id=%s", (status, self.appo_id))
+                        self.conn.commit()
                     cursor24 = self.conn.cursor()
                     cursor24.execute("SELECT * from payments WHERE date=%s", (today,))
                     self.load_payments_table(cursor24)
@@ -314,25 +317,30 @@ class Funds(QWidget):
                     cursor80.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
                                      "VALUES (?, ?, ?, ?, ?, ?)",
                                      (f"{first_name} {last_name}", category, today, time_now, phone,
-                                      f"განყოფილება: გადახდა | გადახდის მეთოდი: {method}"))
+                                      f"განყოფილება: გადახდა | გადახდის მეთოდი: {method}, თანხა: {amount} ლარი"))
                     self.conn.commit()
-                    cursor44 = self.conn.cursor()
-                    cursor44.execute(f"UPDATE {categories[category]} SET status=%s WHERE id=%s", (status, appo_id))
-                    self.conn.commit()
+                    if self.appo_id is not None:
+                        cursor44 = self.conn.cursor()
+                        cursor44.execute(f"UPDATE {categories[category]} SET status=%s "
+                                         f"WHERE id=%s", (status, self.appo_id))
+                        self.conn.commit()
                     cursor26 = self.conn.cursor()
                     cursor26.execute("SELECT * from payments WHERE date=%s", (today,))
                     QMessageBox.information(self, "წარმატებული გადახდა", "გადახდა წარმატებით განხორციელდა!")
                     self.clear_fields()
                     self.load_payments_table(cursor26)
+        cursor_months = self.conn.cursor()
+        cursor_months.execute("SELECT * FROM `payments` WHERE monthname(date)=%s", (month_name,))
+        self.load_payments_months(cursor_months, month_name, year)
 
     def load_payments_table(self, data):
         self.all_payments.setRowCount(data.rowcount)
         self.all_payments.setColumnCount(8)
 
-        self.all_payments.setColumnWidth(0, 100)
-        self.all_payments.setColumnWidth(1, 180)
-        self.all_payments.setColumnWidth(2, 90)
-        self.all_payments.setColumnWidth(3, 130)
+        self.all_payments.setColumnWidth(0, 120)
+        self.all_payments.setColumnWidth(1, 200)
+        self.all_payments.setColumnWidth(2, 100)
+        self.all_payments.setColumnWidth(3, 150)
         self.all_payments.setColumnWidth(4, 160)
         self.all_payments.setColumnWidth(5, 90)
         self.all_payments.setColumnWidth(6, 60)
@@ -343,9 +351,19 @@ class Funds(QWidget):
         total_cash = [pay[8] for pay in payments if pay[5] == "ნაღდი"]
         total_card = [pay[8] for pay in payments if pay[5] == "უნაღდო"]
         total_by_minutes = [pay[7] for pay in payments if pay[5] == "წუთები"]
+        total_cos = [pay[8] for pay in payments if pay[4] == "კოსმეტოლოგია"]
+        total_las = [pay[8] for pay in payments if pay[4] == "ლაზერი"]
+        total_sol_1 = [pay[8] for pay in payments if pay[4] == "სოლარიუმი 1"]
+        total_sol_2 = [pay[8] for pay in payments if pay[4] == "სოლარიუმი 2"]
+        total_subs = [pay[8] for pay in payments if pay[4] == "აბონემენტი"]
         self.total_daily.setText(str(sum(total_cash) + sum(total_card)))
         self.cash.setText(str(sum(total_cash)))
         self.card.setText(str(sum(total_card)))
+        self.cos_total.setText(str(sum(total_cos)))
+        self.las_total.setText(str(sum(total_las)))
+        self.sol_1_total.setText(str(sum(total_sol_1)))
+        self.sol_2_total.setText(str(sum(total_sol_2)))
+        self.subscriptions.setText(str(sum(total_subs)))
         self.new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
         self.pay_by_minutes.setText(str(sum(total_by_minutes)))
         self.all_payments.horizontalHeader().setVisible(True)
@@ -358,7 +376,10 @@ class Funds(QWidget):
             self.all_payments.setItem(row, 3, QTableWidgetItem(item[4]))
             self.all_payments.setItem(row, 4, QTableWidgetItem(item[5]))
             self.all_payments.setItem(row, 5, QTableWidgetItem(item[6]))
-            self.all_payments.setItem(row, 6, QTableWidgetItem(str(item[7])))
+            if item[8] == 0:
+                self.all_payments.setItem(row, 6, QTableWidgetItem(f"-{str(item[7])}"))
+            else:
+                self.all_payments.setItem(row, 6, QTableWidgetItem(str(item[7])))
             self.all_payments.setItem(row, 7, QTableWidgetItem(str(item[8])))
             if item[5] == "ნაღდი":
                 self.all_payments.item(row, 0).setBackground(QColor(255, 251, 193))
@@ -391,13 +412,14 @@ class Funds(QWidget):
             row += 1
 
     def load_payments_months(self, data, month, year_num):
+        global month_name
         self.all_payments_mon.setRowCount(data.rowcount)
         self.all_payments_mon.setColumnCount(8)
 
-        self.all_payments_mon.setColumnWidth(0, 100)
-        self.all_payments_mon.setColumnWidth(1, 180)
-        self.all_payments_mon.setColumnWidth(2, 90)
-        self.all_payments_mon.setColumnWidth(3, 130)
+        self.all_payments_mon.setColumnWidth(0, 120)
+        self.all_payments_mon.setColumnWidth(1, 200)
+        self.all_payments_mon.setColumnWidth(2, 100)
+        self.all_payments_mon.setColumnWidth(3, 150)
         self.all_payments_mon.setColumnWidth(4, 160)
         self.all_payments_mon.setColumnWidth(5, 90)
         self.all_payments_mon.setColumnWidth(6, 60)
@@ -409,11 +431,21 @@ class Funds(QWidget):
         total_cash = [pay[8] for pay in payments if pay[5] == "ნაღდი"]
         total_card = [pay[8] for pay in payments if pay[5] == "უნაღდო"]
         total_by_minutes = [pay[7] for pay in payments if pay[5] == "წუთები"]
+        total_cos_m = [pay[8] for pay in payments if pay[4] == "კოსმეტოლოგია"]
+        total_las_m = [pay[8] for pay in payments if pay[4] == "ლაზერი"]
+        total_sol_1_m = [pay[8] for pay in payments if pay[4] == "სოლარიუმი 1"]
+        total_sol_2_m = [pay[8] for pay in payments if pay[4] == "სოლარიუმი 2"]
+        total_subs_m = [pay[8] for pay in payments if pay[4] == "აბონემენტი"]
         self.total_daily_mon.setText(str(sum(total_cash) + sum(total_card)))
         self.cash_mon.setText(str(sum(total_cash)))
         self.card_mon.setText(str(sum(total_card)))
-        self.months_combo.setCurrentText(load_months()[1][month])
+        self.cos_total_m.setText(str(sum(total_cos_m)))
+        self.las_total_m.setText(str(sum(total_las_m)))
+        self.sol_1_total_m.setText(str(sum(total_sol_1_m)))
+        self.sol_2_total_m.setText(str(sum(total_sol_2_m)))
+        self.subscriptions_m.setText(str(sum(total_subs_m)))
         self.pay_by_minutes_mon.setText(str(sum(total_by_minutes)))
+        self.months_combo.setCurrentText(load_months()[1][month])
         self.all_payments_mon.horizontalHeader().setVisible(True)
         self.all_payments_mon.verticalHeader().setVisible(True)
         row = 0
@@ -424,7 +456,10 @@ class Funds(QWidget):
             self.all_payments_mon.setItem(row, 3, QTableWidgetItem(item[4]))
             self.all_payments_mon.setItem(row, 4, QTableWidgetItem(item[5]))
             self.all_payments_mon.setItem(row, 5, QTableWidgetItem(item[6]))
-            self.all_payments_mon.setItem(row, 6, QTableWidgetItem(str(item[7])))
+            if item[8] == 0:
+                self.all_payments_mon.setItem(row, 6, QTableWidgetItem(f"-{str(item[7])}"))
+            else:
+                self.all_payments_mon.setItem(row, 6, QTableWidgetItem(str(item[7])))
             self.all_payments_mon.setItem(row, 7, QTableWidgetItem(str(item[8])))
             if item[5] == "ნაღდი":
                 self.all_payments_mon.item(row, 0).setBackground(QColor(255, 251, 193))
@@ -454,6 +489,8 @@ class Funds(QWidget):
                 self.all_payments_mon.item(row, 6).setBackground(QColor(184, 231, 225))
                 self.all_payments_mon.item(row, 7).setBackground(QColor(184, 231, 225))
             row += 1
+
+        month_name = calendar.month_name[int(today.split(".")[1][1])]
 
     def clear_fields_sub(self):
         self.conn.commit()

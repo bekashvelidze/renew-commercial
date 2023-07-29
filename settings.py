@@ -90,7 +90,7 @@ class Settings(QWidget):
             doc_row += 1
 
     def load_sol_2_sub_types(self):
-        # Load subscription_types_sol_1
+        # Load subscription_types_sol_2
         cursor = self.conn.cursor()
         cursor.execute("SELECT * FROM sub_types_sol_2")
         sub_types = []

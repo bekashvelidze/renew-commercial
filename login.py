@@ -4,7 +4,6 @@ from PyQt6 import QtWidgets
 from PyQt6.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PyQt6.uic import loadUi
 from PyQt6.QtGui import QIcon
-from PyQt6.QtCore import Qt
 from main_window import MainWindow
 
 
@@ -33,9 +32,6 @@ class Login(QMainWindow):
             QMessageBox.information(self, "შეცდომა!", "სახელი ან პაროლი არასწორია.")
         else:
             main_window()
-
-    def keyPressEvent(self, event):
-        print(event.key())
 
 
 app = QApplication(sys.argv)

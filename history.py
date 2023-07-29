@@ -19,7 +19,7 @@ class PatientHistory(QWidget):
         self.patient_history.setColumnWidth(0, 140)
         self.patient_history.setColumnWidth(1, 90)
         self.patient_history.setColumnWidth(2, 90)
-        self.patient_history.setColumnWidth(3, 850)
+        self.patient_history.setColumnWidth(3, 630)
 
     def search_client(self):
         search = self.search_patient.text()

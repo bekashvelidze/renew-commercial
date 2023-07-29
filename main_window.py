@@ -5,10 +5,8 @@ import webbrowser
 from datetime import datetime
 from PyQt6.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem, QPushButton
 from PyQt6.uic import loadUi
-from PyQt6.QtGui import QIcon
-from PyQt6.QtGui import QColor
+from PyQt6.QtGui import QIcon, QColor
 from connection import Database
-from history import PatientHistory
 from settings import Settings
 from funds import Funds
 from about import About
@@ -1046,5 +1044,11 @@ class MainWindow(QMainWindow):
 
     def patient_history_window(self):
         self.history_window = PatientHistory()
+        self.history_window.setFixedWidth(1002)
+        self.history_window.setFixedHeight(671)
+        x = (self.history_window.screen().availableGeometry().width() // 2) - (self.history_window.width() // 2)
+        y = (self.history_window.screen().availableGeometry().height() // 2) - (self.history_window.height() // 2)
+        self.history_window.move(x, y)
         self.history_window.setWindowTitle("პაციენტის ისტორია")
+        self.history_window.setWindowIcon(QIcon("ui/renew.ico"))
         self.history_window.show()
