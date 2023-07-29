@@ -12,7 +12,7 @@ from history import PatientHistory
 from settings import Settings
 from funds import Funds
 from about import About
-
+from history import PatientHistory
 
 today = datetime.now().date().strftime("%d.%m.%Y")
 db = Database()
@@ -93,6 +93,7 @@ class MainWindow(QMainWindow):
         self.settings_window_open = Settings()
         self.funds_window = Funds()
         self.about = About()
+        self.history = PatientHistory()
         # Menu items
         self.close_application.triggered.connect(close_main_application)
         self.patient_history.triggered.connect(self.patient_history_window)
@@ -151,6 +152,38 @@ class MainWindow(QMainWindow):
         self.las_zone.setCurrentText("აირჩიეთ ზონა")
         self.las_doctor.setCurrentText("აირჩიეთ ექიმი")
 
+        # Load column width
+        self.cos_appointments.setColumnWidth(0, 30)
+        self.cos_appointments.setColumnWidth(1, 250)
+        self.cos_appointments.setColumnWidth(2, 120)
+        self.cos_appointments.setColumnWidth(3, 180)
+        self.cos_appointments.setColumnWidth(4, 120)
+        self.cos_appointments.setColumnWidth(5, 215)
+        self.cos_appointments.setColumnWidth(6, 20)
+
+        self.las_appointments.setColumnWidth(0, 30)
+        self.las_appointments.setColumnWidth(1, 140)
+        self.las_appointments.setColumnWidth(2, 170)
+        self.las_appointments.setColumnWidth(3, 110)
+        self.las_appointments.setColumnWidth(4, 170)
+        self.las_appointments.setColumnWidth(5, 110)
+        self.las_appointments.setColumnWidth(6, 185)
+        self.las_appointments.setColumnWidth(7, 20)
+
+        self.sol_1_appointments.setColumnWidth(0, 30)
+        self.sol_1_appointments.setColumnWidth(1, 210)
+        self.sol_1_appointments.setColumnWidth(2, 230)
+        self.sol_1_appointments.setColumnWidth(3, 230)
+        self.sol_1_appointments.setColumnWidth(4, 190)
+        self.sol_1_appointments.setColumnWidth(5, 20)
+
+        self.sol_2_appointments.setColumnWidth(0, 30)
+        self.sol_2_appointments.setColumnWidth(1, 210)
+        self.sol_2_appointments.setColumnWidth(2, 230)
+        self.sol_2_appointments.setColumnWidth(3, 230)
+        self.sol_2_appointments.setColumnWidth(4, 190)
+        self.sol_2_appointments.setColumnWidth(5, 20)
+
     def load_data(self):
         self.cos_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
         self.las_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
@@ -199,14 +232,6 @@ class MainWindow(QMainWindow):
         self.cos_patients.setText(str(cursor.rowcount))
         self.cos_current_day.setText(load_days()[datetime.now().strftime("%A")])
         self.current_date.setText(datetime.now().date().strftime("%d.%m.%Y"))
-
-        self.cos_appointments.setColumnWidth(0, 30)
-        self.cos_appointments.setColumnWidth(1, 250)
-        self.cos_appointments.setColumnWidth(2, 120)
-        self.cos_appointments.setColumnWidth(3, 180)
-        self.cos_appointments.setColumnWidth(4, 120)
-        self.cos_appointments.setColumnWidth(5, 190)
-        self.cos_appointments.setColumnWidth(6, 20)
 
         row = 0
         for cos in cursor:
@@ -260,6 +285,8 @@ class MainWindow(QMainWindow):
         doctor = self.cos_doctor.currentText()
         date = self.cos_date.text()
         time = self.cos_time.text()
+        category = "კოსმეტოლოგია"
+        time_now = datetime.now().time().strftime("%H:%M")
 
         checked = check_integer(phone)
 
@@ -278,6 +305,14 @@ class MainWindow(QMainWindow):
             cursor.execute(
                 "INSERT INTO cosmetology_appointments (procedure_name, fname, lname, phone, doctor, date, time) "
                 "VALUES (?, ?, ?, ?, ?, ?, ?)", (zone, first_name, last_name, phone, doctor, date, time))
+
+            conn.commit()
+            cursor71 = conn.cursor()
+            cursor71.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
+                             "VALUES (?, ?, ?, ?, ?, ?)",
+                             (f"{first_name} {last_name}", category, date, time_now, phone,
+                              f"განყოფილება: ჩაწერა | პროცედურა: {zone}, ექიმი: {doctor}"))
+            conn.commit()
             self.cos_fname.clear()
             self.cos_lname.clear()
             self.cos_phone.clear()
@@ -288,7 +323,6 @@ class MainWindow(QMainWindow):
                 self.cos_doctor.addItem(doctor_cos)
             for zone_cos in procedures:
                 self.cos_zone.addItem(zone_cos)
-            conn.commit()
 
             balance = 0
             init_minutes = 0
@@ -300,6 +334,12 @@ class MainWindow(QMainWindow):
                 cursor3.execute("INSERT INTO clients (fname, lname, phone, balance, minutes) "
                                 "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, init_minutes))
                 conn.commit()
+                cursor72 = conn.cursor()
+                cursor72.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
+                                 "VALUES (?, ?, ?, ?, ?, ?)",
+                                 (f"{first_name} {last_name}", category, date, time_now, phone,
+                                  f"განყოფილება: ჩაწერა | პროცედურა: {zone}, ექიმი: {doctor}"))
+                conn.commit()
             else:
                 client_phones = [client[3] for client in cursor2]
                 if phone not in client_phones:
@@ -307,6 +347,12 @@ class MainWindow(QMainWindow):
                     cursor3.execute("INSERT INTO clients (fname, lname, phone, balance, minutes) "
                                     "VALUES (?, ?, ?, ?, ?)",
                                     (first_name, last_name, phone, balance, init_minutes))
+                    conn.commit()
+                    cursor73 = conn.cursor()
+                    cursor73.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
+                                     "VALUES (?, ?, ?, ?, ?, ?)",
+                                     (f"{first_name} {last_name}", category, date, time_now, phone,
+                                      f"განყოფილება: ჩაწერა | პროცედურა: {zone}, ექიმი: {doctor}"))
                     conn.commit()
             conn.close()
 
@@ -339,15 +385,6 @@ class MainWindow(QMainWindow):
         self.las_patients.setText(str(cursor.rowcount))
         self.las_current_day.setText(load_days()[datetime.now().strftime("%A")])
         self.las_current_date.setText(datetime.now().date().strftime("%d.%m.%Y"))
-
-        self.las_appointments.setColumnWidth(0, 30)
-        self.las_appointments.setColumnWidth(1, 140)
-        self.las_appointments.setColumnWidth(2, 170)
-        self.las_appointments.setColumnWidth(3, 110)
-        self.las_appointments.setColumnWidth(4, 170)
-        self.las_appointments.setColumnWidth(5, 110)
-        self.las_appointments.setColumnWidth(6, 160)
-        self.las_appointments.setColumnWidth(7, 20)
 
         row = 0
         for las in cursor:
@@ -405,6 +442,8 @@ class MainWindow(QMainWindow):
         doctor = self.las_doctor.currentText()
         date = self.las_date.text()
         time = self.las_time.text()
+        category = "ლაზერი"
+        time_now = datetime.now().time().strftime("%H:%M")
 
         checked = check_integer(phone)
 
@@ -427,6 +466,13 @@ class MainWindow(QMainWindow):
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                 (laser_type, zone, first_name, last_name, phone, doctor, date, time)
             )
+            conn.commit()
+            cursor74 = conn.cursor()
+            cursor74.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
+                             "VALUES (?, ?, ?, ?, ?, ?)",
+                             (f"{first_name} {last_name}", category, date, time_now, phone,
+                              f"განყოფილება: ჩაწერა | ლაზერის ტიპი: {laser_type}, ზონა: {zone}, ექიმი: {doctor}"))
+            conn.commit()
             self.las_fname.clear()
             self.las_lname.clear()
             self.las_phone.clear()
@@ -452,12 +498,24 @@ class MainWindow(QMainWindow):
                 cursor3.execute("INSERT INTO clients (fname, lname, phone, balance, minutes) "
                                 "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, init_minutes))
                 conn.commit()
+                cursor75 = conn.cursor()
+                cursor75.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
+                                 "VALUES (?, ?, ?, ?, ?, ?)",
+                                 (f"{first_name} {last_name}", category, date, time_now, phone,
+                                  f"განყოფილება: ჩაწერა | ლაზერის ტიპი: {laser_type}, ზონა: {zone}, ექიმი: {doctor}"))
+                conn.commit()
             else:
                 client_phones = [client[3] for client in cursor2]
                 if phone not in client_phones:
                     cursor3 = conn.cursor()
                     cursor3.execute("INSERT INTO clients (fname, lname, phone, balance, minutes) "
                                     "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, init_minutes))
+                    conn.commit()
+                    cursor75 = conn.cursor()
+                    cursor75.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
+                                     "VALUES (?, ?, ?, ?, ?, ?)",
+                                     (f"{first_name} {last_name}", category, date, time_now, phone,
+                                      f"განყოფილება: ჩაწერა | ლაზერის ტიპი: {laser_type}, ზონა: {zone}, ექიმი: {doctor}"))
                     conn.commit()
             conn.close()
 
@@ -490,13 +548,6 @@ class MainWindow(QMainWindow):
         self.sol_1_patients.setText(str(cursor.rowcount))
         self.sol_1_current_day.setText(load_days()[datetime.now().strftime("%A")])
         self.sol_1_current_date.setText(datetime.now().date().strftime("%d.%m.%Y"))
-
-        self.sol_1_appointments.setColumnWidth(0, 30)
-        self.sol_1_appointments.setColumnWidth(1, 210)
-        self.sol_1_appointments.setColumnWidth(2, 230)
-        self.sol_1_appointments.setColumnWidth(3, 230)
-        self.sol_1_appointments.setColumnWidth(4, 190)
-        self.sol_1_appointments.setColumnWidth(5, 20)
 
         row = 0
         for sol_1 in cursor:
@@ -544,6 +595,8 @@ class MainWindow(QMainWindow):
         minutes = self.sol_1_minutes.text()
         date = self.sol_1_date.text()
         time = self.sol_1_time.text()
+        category = "სოლარიუმი 1"
+        time_now = datetime.now().time().strftime("%H:%M")
 
         checked_phone = check_integer(phone)
         checked_minutes = check_integer(minutes)
@@ -564,6 +617,13 @@ class MainWindow(QMainWindow):
             cursor = conn.cursor()
             cursor.execute("INSERT INTO solarium_1_appointments (fname, lname, phone, minutes, date, time) "
                            "VALUES (?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, minutes, date, time))
+            conn.commit()
+            cursor76 = conn.cursor()
+            cursor76.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
+                             "VALUES (?, ?, ?, ?, ?, ?)",
+                             (f"{first_name} {last_name}", category, date, time_now, phone,
+                              f"განყოფილება: ჩაწერა | წუთი: {minutes}"))
+            conn.commit()
             self.sol_1_fname.clear()
             self.sol_1_lname.clear()
             self.sol_1_phone.clear()
@@ -581,12 +641,24 @@ class MainWindow(QMainWindow):
                 cursor3.execute("INSERT INTO clients (fname, lname, phone, balance, minutes) "
                                 "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, init_minutes))
                 conn.commit()
+                cursor77 = conn.cursor()
+                cursor77.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
+                                 "VALUES (?, ?, ?, ?, ?, ?)",
+                                 (f"{first_name} {last_name}", category, date, time_now, phone,
+                                  f"განყოფილება: ჩაწერა | წუთი: {minutes}"))
+                conn.commit()
             else:
                 client_phones = [client[3] for client in cursor2]
                 if phone not in client_phones:
                     cursor3 = conn.cursor()
                     cursor3.execute("INSERT INTO clients (fname, lname, phone, balance, minutes) "
                                     "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, init_minutes))
+                    conn.commit()
+                    cursor77 = conn.cursor()
+                    cursor77.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
+                                     "VALUES (?, ?, ?, ?, ?, ?)",
+                                     (f"{first_name} {last_name}", category, date, time_now, phone,
+                                      f"განყოფილება: ჩაწერა | წუთი: {minutes}"))
                     conn.commit()
             conn.close()
             QMessageBox.information(self, 'პაციენტი ჩაწერილია',
@@ -616,13 +688,6 @@ class MainWindow(QMainWindow):
         self.sol_2_patients.setText(str(cursor.rowcount))
         self.sol_2_current_day.setText(load_days()[datetime.now().strftime("%A")])
         self.sol_2_current_date.setText(datetime.now().date().strftime("%d.%m.%Y"))
-
-        self.sol_2_appointments.setColumnWidth(0, 30)
-        self.sol_2_appointments.setColumnWidth(1, 210)
-        self.sol_2_appointments.setColumnWidth(2, 230)
-        self.sol_2_appointments.setColumnWidth(3, 230)
-        self.sol_2_appointments.setColumnWidth(4, 190)
-        self.sol_2_appointments.setColumnWidth(5, 20)
 
         row = 0
         for sol_2 in cursor:
@@ -671,6 +736,8 @@ class MainWindow(QMainWindow):
         minutes = self.sol_2_minutes.text()
         date = self.sol_2_date.text()
         time = self.sol_2_time.text()
+        category = "სოლარიუმი 2"
+        time_now = datetime.now().time().strftime("%H:%M")
 
         checked_phone = check_integer(phone)
         checked_minutes = check_integer(minutes)
@@ -691,6 +758,13 @@ class MainWindow(QMainWindow):
             cursor = conn.cursor()
             cursor.execute("INSERT INTO solarium_2_appointments (fname, lname, phone, minutes, date, time) "
                            "VALUES (?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, minutes, date, time))
+            conn.commit()
+            cursor78 = conn.cursor()
+            cursor78.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
+                             "VALUES (?, ?, ?, ?, ?, ?)",
+                             (f"{first_name} {last_name}", category, date, time_now, phone,
+                              f"განყოფილება: ჩაწერა | წუთი: {minutes}"))
+            conn.commit()
             self.sol_2_fname.clear()
             self.sol_2_lname.clear()
             self.sol_2_phone.clear()
@@ -708,12 +782,24 @@ class MainWindow(QMainWindow):
                 cursor3.execute("INSERT INTO clients (fname, lname, phone, balance, minutes) "
                                 "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, init_minutes))
                 conn.commit()
+                cursor79 = conn.cursor()
+                cursor79.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
+                                 "VALUES (?, ?, ?, ?, ?, ?)",
+                                 (f"{first_name} {last_name}", category, date, time_now, phone,
+                                  f"განყოფილება: ჩაწერა | წუთი: {minutes}"))
+                conn.commit()
             else:
                 client_phones = [client[3] for client in cursor2]
                 if phone not in client_phones:
                     cursor3 = conn.cursor()
                     cursor3.execute("INSERT INTO clients (fname, lname, phone, balance, minutes) "
                                     "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, init_minutes))
+                    conn.commit()
+                    cursor79 = conn.cursor()
+                    cursor79.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
+                                     "VALUES (?, ?, ?, ?, ?, ?)",
+                                     (f"{first_name} {last_name}", category, date, time_now, phone,
+                                      f"განყოფილება: ჩაწერა | წუთი: {minutes}"))
                     conn.commit()
             conn.close()
 
@@ -815,6 +901,14 @@ class MainWindow(QMainWindow):
                     self.sol_2_lname.setText(client[2])
 
     def cancel_cos(self):
+        categories = {
+            "კოსმეტოლოგია": "cosmetology_appointments",
+            "ლაზერი": "laser_appointments",
+            "სოლარიუმი 1": "solarium_1_appointments",
+            "სოლარიუმი 2": "solarium_2_appointments"
+        }
+        status = "cancelled"
+        category = "კოსმეტოლოგია"
         msg = QMessageBox(text="დარწმუნებული ხართ, რომ გსურთ ჩაწერის გაუქმება?", parent=self)
         msg.setWindowTitle("ჩაწერის გაუქმება")
         msg.setIcon(QMessageBox.Icon.Question)
@@ -825,18 +919,32 @@ class MainWindow(QMainWindow):
         reply = msg.exec()
         if reply == QMessageBox.StandardButton.Yes:
             current_row = self.cos_appointments.currentRow()
+            num = int(self.cos_appointments.item(current_row, 0).text())
             cursor60 = self.conn.cursor()
-            cursor60.execute("DELETE FROM `cosmetology_appointments` WHERE id=%s",
-                             (int(self.cos_appointments.item(current_row, 0).text()), ))
+            cursor60.execute("DELETE FROM `cosmetology_appointments` WHERE id=%s", (num,))
             self.conn.commit()
-            QMessageBox.information(self, "ჩაწერის გაუქმება",
-                                    f"ჩაწერა გაუქმებულია პაციენტისთვის {self.cos_appointments.item(current_row, 2).text()} "
+            QMessageBox.information(self,
+                                    "ჩაწერის გაუქმება",
+                                    f"ჩაწერა გაუქმებულია პაციენტისთვის "
+                                    f"{self.cos_appointments.item(current_row, 2).text()} "
                                     f"{self.cos_appointments.item(current_row, 3).text()}.")
             self.load_data()
+            cursor84 = self.conn.cursor()
+            cursor84.execute(f"UPDATE {categories[category]} SET status=%s WHERE id=%s",
+                             (status, num))
+            self.conn.commit()
         else:
             pass
 
     def cancel_las(self):
+        categories = {
+            "კოსმეტოლოგია": "cosmetology_appointments",
+            "ლაზერი": "laser_appointments",
+            "სოლარიუმი 1": "solarium_1_appointments",
+            "სოლარიუმი 2": "solarium_2_appointments"
+        }
+        status = "cancelled"
+        category = "ლაზერი"
         msg = QMessageBox(text="დარწმუნებული ხართ, რომ გსურთ ჩაწერის გაუქმება?", parent=self)
         msg.setWindowTitle("ჩაწერის გაუქმება")
         msg.setIcon(QMessageBox.Icon.Question)
@@ -847,18 +955,32 @@ class MainWindow(QMainWindow):
         reply = msg.exec()
         if reply == QMessageBox.StandardButton.Yes:
             current_row = self.las_appointments.currentRow()
+            num = int(self.las_appointments.item(current_row, 0).text())
             cursor61 = self.conn.cursor()
-            cursor61.execute("DELETE FROM `laser_appointments` WHERE id=%s",
-                             (int(self.las_appointments.item(current_row, 0).text()), ))
+            cursor61.execute("DELETE FROM `laser_appointments` WHERE id=%s", (num, ))
             self.conn.commit()
-            QMessageBox.information(self, "ჩაწერის გაუქმება",
-                                    f"ჩაწერა გაუქმებულია პაციენტისთვის {self.las_appointments.item(current_row, 3).text()} "
+            QMessageBox.information(self,
+                                    "ჩაწერის გაუქმება",
+                                    f"ჩაწერა გაუქმებულია პაციენტისთვის "
+                                    f"{self.las_appointments.item(current_row, 3).text()} "
                                     f"{self.las_appointments.item(current_row, 4).text()}.")
             self.load_data()
+            cursor83 = self.conn.cursor()
+            cursor83.execute(f"UPDATE {categories[category]} SET status=%s WHERE id=%s",
+                             (status, num))
+            self.conn.commit()
         else:
             pass
 
     def cancel_sol_1(self):
+        categories = {
+            "კოსმეტოლოგია": "cosmetology_appointments",
+            "ლაზერი": "laser_appointments",
+            "სოლარიუმი 1": "solarium_1_appointments",
+            "სოლარიუმი 2": "solarium_2_appointments"
+        }
+        status = "cancelled"
+        category = "სოლარიუმი 1"
         msg = QMessageBox(text="დარწმუნებული ხართ, რომ გსურთ ჩაწერის გაუქმება?", parent=self)
         msg.setWindowTitle("ჩაწერის გაუქმება")
         msg.setIcon(QMessageBox.Icon.Question)
@@ -869,18 +991,32 @@ class MainWindow(QMainWindow):
         reply = msg.exec()
         if reply == QMessageBox.StandardButton.Yes:
             current_row = self.sol_1_appointments.currentRow()
+            num = int(self.sol_1_appointments.item(current_row, 0).text())
             cursor62 = self.conn.cursor()
-            cursor62.execute("DELETE FROM `solarium_1_appointments` WHERE id=%s",
-                             (int(self.sol_1_appointments.item(current_row, 0).text()), ))
+            cursor62.execute("DELETE FROM `solarium_1_appointments` WHERE id=%s", (num,))
             self.conn.commit()
-            QMessageBox.information(self, "ჩაწერის გაუქმება",
-                                    f"ჩაწერა გაუქმებულია პაციენტისთვის {self.sol_1_appointments.item(current_row, 1).text()} "
+            QMessageBox.information(self,
+                                    "ჩაწერის გაუქმება",
+                                    f"ჩაწერა გაუქმებულია პაციენტისთვის "
+                                    f"{self.sol_1_appointments.item(current_row, 1).text()} "
                                     f"{self.sol_1_appointments.item(current_row, 2).text()}.")
             self.load_data()
+            cursor81 = self.conn.cursor()
+            cursor81.execute(f"UPDATE {categories[category]} SET status=%s WHERE id=%s",
+                             (status, num))
+            self.conn.commit()
         else:
             pass
 
     def cancel_sol_2(self):
+        categories = {
+            "კოსმეტოლოგია": "cosmetology_appointments",
+            "ლაზერი": "laser_appointments",
+            "სოლარიუმი 1": "solarium_1_appointments",
+            "სოლარიუმი 2": "solarium_2_appointments"
+        }
+        status = "cancelled"
+        category = "სოლარიუმი 2"
         msg = QMessageBox(text="დარწმუნებული ხართ, რომ გსურთ ჩაწერის გაუქმება?", parent=self)
         msg.setWindowTitle("ჩაწერის გაუქმება")
         msg.setIcon(QMessageBox.Icon.Question)
@@ -891,28 +1027,24 @@ class MainWindow(QMainWindow):
         reply = msg.exec()
         if reply == QMessageBox.StandardButton.Yes:
             current_row = self.sol_2_appointments.currentRow()
+            num = int(self.sol_2_appointments.item(current_row, 0).text())
             cursor63 = self.conn.cursor()
-            cursor63.execute("DELETE FROM `solarium_2_appointments` WHERE id=%s",
-                             (int(self.sol_2_appointments.item(current_row, 0).text()), ))
+            cursor63.execute("DELETE FROM `solarium_2_appointments` WHERE id=%s", (num,))
             self.conn.commit()
-            QMessageBox.information(self, "ჩაწერის გაუქმება",
-                                    f"ჩაწერა გაუქმებულია პაციენტისთვის {self.sol_2_appointments.item(current_row, 1).text()} "
+            QMessageBox.information(self,
+                                    "ჩაწერის გაუქმება",
+                                    f"ჩაწერა გაუქმებულია პაციენტისთვის "
+                                    f"{self.sol_2_appointments.item(current_row, 1).text()} "
                                     f"{self.sol_2_appointments.item(current_row, 2).text()}.")
             self.load_data()
+            cursor82 = self.conn.cursor()
+            cursor82.execute(f"UPDATE {categories[category]} SET status=%s WHERE id=%s",
+                             (status, num))
+            self.conn.commit()
         else:
             pass
 
-    def patient_history_window(self, *args):
-        if not args[0]:
-            self.history_window = PatientHistory()
-        else:
-            appo_id = args[0]
-            fname = args[1]
-            lname = args[2]
-            phone = args[3]
-            category = args[4]
-            self.history_window = PatientHistory(appo_id, fname, lname, phone, category)
-            self.history_window.search_client_2()
+    def patient_history_window(self):
         self.history_window = PatientHistory()
         self.history_window.setWindowTitle("პაციენტის ისტორია")
         self.history_window.show()
