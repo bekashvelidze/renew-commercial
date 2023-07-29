@@ -73,9 +73,9 @@
   <widget class="QLabel" name="program_name">
    <property name="geometry">
     <rect>
-     <x>49</x>
+     <x>40</x>
      <y>130</y>
-     <width>323</width>
+     <width>335</width>
      <height>19</height>
     </rect>
    </property>
@@ -130,7 +130,7 @@
   <widget class="QLabel" name="version">
    <property name="geometry">
     <rect>
-     <x>378</x>
+     <x>382</x>
      <y>130</y>
      <width>31</width>
      <height>19</height>
