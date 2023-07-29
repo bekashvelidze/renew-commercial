@@ -846,7 +846,7 @@ class MainWindow(QMainWindow):
         if cursor40.rowcount == 0:
             QMessageBox.warning(self, "შეცდომა",
                                 f"პაციენტი ნომრით: {search} არ მოიძებნა ბაზაში, გთხოვთ შეავსეთ შესაბამისი ველები "
-                                f"გადახდის დასაფიქსირებლად.")
+                                f"პაციენტის ჩასაწერად.")
         else:
             for client in cursor40:
                 if search == client[3]:
@@ -861,7 +861,7 @@ class MainWindow(QMainWindow):
         if cursor41.rowcount == 0:
             QMessageBox.warning(self, "შეცდომა",
                                 f"პაციენტი ნომრით: {search} არ მოიძებნა ბაზაში, გთხოვთ შეავსეთ შესაბამისი ველები "
-                                f"გადახდის დასაფიქსირებლად.")
+                                f"პაციენტის ჩასაწერად.")
         else:
             for client in cursor41:
                 if search == client[3]:
@@ -876,7 +876,7 @@ class MainWindow(QMainWindow):
         if cursor42.rowcount == 0:
             QMessageBox.warning(self, "შეცდომა",
                                 f"პაციენტი ნომრით: {search} არ მოიძებნა ბაზაში, გთხოვთ შეავსეთ შესაბამისი ველები "
-                                f"გადახდის დასაფიქსირებლად.")
+                                f"პაციენტის ჩასაწერად.")
         else:
             for client in cursor42:
                 if search == client[3]:
@@ -891,7 +891,7 @@ class MainWindow(QMainWindow):
         if cursor43.rowcount == 0:
             QMessageBox.warning(self, "შეცდომა",
                                 f"პაციენტი ნომრით: {search} არ მოიძებნა ბაზაში, გთხოვთ შეავსეთ შესაბამისი ველები "
-                                f"გადახდის დასაფიქსირებლად.")
+                                f"პაციენტის ჩასაწერად.")
         else:
             for client in cursor43:
                 if search == client[3]:
