@@ -419,11 +419,13 @@ class MainWindow(QMainWindow):
         if self.las_appointments.item(current_row, current_column):
             try:
                 appo_id = str(self.las_appointments.item(current_row, 0).text())
+                zone = self.las_appointments.item(current_row, 2).text()
                 fname = str(self.las_appointments.item(current_row, 3).text())
                 lname = str(self.las_appointments.item(current_row, 4).text())
                 phone = str(self.las_appointments.item(current_row, 5).text())
                 category = "ლაზერი"
-                self.funds(appo_id, fname, lname, phone, category)
+                self.funds(appo_id, fname, lname, phone, category, zone)
+                print(zone)
             except AttributeError:
                 pass
 
@@ -665,6 +667,7 @@ class MainWindow(QMainWindow):
                                     f"\nწუთები: {minutes}")
             self.load_data()
 
+
     # სოლარიუმი 2
     def change_date_sol_2(self):
         global today
@@ -822,8 +825,13 @@ class MainWindow(QMainWindow):
             lname = args[2]
             phone = args[3]
             category = args[4]
-            self.funds_window = Funds(appo_id, fname, lname, phone, category)
-            self.funds_window.search_client_2()
+            if len(args) == 6:
+                zone = args[5]
+                self.funds_window = Funds(appo_id, fname, lname, phone, category, zone)
+                self.funds_window.search_client_2()
+            else:
+                self.funds_window = Funds(appo_id, fname, lname, phone, category)
+                self.funds_window.search_client_2()
         self.funds_window.setWindowTitle("საფასურის გადახდა")
         self.funds_window.setWindowIcon(QIcon("ui/renew.ico"))
         self.funds_window.show()
@@ -1044,7 +1052,7 @@ class MainWindow(QMainWindow):
 
     def patient_history_window(self):
         self.history_window = PatientHistory()
-        self.history_window.setFixedWidth(1002)
+        self.history_window.setFixedWidth(1068)
         self.history_window.setFixedHeight(671)
         x = (self.history_window.screen().availableGeometry().width() // 2) - (self.history_window.width() // 2)
         y = (self.history_window.screen().availableGeometry().height() // 2) - (self.history_window.height() // 2)

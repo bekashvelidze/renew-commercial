@@ -60,6 +60,7 @@ class Funds(QWidget):
         self.category.setCurrentText("კატეგორია")
         self.years_combo.setCurrentText(str(year))
         self.appo_id = None
+        self.zone_text_label = ''
         if args:
             args_list = [arg for arg in args]
             self.appo_id = str(args_list[0])
@@ -67,6 +68,9 @@ class Funds(QWidget):
             self.lname.setText(str(args_list[2]))
             self.phone.setText(str(args_list[3]))
             self.category.setCurrentText(str(args_list[4]))
+            if len(args_list) == 6:
+                self.zone_text.setText(f"ზონა: {str(args_list[5])}")
+                self.zone_text_label = str(args_list[5])
         self.load_sub_types()
         self.conn = db.connect()
         self.search_button.clicked.connect(self.search_client)
@@ -250,7 +254,7 @@ class Funds(QWidget):
                     cursor80.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
                                      "VALUES (?, ?, ?, ?, ?, ?)",
                                      (f"{first_name} {last_name}", category, today, time_now, phone,
-                                      f"განყოფილება: გადახდა | წუთი: {amount}, გადახდის მეთოდი: {method}"))
+                                      f"განყ.: გადახდა | წუთი: {amount}, გადახდის მეთოდი: {method}"))
                     self.conn.commit()
                     if self.appo_id is not None:
                         cursor44 = self.conn.cursor()
@@ -282,12 +286,20 @@ class Funds(QWidget):
                                      "amount) VALUES (?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category,
                                                                               method, today, amount))
                     self.conn.commit()
-                    cursor80 = self.conn.cursor()
-                    cursor80.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
-                                     "VALUES (?, ?, ?, ?, ?, ?)",
-                                     (f"{first_name} {last_name}", category, today, time_now, phone,
-                                      f"განყოფილება: გადახდა | გადახდის მეთოდი: {method}, თანხა: {amount} ლარი"))
-                    self.conn.commit()
+
+                    if category == "ლაზერი":
+                        cursor80 = self.conn.cursor()
+                        cursor80.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
+                                             "VALUES (?, ?, ?, ?, ?, ?)",
+                                             (f"{first_name} {last_name}", category, today, time_now, phone,
+                                              f"განყ.: გადახდა | ზონა: {self.zone_text_label}, გადახდის მეთოდი: {method}, თანხა: {amount} ლარი"))
+                        self.conn.commit()
+                    else:
+                        cursor80.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
+                                         "VALUES (?, ?, ?, ?, ?, ?)",
+                                         (f"{first_name} {last_name}", category, today, time_now, phone,
+                                          f"განყ.: გადახდა | გადახდის მეთოდი: {method}, თანხა: {amount} ლარი"))
+                        self.conn.commit()
                     if self.appo_id is not  None:
                         cursor44 = self.conn.cursor()
                         cursor44.execute(f"UPDATE {categories[category]} SET status=%s "
@@ -313,12 +325,20 @@ class Funds(QWidget):
                                      "amount) VALUES (?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category,
                                                                               method, today, amount))
                     self.conn.commit()
-                    cursor80 = self.conn.cursor()
-                    cursor80.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
-                                     "VALUES (?, ?, ?, ?, ?, ?)",
-                                     (f"{first_name} {last_name}", category, today, time_now, phone,
-                                      f"განყოფილება: გადახდა | გადახდის მეთოდი: {method}, თანხა: {amount} ლარი"))
-                    self.conn.commit()
+                    if self.zone_text_label == '':
+                        cursor80 = self.conn.cursor()
+                        cursor80.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
+                                         "VALUES (?, ?, ?, ?, ?, ?)",
+                                         (f"{first_name} {last_name}", category, today, time_now, phone,
+                                          f"განყ.: გადახდა | გადახდის მეთოდი: {method}, თანხა: {amount} ლარი"))
+                        self.conn.commit()
+                    else:
+                        cursor99 = self.conn.cursor()
+                        cursor99.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
+                                             "VALUES (?, ?, ?, ?, ?, ?)",
+                                             (f"{first_name} {last_name}", category, today, time_now, phone,
+                                              f"განყ.: გადახდა | ზონა: {self.zone_text_label}, გადახდის მეთოდი: {method}, თანხა: {amount} ლარი"))
+                        self.conn.commit()
                     if self.appo_id is not None:
                         cursor44 = self.conn.cursor()
                         cursor44.execute(f"UPDATE {categories[category]} SET status=%s "
@@ -332,6 +352,7 @@ class Funds(QWidget):
         cursor_months = self.conn.cursor()
         cursor_months.execute("SELECT * FROM `payments` WHERE monthname(date)=%s", (month_name,))
         self.load_payments_months(cursor_months, month_name, year)
+        self.conn.close()
 
     def load_payments_table(self, data):
         self.all_payments.setRowCount(data.rowcount)
@@ -575,7 +596,7 @@ class Funds(QWidget):
                 cursor85.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
                                  "VALUES (?, ?, ?, ?, ?, ?)",
                                  (f"{first_name} {last_name}", category, today, time_now, phone,
-                                  f"განყოფილება: აბონემენტი | წუთი: {minutes}, გადახდის მეთოდი: {method}"))
+                                  f"განყ.: აბონემენტი | წუთი: {minutes}, გადახდის მეთოდი: {method}"))
                 self.conn.commit()
 
                 cursor51 = self.conn.cursor()
@@ -608,7 +629,7 @@ class Funds(QWidget):
                                      "VALUES (?, ?, ?, ?, ?, ?)",
                                      (f"{first_name} {last_name}", category, today, time_now,
                                       phone,
-                                      f"განყოფილება: აბონემენტი | წუთი: {minutes}, გადახდის მეთოდი: {method}"))
+                                      f"განყ.: აბონემენტი | წუთი: {minutes}, გადახდის მეთოდი: {method}"))
                     self.conn.commit()
                     cursor50 = self.conn.cursor()
                     cursor50.execute(
@@ -652,7 +673,7 @@ class Funds(QWidget):
                                      "VALUES (?, ?, ?, ?, ?, ?)",
                                      (f"{first_name} {last_name}", category, today, time_now,
                                       phone,
-                                      f"განყოფილება: აბონემენტი | წუთი: {minutes}, გადახდის მეთოდი: {method}"))
+                                      f"განყ.: აბონემენტი | წუთი: {minutes}, გადახდის მეთოდი: {method}"))
                     self.conn.commit()
                     cursor50 = self.conn.cursor()
                     cursor50.execute(

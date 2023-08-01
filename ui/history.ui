@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1002</width>
+    <width>1067</width>
     <height>671</height>
    </rect>
   </property>
@@ -145,7 +145,7 @@ QTableWidget::item:hover {
     <rect>
      <x>0</x>
      <y>70</y>
-     <width>1000</width>
+     <width>1065</width>
      <height>581</height>
     </rect>
    </property>
@@ -203,7 +203,7 @@ QTableWidget::item:hover {
   <widget class="QLineEdit" name="search_patient">
    <property name="geometry">
     <rect>
-     <x>779</x>
+     <x>841</x>
      <y>40</y>
      <width>171</width>
      <height>30</height>
@@ -219,7 +219,7 @@ QTableWidget::item:hover {
   <widget class="QLabel" name="search_by_phone">
    <property name="geometry">
     <rect>
-     <x>469</x>
+     <x>531</x>
      <y>47</y>
      <width>304</width>
      <height>19</height>
@@ -257,7 +257,7 @@ QTableWidget::item:hover {
   <widget class="QPushButton" name="search_button">
    <property name="geometry">
     <rect>
-     <x>949</x>
+     <x>1011</x>
      <y>40</y>
      <width>51</width>
      <height>30</height>

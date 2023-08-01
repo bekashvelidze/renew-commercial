@@ -18,17 +18,19 @@ class PatientHistory(QWidget):
 
         self.patient_history.setColumnWidth(0, 140)
         self.patient_history.setColumnWidth(1, 90)
-        self.patient_history.setColumnWidth(2, 90)
-        self.patient_history.setColumnWidth(3, 630)
+        self.patient_history.setColumnWidth(2, 60)
+        self.patient_history.setColumnWidth(3, 748)
 
     def search_client(self):
+        self.patient_history.clearContents()
         search = self.search_patient.text()
+        conn.commit()
         cursor70 = conn.cursor()
         cursor70.execute("SELECT * FROM patient_history WHERE phone=%s", (search,))
 
         if cursor70.rowcount == 0:
             QMessageBox.warning(self, "შეცდომა",
-                                f"პაციენტი ნომრით: {self.search} არ მოიძებნა ბაზაში, გადაამოწმეთ ნომერი.")
+                                f"პაციენტი ნომრით: {search} არ მოიძებნა ბაზაში, გადაამოწმეთ ნომერი.")
             self.search_patient.clear()
         else:
             self.patient_history.setRowCount(cursor70.rowcount)

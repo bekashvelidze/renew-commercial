@@ -461,6 +461,25 @@ QPushButton:hover {
       <string>გვარი</string>
      </property>
     </widget>
+    <widget class="QLabel" name="zone_text">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>317</y>
+       <width>291</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>BPG Nino Mtavruli</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="tab_4">
     <attribute name="title">
