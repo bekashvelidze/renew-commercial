@@ -100,7 +100,7 @@ QPushButton:hover {
     </font>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>3</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -1436,7 +1436,7 @@ QPushButton:hover {
       </font>
      </property>
      <property name="text">
-      <string>მიმდინარე დღის შემოსავალი სულ: </string>
+      <string>მიმდინარე თვის შემოსავალი სულ: </string>
      </property>
     </widget>
     <widget class="QLabel" name="card_mon">

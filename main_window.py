@@ -332,12 +332,6 @@ class MainWindow(QMainWindow):
                 cursor3.execute("INSERT INTO clients (fname, lname, phone, balance, minutes) "
                                 "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, init_minutes))
                 conn.commit()
-                cursor72 = conn.cursor()
-                cursor72.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
-                                 "VALUES (?, ?, ?, ?, ?, ?)",
-                                 (f"{first_name} {last_name}", category, date, time_now, phone,
-                                  f"განყოფილება: ჩაწერა | პროცედურა: {zone}, ექიმი: {doctor}"))
-                conn.commit()
             else:
                 client_phones = [client[3] for client in cursor2]
                 if phone not in client_phones:
@@ -345,12 +339,6 @@ class MainWindow(QMainWindow):
                     cursor3.execute("INSERT INTO clients (fname, lname, phone, balance, minutes) "
                                     "VALUES (?, ?, ?, ?, ?)",
                                     (first_name, last_name, phone, balance, init_minutes))
-                    conn.commit()
-                    cursor73 = conn.cursor()
-                    cursor73.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
-                                     "VALUES (?, ?, ?, ?, ?, ?)",
-                                     (f"{first_name} {last_name}", category, date, time_now, phone,
-                                      f"განყოფილება: ჩაწერა | პროცედურა: {zone}, ექიმი: {doctor}"))
                     conn.commit()
             conn.close()
 
@@ -498,24 +486,12 @@ class MainWindow(QMainWindow):
                 cursor3.execute("INSERT INTO clients (fname, lname, phone, balance, minutes) "
                                 "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, init_minutes))
                 conn.commit()
-                cursor75 = conn.cursor()
-                cursor75.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
-                                 "VALUES (?, ?, ?, ?, ?, ?)",
-                                 (f"{first_name} {last_name}", category, date, time_now, phone,
-                                  f"განყოფილება: ჩაწერა | ლაზერის ტიპი: {laser_type}, ზონა: {zone}, ექიმი: {doctor}"))
-                conn.commit()
             else:
                 client_phones = [client[3] for client in cursor2]
                 if phone not in client_phones:
                     cursor3 = conn.cursor()
                     cursor3.execute("INSERT INTO clients (fname, lname, phone, balance, minutes) "
                                     "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, init_minutes))
-                    conn.commit()
-                    cursor75 = conn.cursor()
-                    cursor75.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
-                                     "VALUES (?, ?, ?, ?, ?, ?)",
-                                     (f"{first_name} {last_name}", category, date, time_now, phone,
-                                      f"განყოფილება: ჩაწერა | ლაზერის ტიპი: {laser_type}, ზონა: {zone}, ექიმი: {doctor}"))
                     conn.commit()
             conn.close()
 
@@ -642,23 +618,12 @@ class MainWindow(QMainWindow):
                                 "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, init_minutes))
                 conn.commit()
                 cursor77 = conn.cursor()
-                cursor77.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
-                                 "VALUES (?, ?, ?, ?, ?, ?)",
-                                 (f"{first_name} {last_name}", category, date, time_now, phone,
-                                  f"განყოფილება: ჩაწერა | წუთი: {minutes}"))
-                conn.commit()
             else:
                 client_phones = [client[3] for client in cursor2]
                 if phone not in client_phones:
                     cursor3 = conn.cursor()
                     cursor3.execute("INSERT INTO clients (fname, lname, phone, balance, minutes) "
                                     "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, init_minutes))
-                    conn.commit()
-                    cursor77 = conn.cursor()
-                    cursor77.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
-                                     "VALUES (?, ?, ?, ?, ?, ?)",
-                                     (f"{first_name} {last_name}", category, date, time_now, phone,
-                                      f"განყოფილება: ჩაწერა | წუთი: {minutes}"))
                     conn.commit()
             conn.close()
             QMessageBox.information(self, 'პაციენტი ჩაწერილია',
@@ -783,24 +748,12 @@ class MainWindow(QMainWindow):
                 cursor3.execute("INSERT INTO clients (fname, lname, phone, balance, minutes) "
                                 "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, init_minutes))
                 conn.commit()
-                cursor79 = conn.cursor()
-                cursor79.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
-                                 "VALUES (?, ?, ?, ?, ?, ?)",
-                                 (f"{first_name} {last_name}", category, date, time_now, phone,
-                                  f"განყოფილება: ჩაწერა | წუთი: {minutes}"))
-                conn.commit()
             else:
                 client_phones = [client[3] for client in cursor2]
                 if phone not in client_phones:
                     cursor3 = conn.cursor()
                     cursor3.execute("INSERT INTO clients (fname, lname, phone, balance, minutes) "
                                     "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, init_minutes))
-                    conn.commit()
-                    cursor79 = conn.cursor()
-                    cursor79.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
-                                     "VALUES (?, ?, ?, ?, ?, ?)",
-                                     (f"{first_name} {last_name}", category, date, time_now, phone,
-                                      f"განყოფილება: ჩაწერა | წუთი: {minutes}"))
                     conn.commit()
             conn.close()
 

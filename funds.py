@@ -295,6 +295,7 @@ class Funds(QWidget):
                                               f"განყ.: გადახდა | ზონა: {self.zone_text_label}, გადახდის მეთოდი: {method}, თანხა: {amount} ლარი"))
                         self.conn.commit()
                     else:
+                        cursor80 = self.conn.cursor()
                         cursor80.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
                                          "VALUES (?, ?, ?, ?, ?, ?)",
                                          (f"{first_name} {last_name}", category, today, time_now, phone,
