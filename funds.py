@@ -9,22 +9,8 @@ from connection import Database
 db = Database()
 today = datetime.now().date().strftime("%d.%m.%Y")
 year = datetime.now().year
-month_name = calendar.month_name[int(today.split(".")[1])]
+month_name = calendar.month_name[int(today.split(".")[1][1])]
 
-months =   {
-        "January": "იანვარი",
-        "February": "თებერვალი",
-        "March": "მარტი",
-        "April": "აპრილი",
-        "May": "მაისი",
-        "June": "ივნისი",
-        "July": "ივლისი",
-        "August": "აგვისტო",
-        "September": "სექტემბერი",
-        "October": "ოქტომბერი",
-        "November": "ნოემბერი",
-        "December": "დეკემბერი"
-  }
 
 def check_integer(number):
     try:
