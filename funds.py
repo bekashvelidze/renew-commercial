@@ -9,8 +9,22 @@ from connection import Database
 db = Database()
 today = datetime.now().date().strftime("%d.%m.%Y")
 year = datetime.now().year
-month_name = calendar.month_name[int(today.split(".")[1][1])]
+month_name = calendar.month_name[int(today.split(".")[1])]
 
+months =   {
+        "January": "იანვარი",
+        "February": "თებერვალი",
+        "March": "მარტი",
+        "April": "აპრილი",
+        "May": "მაისი",
+        "June": "ივნისი",
+        "July": "ივლისი",
+        "August": "აგვისტო",
+        "September": "სექტემბერი",
+        "October": "ოქტომბერი",
+        "November": "ნოემბერი",
+        "December": "დეკემბერი"
+  }
 
 def check_integer(number):
     try:
@@ -467,7 +481,7 @@ class Funds(QWidget):
         self.sol_2_total_m.setText(str(sum(total_sol_2_m)))
         self.subscriptions_m.setText(str(sum(total_subs_m)))
         self.pay_by_minutes_mon.setText(str(sum(total_by_minutes)))
-        self.months_combo.setCurrentText(load_months()[1][month])
+        # self.months_combo.setCurrentText(load_months()[1][month])
         self.all_payments_mon.horizontalHeader().setVisible(True)
         self.all_payments_mon.verticalHeader().setVisible(True)
         row = 0
