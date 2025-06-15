@@ -11,9 +11,18 @@ from settings import Settings
 from funds import Funds
 from about import About
 from history import PatientHistory
+from patients_list import PatientsList
+from patient_edit import PatientsEdit
 
-today = datetime.now().date().strftime("%d.%m.%Y")
+today = datetime.now().date().strftime("%Y-%m-%d")
 db = Database()
+
+
+def get_version():
+    with open("version.json", "r") as file:
+        version = json.load(file)
+
+    return version["version"]
 
 
 def open_documentation():
@@ -92,14 +101,18 @@ class MainWindow(QMainWindow):
         self.funds_window = Funds()
         self.about = About()
         self.history = PatientHistory()
+        self.patients_list = PatientsList()
+        self.statusBar().showMessage(f"ვერსია: {get_version()}")
         # Menu items
         self.close_application.triggered.connect(close_main_application)
         self.patient_history.triggered.connect(self.patient_history_window)
         self.change_settings.triggered.connect(self.settings_window)
         self.documentation.triggered.connect(open_documentation)
         self.about_menu.triggered.connect(self.about_window)
+        self.patients_list_menu.triggered.connect(self.patients_list_window)
+        self.patient_edit.triggered.connect(self.patients_edit_window)
         # Cosmetics
-        self.cos_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
+        self.cos_new_date.setDate(datetime.strptime(today, "%Y-%m-%d"))
         self.cos_new_date.dateChanged.connect(self.change_date_cos)
         self.doctors_cos = load_doctors("კოსმეტოლოგია")
         for doctor_cos in self.doctors_cos:
@@ -108,7 +121,7 @@ class MainWindow(QMainWindow):
         for zone_cos in self.procedures:
             self.cos_zone.addItem(zone_cos[1])
         # Laser
-        self.las_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
+        self.las_new_date.setDate(datetime.strptime(today, "%Y-%m-%d"))
         self.las_new_date.dateChanged.connect(self.change_date_las)
         self.doctors_las = load_doctors("ლაზერი")
         for doctor_las in self.doctors_las:
@@ -120,10 +133,10 @@ class MainWindow(QMainWindow):
         for zone_las in self.zones:
             self.las_zone.addItem(zone_las[1])
         # Solarium 1
-        self.sol_1_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
+        self.sol_1_new_date.setDate(datetime.strptime(today, "%Y-%m-%d"))
         self.sol_1_new_date.dateChanged.connect(self.change_date_sol_1)
         # Solarium 2
-        self.sol_2_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
+        self.sol_2_new_date.setDate(datetime.strptime(today, "%Y-%m-%d"))
         self.sol_2_new_date.dateChanged.connect(self.change_date_sol_2)
         # Button click events
         self.cos_make_an_appointment_button.clicked.connect(self.make_an_appointment_cos)
@@ -150,43 +163,12 @@ class MainWindow(QMainWindow):
         self.las_zone.setCurrentText("აირჩიეთ ზონა")
         self.las_doctor.setCurrentText("აირჩიეთ ექიმი")
 
-        # Load column width
-        self.cos_appointments.setColumnWidth(0, 30)
-        self.cos_appointments.setColumnWidth(1, 250)
-        self.cos_appointments.setColumnWidth(2, 120)
-        self.cos_appointments.setColumnWidth(3, 180)
-        self.cos_appointments.setColumnWidth(4, 120)
-        self.cos_appointments.setColumnWidth(5, 215)
-        self.cos_appointments.setColumnWidth(6, 20)
-
-        self.las_appointments.setColumnWidth(0, 30)
-        self.las_appointments.setColumnWidth(1, 140)
-        self.las_appointments.setColumnWidth(2, 170)
-        self.las_appointments.setColumnWidth(3, 110)
-        self.las_appointments.setColumnWidth(4, 170)
-        self.las_appointments.setColumnWidth(5, 110)
-        self.las_appointments.setColumnWidth(6, 185)
-        self.las_appointments.setColumnWidth(7, 20)
-
-        self.sol_1_appointments.setColumnWidth(0, 30)
-        self.sol_1_appointments.setColumnWidth(1, 210)
-        self.sol_1_appointments.setColumnWidth(2, 230)
-        self.sol_1_appointments.setColumnWidth(3, 230)
-        self.sol_1_appointments.setColumnWidth(4, 190)
-        self.sol_1_appointments.setColumnWidth(5, 20)
-
-        self.sol_2_appointments.setColumnWidth(0, 30)
-        self.sol_2_appointments.setColumnWidth(1, 210)
-        self.sol_2_appointments.setColumnWidth(2, 230)
-        self.sol_2_appointments.setColumnWidth(3, 230)
-        self.sol_2_appointments.setColumnWidth(4, 190)
-        self.sol_2_appointments.setColumnWidth(5, 20)
-
     def load_data(self):
-        self.cos_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
-        self.las_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
-        self.sol_1_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
-        self.sol_2_new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
+        self.cosmetology()
+        self.cos_new_date.setDate(datetime.strptime(today, "%Y-%m-%d"))
+        self.las_new_date.setDate(datetime.strptime(today, "%Y-%m-%d"))
+        self.sol_1_new_date.setDate(datetime.strptime(today, "%Y-%m-%d"))
+        self.sol_2_new_date.setDate(datetime.strptime(today, "%Y-%m-%d"))
         self.cos_fname.clear()
         self.cos_lname.clear()
         self.cos_phone.clear()
@@ -215,7 +197,7 @@ class MainWindow(QMainWindow):
 
         today = self.cos_new_date.text()
         self.current_date.clear()
-        self.current_date.setText(today)
+        self.current_date.setText(datetime.now().date().strftime("%Y-%m-%d"))
         self.cos_appointments.clearContents()
         self.cosmetology()
 
@@ -230,6 +212,14 @@ class MainWindow(QMainWindow):
         self.cos_patients.setText(str(cursor.rowcount))
         self.cos_current_day.setText(load_days()[datetime.now().strftime("%A")])
         self.current_date.setText(datetime.now().date().strftime("%d.%m.%Y"))
+
+        self.cos_appointments.setColumnWidth(0, 50)
+        self.cos_appointments.setColumnWidth(1, 225)
+        self.cos_appointments.setColumnWidth(2, 120)
+        self.cos_appointments.setColumnWidth(3, 140)
+        self.cos_appointments.setColumnWidth(4, 140)
+        self.cos_appointments.setColumnWidth(5, 215)
+        self.cos_appointments.setColumnWidth(6, 20)
 
         row = 0
         for cos in cursor:
@@ -356,7 +346,7 @@ class MainWindow(QMainWindow):
         global today
         today = self.las_new_date.text()
         self.current_date.clear()
-        self.las_current_date.setText(today)
+        self.las_current_date.setText(datetime.now().date().strftime("%Y-%m-%d"))
         self.las_appointments.clearContents()
         self.laser()
 
@@ -371,6 +361,15 @@ class MainWindow(QMainWindow):
         self.las_patients.setText(str(cursor.rowcount))
         self.las_current_day.setText(load_days()[datetime.now().strftime("%A")])
         self.las_current_date.setText(datetime.now().date().strftime("%d.%m.%Y"))
+
+        self.las_appointments.setColumnWidth(0, 50)
+        self.las_appointments.setColumnWidth(1, 120)
+        self.las_appointments.setColumnWidth(2, 170)
+        self.las_appointments.setColumnWidth(3, 110)
+        self.las_appointments.setColumnWidth(4, 170)
+        self.las_appointments.setColumnWidth(5, 110)
+        self.las_appointments.setColumnWidth(6, 160)
+        self.las_appointments.setColumnWidth(7, 20)
 
         row = 0
         for las in cursor:
@@ -509,7 +508,7 @@ class MainWindow(QMainWindow):
         global today
         today = self.sol_1_new_date.text()
         self.sol_1_current_date.clear()
-        self.sol_1_current_date.setText(today)
+        self.sol_1_current_date.setText(datetime.now().date().strftime("%Y-%m-%d"))
         self.sol_1_appointments.clearContents()
         self.solarium_1()
 
@@ -524,6 +523,13 @@ class MainWindow(QMainWindow):
         self.sol_1_patients.setText(str(cursor.rowcount))
         self.sol_1_current_day.setText(load_days()[datetime.now().strftime("%A")])
         self.sol_1_current_date.setText(datetime.now().date().strftime("%d.%m.%Y"))
+
+        self.sol_1_appointments.setColumnWidth(0, 50)
+        self.sol_1_appointments.setColumnWidth(1, 190)
+        self.sol_1_appointments.setColumnWidth(2, 230)
+        self.sol_1_appointments.setColumnWidth(3, 230)
+        self.sol_1_appointments.setColumnWidth(4, 190)
+        self.sol_1_appointments.setColumnWidth(5, 20)
 
         row = 0
         for sol_1 in cursor:
@@ -632,14 +638,13 @@ class MainWindow(QMainWindow):
                                     f"\nწუთები: {minutes}")
             self.load_data()
 
-
     # სოლარიუმი 2
     def change_date_sol_2(self):
         global today
 
         today = self.sol_2_new_date.text()
         self.sol_2_current_date.clear()
-        self.sol_2_current_date.setText(today)
+        self.sol_2_current_date.setText(datetime.now().date().strftime("%d.%m.%Y"))
         self.sol_2_appointments.clearContents()
         self.solarium_2()
 
@@ -654,6 +659,13 @@ class MainWindow(QMainWindow):
         self.sol_2_patients.setText(str(cursor.rowcount))
         self.sol_2_current_day.setText(load_days()[datetime.now().strftime("%A")])
         self.sol_2_current_date.setText(datetime.now().date().strftime("%d.%m.%Y"))
+
+        self.sol_2_appointments.setColumnWidth(0, 50)
+        self.sol_2_appointments.setColumnWidth(1, 190)
+        self.sol_2_appointments.setColumnWidth(2, 230)
+        self.sol_2_appointments.setColumnWidth(3, 230)
+        self.sol_2_appointments.setColumnWidth(4, 190)
+        self.sol_2_appointments.setColumnWidth(5, 20)
 
         row = 0
         for sol_2 in cursor:
@@ -1013,3 +1025,27 @@ class MainWindow(QMainWindow):
         self.history_window.setWindowTitle("პაციენტის ისტორია")
         self.history_window.setWindowIcon(QIcon("ui/renew.ico"))
         self.history_window.show()
+
+    def patients_list_window(self):
+        self.patients_list_show = PatientsList()
+        self.patients_list_show.setFixedWidth(550)
+        self.patients_list_show.setFixedHeight(600)
+        x = (self.patients_list_show.screen().availableGeometry().width() // 2) - (self.patients_list_show.width() // 2)
+        y = (self.patients_list_show.screen().availableGeometry().height() // 2) - (self.patients_list_show.height() // 2)
+        self.patients_list_show.move(x, y)
+        self.patients_list_show.setWindowTitle("პაციენტების სია")
+        self.patients_list_show.setWindowIcon(QIcon("ui/renew.ico"))
+        self.patients_list_show.show()
+
+    def patients_edit_window(self):
+        self.patients_edit_show = PatientsEdit()
+        self.patients_edit_show.setFixedWidth(500)
+        self.patients_edit_show.setFixedHeight(380)
+        x = (self.patients_edit_show.screen().availableGeometry().width() // 2) - (
+                    self.patients_edit_show.width() // 2)
+        y = (self.patients_edit_show.screen().availableGeometry().height() // 2) - (
+                    self.patients_edit_show.height() // 2)
+        self.patients_edit_show.move(x, y)
+        self.patients_edit_show.setWindowTitle("პაციენტის რედაქტირება")
+        self.patients_edit_show.setWindowIcon(QIcon("ui/renew.ico"))
+        self.patients_edit_show.show()

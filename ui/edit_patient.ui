@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>500</width>
+    <height>380</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QTabWidget::tab-bar {
+    left: 5px; /* move to the right by 5px */
+}
+
+/* Style the tab using the tab sub-control. Note that
+    it reads QTabBar _not_ QTabWidget */
+QTabBar::tab {
+    background: #FFF7D4;
+	border: 1px solid #4C3D3D;
+    border-bottom-color: #C2C7CB; /* same as the pane color */
+	border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    min-width: 8ex;
+    padding: 4px;
+}
+
+QTabBar::tab:selected, QTabBar::tab:hover {
+    background: #FFD95A;
+	color: #4C3D3D;
+}
+
+QTabBar::tab:selected {
+    border-color: #9B9B9B;
+    border-bottom-color: #C2C7CB; /* same as pane color */
+}
+
+QTabBar::tab:!selected {
+    margin-top: 2px; /* make non-selected tabs look smaller */
+}
+
+QLineEdit {
+	border: 0.5px solid #C07F00;
+}
+
+QLineEdit:focus {
+	border: 1px solid #F8AD25;
+}
+
+QLineEdit:hover {
+	background-color: #FFD95A;
+}
+
+QComboBox {
+	border: 0.5px solid #C07F00;
+}
+
+QComboBox:hover {
+	background-color: #FFD95A;
+}
+
+QPushButton {
+	border: 1px solid #C07F00;
+	background: #FFF7D4;
+	border-radius: 6px;
+
+}
+
+QPushButton:hover {
+	border: 1px solid black;
+	background-color: #FFD95A;
+}
+
+QTableWidget::item:hover {
+	background-color: #D2E9E9;
+}</string>
+  </property>
+  <widget class="QLineEdit" name="search_patient">
+   <property name="geometry">
+    <rect>
+     <x>134</x>
+     <y>110</y>
+     <width>171</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>BPG Nino Mtavruli</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+  </widget>
+  <widget class="QLabel" name="search_by_phone">
+   <property name="geometry">
+    <rect>
+     <x>66</x>
+     <y>80</y>
+     <width>366</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>BPG Nino Mtavruli</family>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>ჩაწერეთ პაციენტის ტელეფონის ნომერი</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="search_button">
+   <property name="geometry">
+    <rect>
+     <x>304</x>
+     <y>110</y>
+     <width>51</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>BPG Nino Mtavruli</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+	border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+	border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}</string>
+   </property>
+   <property name="text">
+    <string>ძებნა</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="phone">
+   <property name="geometry">
+    <rect>
+     <x>144</x>
+     <y>280</y>
+     <width>200</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>BPG Nino Mtavruli</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="patient_id">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>144</x>
+     <y>160</y>
+     <width>200</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>BPG Nino Mtavruli</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="fname">
+   <property name="geometry">
+    <rect>
+     <x>144</x>
+     <y>200</y>
+     <width>200</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>BPG Nino Mtavruli</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lname">
+   <property name="geometry">
+    <rect>
+     <x>144</x>
+     <y>240</y>
+     <width>200</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>BPG Nino Mtavruli</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="edit_button">
+   <property name="geometry">
+    <rect>
+     <x>144</x>
+     <y>320</y>
+     <width>200</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>BPG Nino Mtavruli</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>რედაქტირება</string>
+   </property>
+  </widget>
+  <widget class="Line" name="line">
+   <property name="geometry">
+    <rect>
+     <x>139</x>
+     <y>39</y>
+     <width>194</width>
+     <height>15</height>
+    </rect>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Plain</enum>
+   </property>
+   <property name="lineWidth">
+    <number>2</number>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="title">
+   <property name="geometry">
+    <rect>
+     <x>116</x>
+     <y>20</y>
+     <width>244</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>BPG Nino Mtavruli</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>პაციენტის რედაქტირება</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

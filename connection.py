@@ -1,7 +1,7 @@
 import mariadb
 import sys
 import json
-from PyQt6.QtWidgets import QMessageBox
+from PyQt6.QtWidgets import QMessageBox, QApplication
 
 
 def load_database_data():
@@ -26,6 +26,7 @@ class Database:
                 password=self.database_data["PASSWORD"]
             )
         except mariadb.Error:
+            app = QApplication(sys.argv)
             msgbox = QMessageBox()
             msgbox.setWindowTitle("კავშირის შეცდომა")
             msgbox.setText("მონაცემთა ბაზასთან დაკავშირება ვერ მოხერხდა,"

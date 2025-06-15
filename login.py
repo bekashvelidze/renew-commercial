@@ -7,10 +7,17 @@ from PyQt6.QtGui import QIcon
 from main_window import MainWindow
 
 
+def get_version():
+    with open("version.json", "r") as file:
+        version = json.load(file)
+
+    return version["version"]
+
+
 def main_window():
     mainwindow = MainWindow()
     widget.addWidget(mainwindow)
-    widget.setWindowTitle('მრავალპროფილური ესთეტიკური მედიცინის ცენტრი "რენიუ"')
+    widget.setWindowTitle(f'მრავალპროფილური ესთეტიკური მედიცინის ცენტრი "რენიუ" - {get_version()}')
     widget.setFixedWidth(1000)
     widget.setFixedHeight(560)
     x = (mainwindow.screen().geometry().width() // 2) - (widget.width() // 2)
@@ -24,6 +31,7 @@ class Login(QMainWindow):
         super(Login, self).__init__()
         loadUi('ui/login.ui', self)
         self.login_button.clicked.connect(self.authorize)
+        self.version.setText(f"ვერსია: {get_version()}")
 
     def authorize(self):
         with open("users.json", "r") as file:

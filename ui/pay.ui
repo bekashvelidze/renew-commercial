@@ -100,7 +100,7 @@ QPushButton:hover {
     </font>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -1113,6 +1113,9 @@ QPushButton:hover {
        <pointsize>12</pointsize>
       </font>
      </property>
+     <property name="displayFormat">
+      <string>yyyy-MM-dd</string>
+     </property>
      <property name="calendarPopup">
       <bool>true</bool>
      </property>
@@ -1231,7 +1234,7 @@ QPushButton:hover {
        <x>610</x>
        <y>405</y>
        <width>90</width>
-       <height>13</height>
+       <height>16</height>
       </rect>
      </property>
      <property name="font">
@@ -1250,7 +1253,7 @@ QPushButton:hover {
        <x>610</x>
        <y>429</y>
        <width>90</width>
-       <height>13</height>
+       <height>16</height>
       </rect>
      </property>
      <property name="font">
@@ -1269,7 +1272,7 @@ QPushButton:hover {
        <x>610</x>
        <y>453</y>
        <width>90</width>
-       <height>13</height>
+       <height>16</height>
       </rect>
      </property>
      <property name="font">
@@ -1288,7 +1291,7 @@ QPushButton:hover {
        <x>610</x>
        <y>477</y>
        <width>90</width>
-       <height>13</height>
+       <height>16</height>
       </rect>
      </property>
      <property name="font">
@@ -1332,7 +1335,7 @@ QPushButton:hover {
      <property name="font">
       <font>
        <family>BPG Nino Mtavruli</family>
-       <pointsize>12</pointsize>
+       <pointsize>11</pointsize>
       </font>
      </property>
      <property name="text">
@@ -1728,13 +1731,13 @@ QPushButton:hover {
        <x>610</x>
        <y>477</y>
        <width>90</width>
-       <height>13</height>
+       <height>16</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>BPG Nino Mtavruli</family>
-       <pointsize>12</pointsize>
+       <pointsize>11</pointsize>
       </font>
      </property>
      <property name="text">
@@ -1785,13 +1788,13 @@ QPushButton:hover {
        <x>610</x>
        <y>453</y>
        <width>90</width>
-       <height>13</height>
+       <height>16</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>BPG Nino Mtavruli</family>
-       <pointsize>12</pointsize>
+       <pointsize>11</pointsize>
       </font>
      </property>
      <property name="text">
@@ -1804,13 +1807,15 @@ QPushButton:hover {
        <x>610</x>
        <y>405</y>
        <width>90</width>
-       <height>13</height>
+       <height>16</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>BPG Nino Mtavruli</family>
-       <pointsize>12</pointsize>
+       <pointsize>11</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
@@ -1842,13 +1847,13 @@ QPushButton:hover {
        <x>610</x>
        <y>429</y>
        <width>90</width>
-       <height>13</height>
+       <height>16</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>BPG Nino Mtavruli</family>
-       <pointsize>12</pointsize>
+       <pointsize>11</pointsize>
       </font>
      </property>
      <property name="text">
@@ -1905,7 +1910,7 @@ QPushButton:hover {
      <property name="font">
       <font>
        <family>BPG Nino Mtavruli</family>
-       <pointsize>12</pointsize>
+       <pointsize>11</pointsize>
       </font>
      </property>
      <property name="text">

@@ -139,6 +139,25 @@ QLineEdit {
      <pixmap>renew_logo.jpg</pixmap>
     </property>
    </widget>
+   <widget class="QLabel" name="version">
+    <property name="geometry">
+     <rect>
+      <x>510</x>
+      <y>260</y>
+      <width>81</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>BPG Nino Mtavruli</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>ვერსია</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>

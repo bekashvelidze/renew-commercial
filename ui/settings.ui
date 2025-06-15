@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>731</width>
+    <width>809</width>
     <height>300</height>
    </rect>
   </property>
@@ -54,7 +54,7 @@ QComboBox:hover {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>731</width>
+     <width>811</width>
      <height>290</height>
     </rect>
    </property>
@@ -74,9 +74,9 @@ QComboBox:hover {
     <widget class="QTableWidget" name="doctors">
      <property name="geometry">
       <rect>
-       <x>279</x>
+       <x>284</x>
        <y>0</y>
-       <width>440</width>
+       <width>521</width>
        <height>260</height>
       </rect>
      </property>
@@ -86,6 +86,39 @@ QComboBox:hover {
        <pointsize>11</pointsize>
       </font>
      </property>
+     <attribute name="horizontalHeaderVisible">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <column>
+      <property name="text">
+       <string>X</string>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>11</pointsize>
+       </font>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>ID</string>
+      </property>
+      <property name="font">
+       <font>
+        <family>BPG Nino Mtavruli</family>
+        <pointsize>11</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="textAlignment">
+       <set>AlignCenter</set>
+      </property>
+     </column>
      <column>
       <property name="text">
        <string>სახელი, გვარი</string>
@@ -290,9 +323,9 @@ QComboBox:hover {
     <widget class="QTableWidget" name="zones">
      <property name="geometry">
       <rect>
-       <x>319</x>
+       <x>324</x>
        <y>0</y>
-       <width>400</width>
+       <width>481</width>
        <height>260</height>
       </rect>
      </property>
@@ -379,9 +412,9 @@ QComboBox:hover {
     <widget class="QTableWidget" name="procedures">
      <property name="geometry">
       <rect>
-       <x>319</x>
+       <x>324</x>
        <y>0</y>
-       <width>400</width>
+       <width>481</width>
        <height>260</height>
       </rect>
      </property>
@@ -468,9 +501,9 @@ QComboBox:hover {
     <widget class="QTableWidget" name="subscription_types_sol_1">
      <property name="geometry">
       <rect>
-       <x>318</x>
+       <x>324</x>
        <y>0</y>
-       <width>400</width>
+       <width>481</width>
        <height>260</height>
       </rect>
      </property>
@@ -549,9 +582,9 @@ QComboBox:hover {
     <widget class="QTableWidget" name="subscription_types_sol_2">
      <property name="geometry">
       <rect>
-       <x>318</x>
+       <x>324</x>
        <y>0</y>
-       <width>400</width>
+       <width>481</width>
        <height>260</height>
       </rect>
      </property>

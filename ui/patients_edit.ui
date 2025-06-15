@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>560</width>
+    <height>275</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton {
+	border: 1px solid #C07F00;
+	background: #FFF7D4;
+	border-radius: 6px;
+
+}
+
+QPushButton:hover {
+	border: 1px solid black;
+	background-color: #FFD95A;
+}
+QLineEdit {
+	border: 1px solid #C07F00;
+	border-radius: 6px;	
+	padding: 6px;
+	background: white;
+}
+
+QLineEdit:focus {
+	border: 1px solid #F8AD25;
+}
+
+QLineEdit:hover {
+	background-color: #FFD95A;
+}
+
+QComboBox {
+	border: 0.5px solid #C07F00;
+}
+
+QComboBox:hover {
+	background-color: #FFD95A;
+}
+</string>
+  </property>
+  <widget class="QLabel" name="main_label">
+   <property name="geometry">
+    <rect>
+     <x>139</x>
+     <y>10</y>
+     <width>282</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>BPG Nino Mtavruli</family>
+     <pointsize>18</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>პაციენტის რედაქტირება</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="fname">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>100</y>
+     <width>200</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>BPG Nino Mtavruli</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lname">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>140</y>
+     <width>200</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>BPG Nino Mtavruli</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="phone">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>180</y>
+     <width>200</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>BPG Nino Mtavruli</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="edit_button">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>220</y>
+     <width>200</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>BPG Nino Mtavruli</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>რედაქტირება</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="patient_id">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>60</y>
+     <width>200</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>BPG Nino Mtavruli</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -7,9 +7,10 @@ from PyQt6.QtGui import QColor
 from connection import Database
 
 db = Database()
-today = datetime.now().date().strftime("%d.%m.%Y")
+today = datetime.now().date().strftime("%Y-%m-%d")
 year = datetime.now().year
-month_name = calendar.month_name[int(today.split(".")[1][1])]
+month_name = calendar.month_name[int(today.split("-")[1])]
+month_number = int(today.split("-")[1])
 
 
 def check_integer(number):
@@ -31,7 +32,7 @@ def load_years():
     conn = db.connect()
     cursor_years = conn.cursor()
     cursor_years.execute("SELECT * FROM payments")
-    years = [year_num[6].split(".")[2] for year_num in cursor_years]
+    years = [year_num[6].split("-")[0] for year_num in cursor_years]
 
     return years
 
@@ -86,7 +87,7 @@ class Funds(QWidget):
             self.years_combo.addItem(year_num)
         cursor_months = self.conn.cursor()
         cursor_months.execute("SELECT * FROM `payments` WHERE monthname(date)=%s", (month_name,))
-        self.load_payments_months(cursor_months, month_name, year)
+        self.load_payments_months(cursor_months, month_number, year)
         self.months_combo.currentTextChanged.connect(self.change_month)
         self.years_combo.currentTextChanged.connect(self.change_year)
 
@@ -115,7 +116,7 @@ class Funds(QWidget):
 
     def load_current_date(self):
         global today
-        today = datetime.now().date().strftime("%d.%m.%Y")
+        today = datetime.now().date().strftime("%Y-%m-%d")
         self.change_month()
         self.months_combo.setCurrentText(month_name)
         self.years_combo.setCurrentText(str(year))
@@ -143,22 +144,23 @@ class Funds(QWidget):
         self.load_payments_table(cursor23)
 
     def change_month(self):
-        global month_name
+        global year, month_number
 
-        month_name = self.months_combo.currentText()
+        month_number = self.months_combo.currentText()
         self.all_payments_mon.clearContents()
         cursor21 = self.conn.cursor()
-        cursor21.execute("SELECT * FROM `payments` WHERE monthname(date)=%s", (load_months()[0][month_name],))
-        self.load_payments_months(cursor21, load_months()[0][month_name], year)
+        cursor21.execute("SELECT * FROM `payments` WHERE monthname(date)=%s", (month_number,))
+        self.load_payments_months(cursor21, month_number, year)
+        #self.change_year()
 
     def change_year(self):
-        global year
+        global year, month_number
 
         self.all_payments_mon.clearContents()
         cursor22 = self.conn.cursor()
-        cursor22.execute("SELECT * FROM `payments` WHERE monthname(date)=%s", (load_months()[0][month_name],))
+        cursor22.execute("SELECT * FROM `payments` WHERE monthname(date)=%s", (load_months()[0][str(month_number)],))
         year = self.years_combo.currentText()
-        self.load_payments_months(cursor22, load_months()[0][month_name], year)
+        self.load_payments_months(cursor22, month_number, year)
 
     def clear_fields(self):
         self.conn.commit()
@@ -386,7 +388,7 @@ class Funds(QWidget):
         self.sol_1_total.setText(str(sum(total_sol_1)))
         self.sol_2_total.setText(str(sum(total_sol_2)))
         self.subscriptions.setText(str(sum(total_subs)))
-        self.new_date.setDate(datetime.strptime(today, "%d.%m.%Y"))
+        self.new_date.setDate(datetime.strptime(today, "%Y-%m-%d"))
         self.pay_by_minutes.setText(str(sum(total_by_minutes)))
         self.all_payments.horizontalHeader().setVisible(True)
         self.all_payments.verticalHeader().setVisible(True)
@@ -434,7 +436,7 @@ class Funds(QWidget):
             row += 1
 
     def load_payments_months(self, data, month, year_num):
-        global month_name
+        global month_number, year
         self.all_payments_mon.setRowCount(data.rowcount)
         self.all_payments_mon.setColumnCount(8)
 
@@ -448,7 +450,7 @@ class Funds(QWidget):
         self.all_payments_mon.setColumnWidth(7, 60)
 
         self.all_payments_mon.clearContents()
-        payments = [payment for payment in data if (payment[6].split(".")[2] == str(year_num))]
+        payments = [payment for payment in data if (payment[6].split("-")[0] == str(year_num))]
         self.all_payments_mon.setRowCount(len(payments))
         total_cash = [pay[8] for pay in payments if pay[5] == "ნაღდი"]
         total_card = [pay[8] for pay in payments if pay[5] == "უნაღდო"]
@@ -467,7 +469,8 @@ class Funds(QWidget):
         self.sol_2_total_m.setText(str(sum(total_sol_2_m)))
         self.subscriptions_m.setText(str(sum(total_subs_m)))
         self.pay_by_minutes_mon.setText(str(sum(total_by_minutes)))
-        # self.months_combo.setCurrentText(load_months()[1][month])
+        self.months_combo.setCurrentText(str(month))
+        self.years_combo.setCurrentText(str(year_num))
         self.all_payments_mon.horizontalHeader().setVisible(True)
         self.all_payments_mon.verticalHeader().setVisible(True)
         row = 0
@@ -512,7 +515,7 @@ class Funds(QWidget):
                 self.all_payments_mon.item(row, 7).setBackground(QColor(184, 231, 225))
             row += 1
 
-        month_name = calendar.month_name[int(today.split(".")[1][1])]
+        month_name = calendar.month_name[int(today.split("-")[1])]
 
     def clear_fields_sub(self):
         self.conn.commit()

@@ -1,8 +1,9 @@
-from PyQt6.QtWidgets import QWidget, QTableWidgetItem, QMessageBox
+from PyQt6.QtWidgets import QWidget, QTableWidgetItem, QMessageBox, QPushButton
 from PyQt6.uic import loadUi
 from connection import Database
 
 db = Database()
+
 
 class Settings(QWidget):
 
@@ -30,17 +31,47 @@ class Settings(QWidget):
         doctors_list = []
         if cursor.rowcount != 0:
             doctors_list = [doctor for doctor in cursor]
-        self.doctors.setColumnWidth(0, 190)
-        self.doctors.setColumnWidth(1, 100)
-        self.doctors.setColumnWidth(2, 130)
+        self.doctors.setColumnWidth(0, 30)
+        self.doctors.setColumnWidth(1, 30)
+        self.doctors.setColumnWidth(2, 190)
+        self.doctors.setColumnWidth(3, 100)
+        self.doctors.setColumnWidth(4, 145)
         self.doctors.setRowCount(len(doctors_list))
-        self.doctors.setColumnCount(3)
+        self.doctors.setColumnCount(5)
         doc_row = 0
         for doctor in doctors_list:
-            self.doctors.setItem(doc_row, 0, QTableWidgetItem(doctor[1]))
-            self.doctors.setItem(doc_row, 1, QTableWidgetItem(doctor[2]))
-            self.doctors.setItem(doc_row, 2, QTableWidgetItem(doctor[3]))
+            btn = QPushButton(self)
+            btn.setText("X")
+            btn.setStyleSheet("color: red; font-weight: bold;")
+            btn.pressed.connect(self.delete_doctor)
+            self.doctors.setCellWidget(doc_row, 0, btn)
+            self.doctors.setItem(doc_row, 1, QTableWidgetItem(str(doctor[0])))
+            self.doctors.setItem(doc_row, 2, QTableWidgetItem(doctor[1]))
+            self.doctors.setItem(doc_row, 3, QTableWidgetItem(doctor[2]))
+            self.doctors.setItem(doc_row, 4, QTableWidgetItem(doctor[3]))
             doc_row += 1
+
+    def delete_doctor(self):
+        msg = QMessageBox(text="დარწმუნებული ხართ, რომ გსურთ ექიმის წაშლა ბაზიდან?", parent=self)
+        msg.setWindowTitle("ექიმის წაშლა ბაზიდან")
+        msg.setIcon(QMessageBox.Icon.Question)
+        msg.setStandardButtons(QMessageBox.StandardButton.Yes |
+                               QMessageBox.StandardButton.No)
+        msg.button(QMessageBox.StandardButton.Yes).setText("დიახ")
+        msg.button(QMessageBox.StandardButton.No).setText("არა")
+        reply = msg.exec()
+        if reply == QMessageBox.StandardButton.Yes:
+            current_row = self.doctors.currentRow()
+            num = int(self.doctors.item(current_row, 1).text())
+            cursor100 = self.conn.cursor()
+            cursor100.execute("DELETE FROM `doctors` WHERE id=%s", (num,))
+            self.conn.commit()
+            QMessageBox.information(self,
+                                    "ექიმის წაშლა ბაზიდან",
+                                    f"ექიმი {self.doctors.item(current_row, 2).text()} წაიშალა ბაზიდან")
+            self.load_doctors()
+        else:
+            pass
 
     def load_zones(self):
         # Load zones
@@ -49,7 +80,7 @@ class Settings(QWidget):
         zones = []
         if cursor2.rowcount != 0:
             zones = [zone for zone in cursor2]
-        self.zones.setColumnWidth(0, 400)
+        self.zones.setColumnWidth(0, 478)
         self.zones.setRowCount(len(zones))
         self.zones.setColumnCount(1)
         zone_row = 0
@@ -64,7 +95,7 @@ class Settings(QWidget):
         procedures = []
         if cursor3.rowcount != 0:
             procedures = [procedure for procedure in cursor3]
-        self.procedures.setColumnWidth(0, 400)
+        self.procedures.setColumnWidth(0, 478)
         self.procedures.setRowCount(len(procedures))
         self.procedures.setColumnCount(1)
         proc_row = 0
@@ -79,8 +110,8 @@ class Settings(QWidget):
         sub_types = []
         if cursor.rowcount != 0:
             sub_types = [sub_type for sub_type in cursor]
-        self.subscription_types_sol_1.setColumnWidth(0, 190)
-        self.subscription_types_sol_1.setColumnWidth(1, 190)
+        self.subscription_types_sol_1.setColumnWidth(0, 239)
+        self.subscription_types_sol_1.setColumnWidth(1, 220)
         self.subscription_types_sol_1.setRowCount(len(sub_types))
         self.subscription_types_sol_1.setColumnCount(2)
         doc_row = 0
@@ -96,8 +127,8 @@ class Settings(QWidget):
         sub_types = []
         if cursor.rowcount != 0:
             sub_types = [sub_type for sub_type in cursor]
-        self.subscription_types_sol_2.setColumnWidth(0, 190)
-        self.subscription_types_sol_2.setColumnWidth(1, 190)
+        self.subscription_types_sol_2.setColumnWidth(0, 239)
+        self.subscription_types_sol_2.setColumnWidth(1, 220)
         self.subscription_types_sol_2.setRowCount(len(sub_types))
         self.subscription_types_sol_2.setColumnCount(2)
         doc_row = 0
