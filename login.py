@@ -6,6 +6,7 @@ from PyQt6.uic import loadUi
 from PyQt6.QtGui import QIcon
 from PyQt6.QtCore import Qt
 from main_window import MainWindow
+from create_db_backup import create_backup
 
 
 def get_version():
@@ -33,6 +34,7 @@ class Login(QMainWindow):
         loadUi('ui/login.ui', self)
         self.login_button.clicked.connect(self.authorize)
         self.version.setText(f"ვერსია: {get_version()}")
+        self.database_backup.clicked.connect(create_backup)
 
     def authorize(self):
         with open("users.json", "r") as file:

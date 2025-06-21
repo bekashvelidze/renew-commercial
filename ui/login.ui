@@ -158,8 +158,35 @@ QLineEdit {
      <string>ვერსია</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="database_backup">
+    <property name="geometry">
+     <rect>
+      <x>485</x>
+      <y>2</y>
+      <width>110</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>BPG Nino Mtavruli</family>
+      <pointsize>11</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>ბაზის ასლი</string>
+    </property>
+    <property name="icon">
+     <iconset resource="../res.qrc">
+      <normaloff>:/icon/icons/database_b.svg</normaloff>:/icon/icons/database_b.svg</iconset>
+    </property>
+   </widget>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="../res.qrc"/>
+ </resources>
  <connections/>
 </ui>
