@@ -23,10 +23,10 @@ class PatientsList(QWidget):
         patients = [patient for patient in cursor if cursor.rowcount != 0]
 
         # self.patients_table.setColumnWidth(0, 110)
-        self.patients_table.setColumnWidth(0, 30)
+        self.patients_table.setColumnWidth(0, 50)
         self.patients_table.setColumnWidth(1, 150)
         self.patients_table.setColumnWidth(2, 170)
-        self.patients_table.setColumnWidth(3, 170)
+        self.patients_table.setColumnWidth(3, 150)
         self.patients_table.setRowCount(len(patients))
         self.patients_num.setText(f"სულ რეგისტრირებულია {str(len(patients))} პაციენტი.")
         self.patients_table.setColumnCount(4)

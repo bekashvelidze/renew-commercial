@@ -249,8 +249,8 @@ class Funds(QWidget):
                 else:
                     cursor18 = self.conn.cursor()
                     cursor18.execute("INSERT INTO payments (fname, lname, phone, category, payment_method, date, "
-                                     "minutes) VALUES (?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category,
-                                                                               method, today, amount))
+                                     "minutes, amount) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category,
+                                                                               method, today, amount, 0))
                     self.conn.commit()
                     cursor80 = self.conn.cursor()
                     cursor80.execute("INSERT INTO patient_history (fname_lname, category, date, time, phone, details)"
@@ -285,8 +285,8 @@ class Funds(QWidget):
                 if phone not in client_phones:
                     cursor13 = self.conn.cursor()
                     cursor13.execute("INSERT INTO payments (fname, lname, phone, category, payment_method, date, "
-                                     "amount) VALUES (?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category,
-                                                                              method, today, amount))
+                                     "minutes, amount) VALUES (?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category,
+                                                                              method, today, 0, amount))
                     self.conn.commit()
 
                     if category == "ლაზერი":
@@ -325,8 +325,8 @@ class Funds(QWidget):
                 else:
                     cursor15 = self.conn.cursor()
                     cursor15.execute("INSERT INTO payments (fname, lname, phone, category, payment_method, date, "
-                                     "amount) VALUES (?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category,
-                                                                              method, today, amount))
+                                     "minutes, amount) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (first_name, last_name, phone, category,
+                                                                              method, today, 0, amount))
                     self.conn.commit()
                     if self.zone_text_label == '':
                         cursor80 = self.conn.cursor()

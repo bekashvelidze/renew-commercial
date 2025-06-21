@@ -412,7 +412,6 @@ class MainWindow(QMainWindow):
                 phone = str(self.las_appointments.item(current_row, 5).text())
                 category = "ლაზერი"
                 self.funds(appo_id, fname, lname, phone, category, zone)
-                print(zone)
             except AttributeError:
                 pass
 
@@ -579,7 +578,6 @@ class MainWindow(QMainWindow):
         time = self.sol_1_time.text()
         category = "სოლარიუმი 1"
         time_now = datetime.now().time().strftime("%H:%M")
-
         checked_phone = check_integer(phone)
         checked_minutes = check_integer(minutes)
 
@@ -623,7 +621,6 @@ class MainWindow(QMainWindow):
                 cursor3.execute("INSERT INTO clients (fname, lname, phone, balance, minutes) "
                                 "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, phone, balance, init_minutes))
                 conn.commit()
-                cursor77 = conn.cursor()
             else:
                 client_phones = [client[3] for client in cursor2]
                 if phone not in client_phones:

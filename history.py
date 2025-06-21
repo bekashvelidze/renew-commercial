@@ -2,6 +2,7 @@ from connection import Database
 from PyQt6.QtWidgets import QWidget, QMessageBox, QTableWidgetItem
 from PyQt6.QtGui import QColor
 from PyQt6.uic import loadUi
+from PyQt6.QtCore import Qt
 
 db = Database()
 conn = db.connect()
@@ -63,3 +64,8 @@ class PatientHistory(QWidget):
                     self.patient_history.item(row, 2).setBackground(QColor(255, 222, 222))
                     self.patient_history.item(row, 3).setBackground(QColor(255, 222, 222))
                 row += 1
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_Enter or event.key() == Qt.Key.Key_Return:
+            self.search_client()
+        else:
+            super().keyPressEvent(event)
