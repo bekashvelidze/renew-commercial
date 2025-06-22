@@ -86,7 +86,7 @@ class Funds(QWidget):
         for year_num in years_num:
             self.years_combo.addItem(year_num)
         cursor_months = self.conn.cursor()
-        cursor_months.execute("SELECT * FROM `payments` WHERE monthname(date)=%s", (month_name,))
+        cursor_months.execute("SELECT * FROM `payments` WHERE month(date)=%s AND year(date)=%s", (self.months_combo.currentText(), year,))
         self.load_payments_months(cursor_months, month_number, year)
         self.months_combo.currentTextChanged.connect(self.change_month)
         self.years_combo.currentTextChanged.connect(self.change_year)
@@ -149,16 +149,15 @@ class Funds(QWidget):
         month_number = self.months_combo.currentText()
         self.all_payments_mon.clearContents()
         cursor21 = self.conn.cursor()
-        cursor21.execute("SELECT * FROM `payments` WHERE monthname(date)=%s", (month_number,))
+        cursor21.execute("SELECT * FROM `payments` WHERE month(date)=%s AND year(date)=%s", (self.months_combo.currentText(), self.years_combo.currentText(),))
         self.load_payments_months(cursor21, month_number, year)
-        #self.change_year()
 
     def change_year(self):
         global year, month_number
 
         self.all_payments_mon.clearContents()
         cursor22 = self.conn.cursor()
-        cursor22.execute("SELECT * FROM `payments` WHERE monthname(date)=%s", (load_months()[0][str(month_number)],))
+        cursor22.execute("SELECT * FROM `payments` WHERE month(date)=%s AND year(date)=%s", (self.months_combo.currentText(), self.years_combo.currentText(),))
         year = self.years_combo.currentText()
         self.load_payments_months(cursor22, month_number, year)
 
@@ -353,7 +352,7 @@ class Funds(QWidget):
                     self.clear_fields()
                     self.load_payments_table(cursor26)
         cursor_months = self.conn.cursor()
-        cursor_months.execute("SELECT * FROM `payments` WHERE monthname(date)=%s", (month_name,))
+        cursor_months.execute("SELECT * FROM `payments` WHERE month(date)=%s AND year(date)=%s", (self.months_combo.currentText(), self.years_combo.currentText(),))
         self.load_payments_months(cursor_months, month_name, year)
         self.conn.close()
 
