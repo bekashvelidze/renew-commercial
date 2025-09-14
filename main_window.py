@@ -26,7 +26,7 @@ def get_version():
 
 
 def open_documentation():
-    webbrowser.open('https://nextcloud.org.ge/renew_documentation')
+    webbrowser.open('https://google.ge')
 
 
 def check_integer(number):
