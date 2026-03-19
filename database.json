@@ -1,6 +1,6 @@
 {
   "HOST": "localhost",
-  "DATABASE": "renew",
+  "DATABASE": "renew_data",
   "USER": "renew",
   "PASSWORD": "renew"
 }

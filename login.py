@@ -1,3 +1,4 @@
+import os
 import sys
 import json
 from PyQt6 import QtWidgets
@@ -8,12 +9,16 @@ from PyQt6.QtCore import Qt
 from main_window import MainWindow
 from create_db_backup import create_backup
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 
 def get_version():
-    with open("version.json", "r") as file:
-        version = json.load(file)
-
-    return version["version"]
+    try:
+        with open(os.path.join(BASE_DIR, 'version.json'), "r") as file:
+            version = json.load(file)
+            return version["version"]
+    except (FileNotFoundError, json.decoder.JSONDecodeError):
+        return "N/A"
 
 
 def main_window():
@@ -31,18 +36,23 @@ def main_window():
 class Login(QMainWindow):
     def __init__(self):
         super(Login, self).__init__()
-        loadUi('ui/login.ui', self)
+        loadUi(os.path.join(BASE_DIR, 'ui', 'login.ui'), self)
         self.login_button.clicked.connect(self.authorize)
         self.version.setText(f"ვერსია: {get_version()}")
         self.database_backup.clicked.connect(create_backup)
 
     def authorize(self):
-        with open("users.json", "r") as file:
-            users = json.load(file)
-        if self.username.text() != users["username"] or self.password.text() != users["password"]:
-            QMessageBox.information(self, "შეცდომა!", "სახელი ან პაროლი არასწორია.")
-        else:
-            main_window()
+        try:
+            with open(os.path.join(BASE_DIR, 'users.json'), "r") as file:
+                users = json.load(file)
+            if self.username.text() == users["username"] and self.password.text() == users["password"]:
+                main_window()
+
+            else:
+                QMessageBox.information(self, "შეცდომა!", "სახელი ან პაროლი არასწორია.")
+        except FileNotFoundError:
+            QMessageBox.critical(self, "შეცდომა", "მომხმარებელთა ბაზა არ მოიძებნა.")
+
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key.Key_Enter or event.key() == Qt.Key.Key_Return:
