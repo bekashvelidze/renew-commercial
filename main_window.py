@@ -1,12 +1,10 @@
-import sys
-import json
 import datetime
-import webbrowser
+import os
+from helpers_functions import close_main_application, db, get_version, check_integer, open_documentation, load_days, load_times, load_types, load_doctors, load_procedures, load_zones, BASE_DIR
 from datetime import datetime
 from PyQt6.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem, QPushButton
 from PyQt6.uic import loadUi
 from PyQt6.QtGui import QIcon, QColor
-from connection import Database
 from settings import Settings
 from funds import Funds
 from about import About
@@ -15,94 +13,76 @@ from patients_list import PatientsList
 from patient_edit import PatientsEdit
 
 today = datetime.now().date().strftime("%Y-%m-%d")
-db = Database()
-
-
-def get_version():
-    with open("version.json", "r") as file:
-        version = json.load(file)
-
-    return version["version"]
-
-
-def open_documentation():
-    webbrowser.open('https://google.ge')
-
-
-def check_integer(number):
-    try:
-        if int(number):
-            return True
-    except ValueError:
-        return False
-
-
-def load_procedures():
-    conn = db.connect()
-    cursor_procedures = conn.cursor()
-    cursor_procedures.execute("SELECT * FROM procedures")
-
-    return cursor_procedures
-
-
-def load_doctors(category):
-    conn = db.connect()
-    cursor_doctors = conn.cursor()
-    cursor_doctors.execute("SELECT * FROM doctors WHERE category=%s", (category,))
-
-    return cursor_doctors
-
-
-def load_zones():
-    conn = db.connect()
-    cursor_zones = conn.cursor()
-    cursor_zones.execute("SELECT * FROM zones")
-
-    return cursor_zones
-
-
-def load_types():
-    conn = db.connect()
-    cursor_types = conn.cursor()
-    cursor_types.execute("SELECT * FROM types")
-
-    return cursor_types
-
-
-def load_times():
-    with open("times.json", "r", encoding="utf-8") as file:
-        times = json.load(file)
-
-    return times
-
-
-def load_days():
-    with open("days.json", "r", encoding="utf-8") as file:
-        days = json.load(file)
-
-    return days
-
-
-def close_main_application():
-    sys.exit()
 
 
 class MainWindow(QMainWindow):
 
     def __init__(self):
         super(MainWindow, self).__init__()
-        loadUi('ui/main_window.ui', self)
-        self.conn = db.connect()
-        self.procedures = load_procedures()
+        loadUi(os.path.join(BASE_DIR, 'ui', 'main_window.ui'), self)
+
+        self.statusBar().showMessage(f"ვერსია: {get_version()}")
         self.load_data()
         self.tabWidget.currentChanged.connect(self.load_data)
-        self.history_window = PatientHistory()
-        self.settings_window_open = Settings()
-        self.funds_window = Funds()
-        self.about = About()
-        self.history = PatientHistory()
-        self.patients_list = PatientsList()
-        self.statusBar().showMessage(f"ვერსია: {get_version()}")
+
+        self.init_cosmetics_tab()
+        self.init_laser_tab()
+        self.init_solarium_tabs()
+
+        self.connect_signals()
+
+    def init_cosmetics_tab(self):
+        self.cos_new_date.setDate(datetime.strptime(today, "%Y-%m-%d"))
+        self.cos_new_date.dateChanged.connect(self.change_date_cos)
+
+        for doctor_cos in load_doctors("კოსმეტოლოგია"):
+            self.cos_doctor.addItem(doctor_cos[1])
+        for zone_cos in load_procedures():
+            self.cos_zone.addItem(zone_cos[1])
+
+        self.cos_zone.setCurrentText("აირჩიეთ პროცედურა")
+        self.cos_doctor.setCurrentText("აირჩიეთ ექიმი")
+
+    def init_laser_tab(self):
+        self.las_new_date.setDate(datetime.strptime(today, "%Y-%m-%d"))
+        self.las_new_date.dateChanged.connect(self.change_date_las)
+
+        for doctor_las in load_doctors("ლაზერი"):
+            self.las_doctor.addItem(doctor_las[1])
+        for type_las in load_types():
+            self.las_type.addItem(type_las[1])
+        for zone_las in load_zones():
+            self.las_zone.addItem(zone_las[1])
+
+        self.las_type.setCurrentText("აირჩიეთ ლაზერის ტიპი")
+        self.las_zone.setCurrentText("აირჩიეთ ზონა")
+        self.las_doctor.setCurrentText("აირჩიეთ ექიმი")
+
+    def init_solarium_tabs(self):
+        self.sol_1_new_date.setDate(datetime.strptime(today, "%Y-%m-%d"))
+        self.sol_2_new_date.setDate(datetime.strptime(today, "%Y-%m-%d"))
+        self.sol_1_new_date.dateChanged.connect(self.change_date_sol_1)
+        self.sol_2_new_date.dateChanged.connect(self.change_date_sol_2)
+
+    def connect_signals(self):
+        # Appointment buttons
+        self.cos_make_an_appointment_button.clicked.connect(self.make_an_appointment_cos)
+        self.las_make_an_appointment_button.clicked.connect(self.make_an_appointment_las)
+        self.sol_1_make_an_appointment_button.clicked.connect(self.make_an_appointment_sol_1)
+        self.sol_2_make_an_appointment_button.clicked.connect(self.make_an_appointment_sol_2)
+
+        # Pay buttons
+        self.cos_pay_button.clicked.connect(self.funds)
+        self.las_pay_button.clicked.connect(self.funds)
+        self.sol_1_pay_button.clicked.connect(self.funds)
+        self.sol_2_pay_button.clicked.connect(self.funds)
+
+        # Search buttons
+        self.search_button_cos.clicked.connect(self.search_client_cos)
+        self.search_button_las.clicked.connect(self.search_client_las)
+        self.search_button_sol_1.clicked.connect(self.search_client_sol_1)
+        self.search_button_sol_2.clicked.connect(self.search_client_sol_2)
+
         # Menu items
         self.close_application.triggered.connect(close_main_application)
         self.patient_history.triggered.connect(self.patient_history_window)
@@ -111,57 +91,24 @@ class MainWindow(QMainWindow):
         self.about_menu.triggered.connect(self.about_window)
         self.patients_list_menu.triggered.connect(self.patients_list_window)
         self.patient_edit.triggered.connect(self.patients_edit_window)
-        # Cosmetics
-        self.cos_new_date.setDate(datetime.strptime(today, "%Y-%m-%d"))
-        self.cos_new_date.dateChanged.connect(self.change_date_cos)
-        self.doctors_cos = load_doctors("კოსმეტოლოგია")
-        for doctor_cos in self.doctors_cos:
-            self.cos_doctor.addItem(doctor_cos[1])
-        self.procedures = load_procedures()
-        for zone_cos in self.procedures:
-            self.cos_zone.addItem(zone_cos[1])
-        # Laser
-        self.las_new_date.setDate(datetime.strptime(today, "%Y-%m-%d"))
-        self.las_new_date.dateChanged.connect(self.change_date_las)
-        self.doctors_las = load_doctors("ლაზერი")
-        for doctor_las in self.doctors_las:
-            self.las_doctor.addItem(doctor_las[1])
-        self.laser_types = load_types()
-        for type_las in self.laser_types:
-            self.las_type.addItem(type_las[1])
-        self.zones = load_zones()
-        for zone_las in self.zones:
-            self.las_zone.addItem(zone_las[1])
-        # Solarium 1
-        self.sol_1_new_date.setDate(datetime.strptime(today, "%Y-%m-%d"))
-        self.sol_1_new_date.dateChanged.connect(self.change_date_sol_1)
-        # Solarium 2
-        self.sol_2_new_date.setDate(datetime.strptime(today, "%Y-%m-%d"))
-        self.sol_2_new_date.dateChanged.connect(self.change_date_sol_2)
-        # Button click events
-        self.cos_make_an_appointment_button.clicked.connect(self.make_an_appointment_cos)
-        self.las_make_an_appointment_button.clicked.connect(self.make_an_appointment_las)
-        self.sol_1_make_an_appointment_button.clicked.connect(self.make_an_appointment_sol_1)
-        self.sol_2_make_an_appointment_button.clicked.connect(self.make_an_appointment_sol_2)
-        self.cos_pay_button.clicked.connect(self.funds)
-        self.las_pay_button.clicked.connect(self.funds)
-        self.sol_1_pay_button.clicked.connect(self.funds)
-        self.sol_2_pay_button.clicked.connect(self.funds)
-        self.search_button_cos.clicked.connect(self.search_client_cos)
-        self.search_button_las.clicked.connect(self.search_client_las)
-        self.search_button_sol_1.clicked.connect(self.search_client_sol_1)
-        self.search_button_sol_2.clicked.connect(self.search_client_sol_2)
+
         # Cell click events
         self.cos_appointments.cellClicked.connect(self.get_cos_cell_information)
         self.las_appointments.cellClicked.connect(self.get_las_cell_information)
         self.sol_1_appointments.cellClicked.connect(self.get_sol_1_cell_information)
         self.sol_2_appointments.cellClicked.connect(self.get_sol_2_cell_information)
-        # Placeholder
-        self.cos_zone.setCurrentText("აირჩიეთ პროცედურა")
-        self.cos_doctor.setCurrentText("აირჩიეთ ექიმი")
-        self.las_type.setCurrentText("აირჩიეთ ლაზერის ტიპი")
-        self.las_zone.setCurrentText("აირჩიეთ ზონა")
-        self.las_doctor.setCurrentText("აირჩიეთ ექიმი")
+
+
+
+
+
+        self.history_window = PatientHistory()
+        self.settings_window_open = Settings()
+        self.funds_window = Funds()
+        self.about = About()
+        self.history = PatientHistory()
+        self.patients_list = PatientsList()
+
 
     def load_data(self):
         self.cosmetology()

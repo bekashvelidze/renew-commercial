@@ -1,7 +1,7 @@
 import os
 import sys
 import json
-from helpers import get_version, BASE_DIR
+from helpers_functions import get_version
 from PyQt6 import QtWidgets
 from PyQt6.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PyQt6.uic import loadUi
@@ -10,6 +10,8 @@ from PyQt6.QtCore import Qt
 from main_window import MainWindow
 from create_db_backup import create_backup
 
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def main_window():
     mainwindow = MainWindow()
