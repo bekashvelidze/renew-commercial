@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+from helpers import get_version, BASE_DIR
 from PyQt6 import QtWidgets
 from PyQt6.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PyQt6.uic import loadUi
@@ -8,17 +9,6 @@ from PyQt6.QtGui import QIcon
 from PyQt6.QtCore import Qt
 from main_window import MainWindow
 from create_db_backup import create_backup
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-
-def get_version():
-    try:
-        with open(os.path.join(BASE_DIR, 'version.json'), "r") as file:
-            version = json.load(file)
-            return version["version"]
-    except (FileNotFoundError, json.decoder.JSONDecodeError):
-        return "N/A"
 
 
 def main_window():
