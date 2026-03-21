@@ -19,6 +19,7 @@ class PatientHistory(QWidget):
 
         self.conn = db.connect()
 
+        self.search_patient.setClearButtonEnabled(True)
         self.search_button.clicked.connect(self.search_client)
 
     def search_client(self):
@@ -67,3 +68,12 @@ class PatientHistory(QWidget):
             self.search_client()
         else:
             super().keyPressEvent(event)
+
+    def closeEvent(self, event):
+        self.search_patient.clear()
+        self.patient_history.setRowCount(0)
+
+        self.phone.setText("")
+        self.title.setText(f"პაციენტის ისტორია")
+
+        event.accept()

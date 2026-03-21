@@ -2,6 +2,7 @@ import datetime
 import os
 from helpers_functions import critical_error, close_main_application, db, get_version, check_integer, open_documentation, load_days, load_times, load_types, load_doctors, load_procedures, load_zones, BASE_DIR
 from datetime import datetime
+from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem, QPushButton
 from PyQt6.uic import loadUi
 from PyQt6.QtGui import QIcon, QColor

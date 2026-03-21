@@ -115,8 +115,8 @@ QTableWidget::item:hover {
       <widget class="QLabel" name="phone">
        <property name="font">
         <font>
-         <family>BPG Boxo</family>
-         <pointsize>12</pointsize>
+         <family>BPG Nino Mtavruli</family>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="text">
