@@ -50,6 +50,9 @@ QComboBox:hover {
 </string>
   </property>
   <widget class="QTableWidget" name="patients_table">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -83,7 +86,7 @@ QComboBox:hover {
      </font>
     </property>
     <property name="textAlignment">
-     <set>AlignLeading|AlignVCenter</set>
+     <set>AlignCenter</set>
     </property>
    </column>
    <column>

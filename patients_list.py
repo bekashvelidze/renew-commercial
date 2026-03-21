@@ -1,3 +1,5 @@
+from PyQt6 import QtWidgets
+from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QWidget, QTableWidgetItem
 from PyQt6.uic import loadUi
 from connection import Database
@@ -13,6 +15,10 @@ class PatientsList(QWidget):
         self.conn = db.connect()
         self.load_patients()
 
+        self.patients_table.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.patients_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
+
+
     def load_patients(self):
         cursor = self.conn.cursor()
         cursor.execute("SELECT * from clients")
@@ -27,13 +33,18 @@ class PatientsList(QWidget):
         self.patients_table.setColumnWidth(3, 150)
 
         for row_id, patient in enumerate(patients):
-            patient_id = str(patient[0])
-            fname = str(patient[1])
-            lname = str(patient[2])
-            phone = str(patient[3])
+            patient_id = QTableWidgetItem(str(patient[0]))
+            fname = QTableWidgetItem(str(patient[1]))
+            lname = QTableWidgetItem(str(patient[2]))
+            phone = QTableWidgetItem(str(patient[3]))
 
-            self.patients_table.setItem(row_id, 0, QTableWidgetItem(patient_id))
-            self.patients_table.setItem(row_id, 1, QTableWidgetItem(fname))
-            self.patients_table.setItem(row_id, 2, QTableWidgetItem(lname))
-            self.patients_table.setItem(row_id, 3, QTableWidgetItem(phone))
+            patient_id.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+            fname.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+            lname.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+            phone.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+
+            self.patients_table.setItem(row_id, 0, patient_id)
+            self.patients_table.setItem(row_id, 1, fname)
+            self.patients_table.setItem(row_id, 2, lname)
+            self.patients_table.setItem(row_id, 3, phone)
 
