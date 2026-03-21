@@ -8,7 +8,7 @@ from PyQt6.uic import loadUi
 from PyQt6.QtGui import QIcon
 from PyQt6.QtCore import Qt
 from main_window import MainWindow
-from create_db_backup import create_backup
+from db_backup import create_backup
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))

@@ -19,6 +19,18 @@ def critical_error(message):
         msgbox.exec()
         sys.exit(1)
 
+def success_message(message):
+    app = QApplication.instance()
+    created_new_app = False
+    if not app:
+        app = QApplication(sys.argv)
+        created_new_app = True
+    msgbox = QMessageBox()
+    msgbox.setIcon(QMessageBox.Icon.Information)
+    msgbox.setWindowTitle("წარმატება")
+    msgbox.setText(message)
+    msgbox.exec()
+
 def load_json_files(filename):
     try:
         with open(os.path.join(BASE_DIR, filename), "r", encoding="utf-8") as file:
