@@ -13,14 +13,20 @@ class PatientsList(QWidget):
         super().__init__()
         loadUi("ui/patients_list.ui", self)
         self.conn = db.connect()
-        self.load_patients()
 
         self.patients_table.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
         self.patients_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
 
+    def showEvent(self, event):
+        self.load_patients()
+        self.patients_table.scrollToTop()
+        self.patients_table.clearSelection()
+
+        event.accept()
 
     def load_patients(self):
         cursor = self.conn.cursor()
+        self.conn.commit()
         cursor.execute("SELECT * from clients")
         patients = cursor.fetchall()
 
@@ -47,4 +53,3 @@ class PatientsList(QWidget):
             self.patients_table.setItem(row_id, 1, fname)
             self.patients_table.setItem(row_id, 2, lname)
             self.patients_table.setItem(row_id, 3, phone)
-

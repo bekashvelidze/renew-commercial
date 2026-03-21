@@ -1,7 +1,6 @@
-from PyQt6.QtCore import pyqtSignal
-
 from connection import Database
 from helpers_functions import critical_error
+from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QWidget, QMessageBox
 from PyQt6.uic import loadUi
 
@@ -51,17 +50,18 @@ class PatientsEdit(QWidget):
                                     "პაციენტის რედაქტირება",
                                     f"პაციენტის განახლებული მონაცემები წარმატებით ჩაიწერა ბაზაში."
                                     )
-            self.data_updated.emit()
+            self.fname.clear()
+            self.lname.clear()
+            self.phone.clear()
+            self.patient_id.clear()
+            self.search_patient.clear()
             self.close()
+
         except Exception as e:
             critical_error(f"პაციენტის მონაცემების განახლება ვერ მოხერხდა - {e}")
 
-
-    def closeEvent(self, event):
-        self.fname.clear()
-        self.lname.clear()
-        self.phone.clear()
-        self.patient_id.clear()
-        self.search_patient.clear()
-
-        event.accept()
+    def keyPressEvent(self, event):
+        if event.key() in (Qt.Key.Key_Enter, Qt.Key.Key_Return):
+            self.load_patient()
+        else:
+            super().keyPressEvent(event)
