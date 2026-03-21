@@ -1,3 +1,5 @@
+from PyQt6.QtCore import pyqtSignal
+
 from connection import Database
 from helpers_functions import critical_error
 from PyQt6.QtWidgets import QWidget, QMessageBox
@@ -7,7 +9,6 @@ db = Database()
 
 
 class PatientsEdit(QWidget):
-
     def __init__(self):
         super().__init__()
         loadUi("ui/edit_patient.ui", self)
@@ -16,35 +17,51 @@ class PatientsEdit(QWidget):
         self.edit_button.clicked.connect(self.update_data)
 
     def load_patient(self):
-        search = self.search_patient.text()
-        cursor = self.conn.cursor()
-        cursor.execute("SELECT * FROM `clients` WHERE phone=%s", (search,))
-        patient = cursor.fetchone()
-        self.patient_id.setText(str(patient[0]))
-        self.fname.setText(patient[1])
-        self.lname.setText(patient[2])
-        self.phone.setText(patient[3])
-
-    def update_data(self):
-        fname = self.fname.text()
-        lname = self.lname.text()
-        phone = self.phone.text()
-        num = self.patient_id.text()
+        search = self.search_patient.text().strip()
+        if not search:
+            return
         try:
             cursor = self.conn.cursor()
-            cursor.execute("UPDATE clients SET fname=%s, lname=%s, phone=%s WHERE id=%s", (fname, lname, phone, num))
+            cursor.execute("SELECT * FROM `clients` WHERE phone=%s", (search,))
+            patient = cursor.fetchone()
+            if patient:
+                self.patient_id.setText(str(patient[0]))
+                self.fname.setText(patient[1])
+                self.lname.setText(patient[2])
+                self.phone.setText(patient[3])
+            else:
+                QMessageBox.warning(self, "შეცდომა", f"პაციენტით ნომრით {self.phone.text()} არ მოიძებნა.")
+        except Exception as e:
+            critical_error(f"ჩატვირთვის შეცდომა - {e}")
+
+    def update_data(self):
+        fname = self.fname.text().strip()
+        lname = self.lname.text().strip()
+        phone = self.phone.text().strip()
+        num = self.patient_id.text().strip()
+
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute("UPDATE clients SET fname=%s, lname=%s, phone=%s WHERE id=%s",
+                           (fname, lname, phone, num)
+                           )
             self.conn.commit()
 
             QMessageBox.information(self,
                                     "პაციენტის რედაქტირება",
                                     f"პაციენტის განახლებული მონაცემები წარმატებით ჩაიწერა ბაზაში."
                                     )
-            self.fname.clear()
-            self.lname.clear()
-            self.phone.clear()
-            self.patient_id.clear()
-            self.search_patient.clear()
+            self.data_updated.emit()
+            self.close()
         except Exception as e:
             critical_error(f"პაციენტის მონაცემების განახლება ვერ მოხერხდა - {e}")
-        finally:
-            self.close()
+
+
+    def closeEvent(self, event):
+        self.fname.clear()
+        self.lname.clear()
+        self.phone.clear()
+        self.patient_id.clear()
+        self.search_patient.clear()
+
+        event.accept()
