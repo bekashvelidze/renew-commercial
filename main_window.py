@@ -175,6 +175,7 @@ class MainWindow(QMainWindow):
             self.search_date = args[0]
         else:
             self.search_date = self.today
+        self.cos_new_date.setDate(datetime.strptime(self.search_date, "%Y-%m-%d"))
         try:
             cursor = conn.cursor()
             cursor.execute(f"SELECT * FROM `cosmetology_appointments` WHERE date=%s", (self.search_date,))
@@ -306,6 +307,7 @@ class MainWindow(QMainWindow):
             self.search_date = args[0]
         else:
             self.search_date = self.today
+        self.las_new_date.setDate(datetime.strptime(self.search_date, "%Y-%m-%d"))
         try:
             cursor = conn.cursor()
             cursor.execute(f"SELECT * FROM `laser_appointments` WHERE date=%s", (self.search_date,))
@@ -447,6 +449,7 @@ class MainWindow(QMainWindow):
             self.search_date = args[0]
         else:
             self.search_date = self.today
+        self.sol_1_new_date.setDate(datetime.strptime(self.search_date, "%Y-%m-%d"))
         try:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM `solarium_1_appointments` WHERE date=%s", (self.search_date,))
@@ -573,6 +576,7 @@ class MainWindow(QMainWindow):
             self.search_date = args[0]
         else:
             self.search_date = self.today
+        self.sol_2_new_date.setDate(datetime.strptime(self.search_date, "%Y-%m-%d"))
         try:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM `solarium_2_appointments` WHERE date=%s", (self.search_date,))
@@ -824,16 +828,17 @@ class MainWindow(QMainWindow):
                 cursor = conn.cursor()
                 cursor.execute("SELECT status FROM cosmetology_appointments WHERE id=%s", (num,))
                 result_check = cursor.fetchone()
-                if result_check and result_check[8] == "paid":
+                if result_check == "paid":
                     QMessageBox.warning(self, "შეცდომა",
                                         "გადახდილი ჩაწერის წაშლა შეუძლებელია!")
                     return
-                cursor.execute("DELETE FROM `cosmetology_appointments` WHERE id=%s", (num,))
-                conn.commit()
-                QMessageBox.information(self,
-                                        "ჩაწერის გაუქმება",
-                                        f"ჩაწერა გაუქმებულია პაციენტისთვის "
-                                        f"{first_name} {last_name}.")
+                else:
+                    cursor.execute("DELETE FROM `cosmetology_appointments` WHERE id=%s", (num,))
+                    conn.commit()
+                    QMessageBox.information(self,
+                                            "ჩაწერის გაუქმება",
+                                            f"ჩაწერა გაუქმებულია პაციენტისთვის "
+                                            f"{first_name} {last_name}.")
                 self.cosmetology()
             except Exception as e:
                 critical_error(f"ვერ მოხერხდა წაშლა - {e}")
@@ -865,17 +870,18 @@ class MainWindow(QMainWindow):
                 cursor = conn.cursor()
                 cursor.execute("SELECT status FROM laser_appointments WHERE id=%s", (num,))
                 result_check = cursor.fetchone()
-                if result_check and result_check[8] == "paid":
+                if result_check == "paid":
                     QMessageBox.warning(self, "შეცდომა",
                                         "გადახდილი ჩაწერის წაშლა შეუძლებელია!")
                     return
-                cursor.execute("DELETE FROM `laser_appointments` WHERE id=%s", (num,))
-                conn.commit()
-                QMessageBox.information(self,
-                                        "ჩაწერის გაუქმება",
-                                        f"ჩაწერა გაუქმებულია პაციენტისთვის "
-                                        f"{first_name} {last_name}.")
-                self.laser()
+                else:
+                    cursor.execute("DELETE FROM `laser_appointments` WHERE id=%s", (num,))
+                    conn.commit()
+                    QMessageBox.information(self,
+                                            "ჩაწერის გაუქმება",
+                                            f"ჩაწერა გაუქმებულია პაციენტისთვის "
+                                            f"{first_name} {last_name}.")
+                    self.laser()
             except Exception as e:
                 critical_error(f"ვერ მოხერხდა წაშლა - {e}")
 
@@ -906,17 +912,18 @@ class MainWindow(QMainWindow):
                 cursor = conn.cursor()
                 cursor.execute("SELECT status FROM solarium_1_appointments WHERE id=%s", (num,))
                 result_check = cursor.fetchone()
-                if result_check and result_check[8] == "paid":
+                if result_check == "paid":
                     QMessageBox.warning(self, "შეცდომა",
                                         "გადახდილი ჩაწერის წაშლა შეუძლებელია!")
                     return
-                cursor.execute("DELETE FROM `solarium_1_appointments` WHERE id=%s", (num,))
-                conn.commit()
-                QMessageBox.information(self,
-                                        "ჩაწერის გაუქმება",
-                                        f"ჩაწერა გაუქმებულია პაციენტისთვის "
-                                        f"{first_name} {last_name}.")
-                self.solarium_1()
+                else:
+                    cursor.execute("DELETE FROM `solarium_1_appointments` WHERE id=%s", (num,))
+                    conn.commit()
+                    QMessageBox.information(self,
+                                            "ჩაწერის გაუქმება",
+                                            f"ჩაწერა გაუქმებულია პაციენტისთვის "
+                                            f"{first_name} {last_name}.")
+                    self.solarium_1()
             except Exception as e:
                 critical_error(f"ვერ მოხერხდა წაშლა - {e}")
 
@@ -947,17 +954,20 @@ class MainWindow(QMainWindow):
                 cursor = conn.cursor()
                 cursor.execute("SELECT status FROM solarium_2_appointments WHERE id=%s", (num,))
                 result_check = cursor.fetchone()
-                if result_check and result_check[8] == "paid":
+
+                if result_check == "paid":
                     QMessageBox.warning(self, "შეცდომა",
                                         "გადახდილი ჩაწერის წაშლა შეუძლებელია!")
                     return
-                cursor.execute("DELETE FROM `solarium_2_appointments` WHERE id=%s", (num,))
-                conn.commit()
-                QMessageBox.information(self,
-                                        "ჩაწერის გაუქმება",
-                                        f"ჩაწერა გაუქმებულია პაციენტისთვის "
-                                        f"{first_name} {last_name}.")
-                self.solarium_2()
+                else:
+
+                    cursor.execute("DELETE FROM `solarium_2_appointments` WHERE id=%s", (num,))
+                    conn.commit()
+                    QMessageBox.information(self,
+                                            "ჩაწერის გაუქმება",
+                                            f"ჩაწერა გაუქმებულია პაციენტისთვის "
+                                            f"{first_name} {last_name}.")
+                    self.solarium_2()
             except Exception as e:
                 critical_error(f"ვერ მოხერხდა წაშლა - {e}")
 
