@@ -1,10 +1,8 @@
 from connection import Database
-from helpers_functions import critical_error
+from helpers_functions import critical_error, db
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QWidget, QMessageBox
 from PyQt6.uic import loadUi
-
-db = Database()
 
 
 class PatientsEdit(QWidget):
