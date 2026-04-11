@@ -828,7 +828,8 @@ class MainWindow(QMainWindow):
                 cursor = conn.cursor()
                 cursor.execute("SELECT status FROM cosmetology_appointments WHERE id=%s", (num,))
                 result_check = cursor.fetchone()
-                if result_check == "paid":
+                status = result_check[0].strip().lower()
+                if status == "paid":
                     QMessageBox.warning(self, "შეცდომა",
                                         "გადახდილი ჩაწერის წაშლა შეუძლებელია!")
                     return
@@ -870,7 +871,8 @@ class MainWindow(QMainWindow):
                 cursor = conn.cursor()
                 cursor.execute("SELECT status FROM laser_appointments WHERE id=%s", (num,))
                 result_check = cursor.fetchone()
-                if result_check == "paid":
+                status = result_check[0].strip().lower()
+                if status == "paid":
                     QMessageBox.warning(self, "შეცდომა",
                                         "გადახდილი ჩაწერის წაშლა შეუძლებელია!")
                     return
@@ -912,7 +914,8 @@ class MainWindow(QMainWindow):
                 cursor = conn.cursor()
                 cursor.execute("SELECT status FROM solarium_1_appointments WHERE id=%s", (num,))
                 result_check = cursor.fetchone()
-                if result_check == "paid":
+                status = result_check[0].strip().lower()
+                if status == "paid":
                     QMessageBox.warning(self, "შეცდომა",
                                         "გადახდილი ჩაწერის წაშლა შეუძლებელია!")
                     return
@@ -954,8 +957,8 @@ class MainWindow(QMainWindow):
                 cursor = conn.cursor()
                 cursor.execute("SELECT status FROM solarium_2_appointments WHERE id=%s", (num,))
                 result_check = cursor.fetchone()
-
-                if result_check == "paid":
+                status = result_check[0].strip().lower()
+                if status == "paid":
                     QMessageBox.warning(self, "შეცდომა",
                                         "გადახდილი ჩაწერის წაშლა შეუძლებელია!")
                     return
