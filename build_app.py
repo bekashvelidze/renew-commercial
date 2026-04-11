@@ -2,7 +2,7 @@ import os
 import shutil
 import subprocess
 
-# Run PyInstaller
+
 print("Building with PyInstaller...")
 result = subprocess.run(['pyinstaller', 'main.spec'], capture_output=True, text=True)
 
@@ -13,7 +13,6 @@ if result.returncode != 0:
 
 print("PyInstaller completed successfully!")
 
-# Copy additional files to the main dist directory
 dist_dir = 'dist/Renew'
 files_to_copy = [
     'database.json',
@@ -33,7 +32,6 @@ folders_to_copy = [
 
 print(f"Copying files to {dist_dir}...")
 
-# Copy individual files
 for file in files_to_copy:
     if os.path.exists(file):
         dest_path = os.path.join(dist_dir, file)
@@ -42,7 +40,6 @@ for file in files_to_copy:
     else:
         print(f"⚠ Warning: {file} not found")
 
-# Copy folders
 for folder in folders_to_copy:
     if os.path.exists(folder):
         dest_folder = os.path.join(dist_dir, folder)
