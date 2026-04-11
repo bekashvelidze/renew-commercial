@@ -2,9 +2,7 @@ from PyQt6 import QtWidgets
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QWidget, QTableWidgetItem
 from PyQt6.uic import loadUi
-from connection import Database
-
-db = Database()
+from helpers_functions import db
 
 
 class PatientsList(QWidget):
