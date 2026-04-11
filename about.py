@@ -1,14 +1,7 @@
-import json
 from datetime import datetime
 from PyQt6.QtWidgets import QWidget
 from PyQt6.uic import loadUi
-
-
-def get_version():
-    with open("version.json", "r") as file:
-        version = json.load(file)
-
-    return version["version"]
+from helpers_functions import get_version
 
 
 class About(QWidget):
