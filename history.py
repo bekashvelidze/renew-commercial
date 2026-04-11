@@ -1,15 +1,11 @@
-from connection import Database
-from helpers_functions import critical_error
+from helpers_functions import critical_error, db
 from PyQt6.QtWidgets import QWidget, QMessageBox, QTableWidgetItem
 from PyQt6.QtGui import QColor
 from PyQt6.uic import loadUi
 from PyQt6.QtCore import Qt
 
-db = Database()
-
 
 class PatientHistory(QWidget):
-
     def __init__(self):
         super().__init__()
         loadUi("ui/history.ui", self)
