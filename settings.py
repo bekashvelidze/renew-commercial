@@ -1,8 +1,6 @@
 from PyQt6.QtWidgets import QWidget, QTableWidgetItem, QMessageBox, QPushButton
 from PyQt6.uic import loadUi
-from connection import Database
-
-db = Database()
+from helpers_functions import db
 
 
 class Settings(QWidget):
@@ -10,8 +8,8 @@ class Settings(QWidget):
     def __init__(self):
         super().__init__()
         loadUi("ui/settings.ui", self)
+        self.showMaximized()
         self.conn = db.connect()
-        # Load data to tables
         self.load_doctors()
         self.load_zones()
         self.load_procedures()
@@ -31,17 +29,15 @@ class Settings(QWidget):
         doctors_list = []
         if cursor.rowcount != 0:
             doctors_list = [doctor for doctor in cursor]
-        self.doctors.setColumnWidth(0, 30)
-        self.doctors.setColumnWidth(1, 30)
-        self.doctors.setColumnWidth(2, 190)
-        self.doctors.setColumnWidth(3, 100)
-        self.doctors.setColumnWidth(4, 145)
+        self.doctors.setColumnWidth(0, 15)
+        self.doctors.setColumnWidth(1, 15)
+        self.doctors.setColumnWidth(2, 200)
+        self.doctors.horizontalHeader().setStretchLastSection(True)
         self.doctors.setRowCount(len(doctors_list))
         self.doctors.setColumnCount(5)
         doc_row = 0
         for doctor in doctors_list:
-            btn = QPushButton(self)
-            btn.setText("X")
+            btn = QPushButton("X")
             btn.setStyleSheet("color: red; font-weight: bold;")
             btn.pressed.connect(self.delete_doctor)
             self.doctors.setCellWidget(doc_row, 0, btn)
@@ -80,7 +76,7 @@ class Settings(QWidget):
         zones = []
         if cursor2.rowcount != 0:
             zones = [zone for zone in cursor2]
-        self.zones.setColumnWidth(0, 478)
+        self.zones.horizontalHeader().setStretchLastSection(True)
         self.zones.setRowCount(len(zones))
         self.zones.setColumnCount(1)
         zone_row = 0
@@ -95,7 +91,7 @@ class Settings(QWidget):
         procedures = []
         if cursor3.rowcount != 0:
             procedures = [procedure for procedure in cursor3]
-        self.procedures.setColumnWidth(0, 478)
+        self.procedures.horizontalHeader().setStretchLastSection(True)
         self.procedures.setRowCount(len(procedures))
         self.procedures.setColumnCount(1)
         proc_row = 0
@@ -110,8 +106,8 @@ class Settings(QWidget):
         sub_types = []
         if cursor.rowcount != 0:
             sub_types = [sub_type for sub_type in cursor]
-        self.subscription_types_sol_1.setColumnWidth(0, 239)
-        self.subscription_types_sol_1.setColumnWidth(1, 220)
+        self.subscription_types_sol_1.setColumnWidth(0, 240)
+        self.subscription_types_sol_1.horizontalHeader().setStretchLastSection(True)
         self.subscription_types_sol_1.setRowCount(len(sub_types))
         self.subscription_types_sol_1.setColumnCount(2)
         doc_row = 0
@@ -127,8 +123,8 @@ class Settings(QWidget):
         sub_types = []
         if cursor.rowcount != 0:
             sub_types = [sub_type for sub_type in cursor]
-        self.subscription_types_sol_2.setColumnWidth(0, 239)
-        self.subscription_types_sol_2.setColumnWidth(1, 220)
+        self.subscription_types_sol_2.setColumnWidth(0, 240)
+        self.subscription_types_sol_2.horizontalHeader().setStretchLastSection(True)
         self.subscription_types_sol_2.setRowCount(len(sub_types))
         self.subscription_types_sol_2.setColumnCount(2)
         doc_row = 0
