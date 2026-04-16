@@ -59,7 +59,7 @@ QComboBox:hover {
       </font>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -162,7 +162,7 @@ QComboBox:hover {
           </font>
          </property>
          <attribute name="horizontalHeaderVisible">
-          <bool>true</bool>
+          <bool>false</bool>
          </attribute>
          <attribute name="verticalHeaderVisible">
           <bool>false</bool>
@@ -254,6 +254,12 @@ QComboBox:hover {
            <pointsize>11</pointsize>
           </font>
          </property>
+         <attribute name="verticalHeaderVisible">
+          <bool>false</bool>
+         </attribute>
+         <attribute name="verticalHeaderCascadingSectionResizes">
+          <bool>true</bool>
+         </attribute>
          <column>
           <property name="text">
            <string>ზონა</string>
@@ -327,6 +333,12 @@ QComboBox:hover {
            <pointsize>11</pointsize>
           </font>
          </property>
+         <attribute name="verticalHeaderVisible">
+          <bool>false</bool>
+         </attribute>
+         <attribute name="verticalHeaderCascadingSectionResizes">
+          <bool>true</bool>
+         </attribute>
          <column>
           <property name="text">
            <string>პროცედურა</string>

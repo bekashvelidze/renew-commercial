@@ -215,8 +215,6 @@ class MainWindow(QMainWindow):
                     self.cos_appointments.item(row_id, 5).setBackground(QColor(142, 172, 80))
         except Exception as e:
             critical_error("დაკავშირების პრობლემა!")
-        finally:
-                conn.close()
 
     def get_cos_cell_information(self):
         current_row = self.cos_appointments.currentRow()
