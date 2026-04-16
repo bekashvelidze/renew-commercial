@@ -13,7 +13,7 @@ if result.returncode != 0:
 
 print("PyInstaller completed successfully!")
 
-dist_dir = 'dist/Renew'
+dist_dir = 'dist/Renew/_internal'
 files_to_copy = [
     'database.json',
     'days.json',
