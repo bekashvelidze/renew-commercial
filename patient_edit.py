@@ -1,5 +1,5 @@
-from connection import Database
-from helpers_functions import critical_error, db
+import os
+from helpers_functions import critical_error, db, BASE_DIR
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QWidget, QMessageBox
 from PyQt6.uic import loadUi
@@ -8,7 +8,7 @@ from PyQt6.uic import loadUi
 class PatientsEdit(QWidget):
     def __init__(self):
         super().__init__()
-        loadUi("ui/edit_patient.ui", self)
+        loadUi(os.path.join(BASE_DIR, 'ui', 'edit_patient.ui'), self)
         self.conn = db.connect()
         self.search_button.clicked.connect(self.load_patient)
         self.edit_button.clicked.connect(self.update_data)

@@ -1,3 +1,4 @@
+import os
 import json
 import calendar
 from datetime import datetime
@@ -5,6 +6,7 @@ from PyQt6.QtWidgets import QWidget, QTableWidgetItem, QMessageBox
 from PyQt6.uic import loadUi
 from PyQt6.QtGui import QColor
 from connection import Database
+from helpers_functions import db, BASE_DIR
 
 db = Database()
 today = datetime.now().date().strftime("%Y-%m-%d")
@@ -22,7 +24,7 @@ def check_integer(number):
 
 
 def load_months():
-    with open("months.json", "r", encoding="utf-8") as file:
+    with open(os.path.join(BASE_DIR, 'months.json'), "r", encoding="utf-8") as file:
         months = json.load(file)
 
     return months
@@ -57,7 +59,7 @@ class Funds(QWidget):
 
     def __init__(self, *args):
         super().__init__()
-        loadUi("ui/pay.ui", self)
+        loadUi(os.path.join(BASE_DIR,'ui', 'pay.ui'), self)
         self.category.setCurrentText("კატეგორია")
         self.years_combo.setCurrentText(str(year))
         self.appo_id = None

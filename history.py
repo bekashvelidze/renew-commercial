@@ -1,4 +1,5 @@
-from helpers_functions import critical_error, db
+import os
+from helpers_functions import critical_error, db, BASE_DIR
 from PyQt6.QtWidgets import QWidget, QMessageBox, QTableWidgetItem
 from PyQt6.QtGui import QColor
 from PyQt6.uic import loadUi
@@ -8,7 +9,7 @@ from PyQt6.QtCore import Qt
 class PatientHistory(QWidget):
     def __init__(self):
         super().__init__()
-        loadUi("ui/history.ui", self)
+        loadUi(os.path.join(BASE_DIR, 'ui', 'history.ui'), self)
         self.showMaximized()
         self.patient_history.setColumnWidth(0, 150)
         self.patient_history.horizontalHeader().setStretchLastSection(True)

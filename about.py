@@ -1,14 +1,15 @@
+import os
 from datetime import datetime
 from PyQt6.QtWidgets import QWidget
 from PyQt6.uic import loadUi
-from helpers_functions import get_version
+from helpers_functions import get_version, BASE_DIR
 
 
 class About(QWidget):
 
     def __init__(self):
         super().__init__()
-        loadUi("ui/about.ui", self)
+        loadUi(os.path.join(BASE_DIR, 'ui', 'about.ui'), self)
         production_year = 2023
         current_year = datetime.now().year
         if datetime.now().year == production_year:

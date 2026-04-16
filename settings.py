@@ -1,13 +1,14 @@
+import os
 from PyQt6.QtWidgets import QWidget, QTableWidgetItem, QMessageBox, QPushButton
 from PyQt6.uic import loadUi
-from helpers_functions import db
+from helpers_functions import db, BASE_DIR
 
 
 class Settings(QWidget):
 
     def __init__(self):
         super().__init__()
-        loadUi("ui/settings.ui", self)
+        loadUi(os.path.join(BASE_DIR, 'ui', 'settings.ui'), self)
         self.showMaximized()
         self.conn = db.connect()
         self.load_doctors()

@@ -1,15 +1,16 @@
+import os
 from PyQt6 import QtWidgets
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QWidget, QTableWidgetItem
 from PyQt6.uic import loadUi
-from helpers_functions import db
+from helpers_functions import db, BASE_DIR
 
 
 class PatientsList(QWidget):
 
     def __init__(self):
         super().__init__()
-        loadUi("ui/patients_list.ui", self)
+        loadUi(os.path.join(BASE_DIR, 'ui', 'patients_list.ui'), self)
         self.conn = db.connect()
 
         self.patients_table.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
