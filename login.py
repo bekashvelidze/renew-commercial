@@ -1,7 +1,7 @@
 import os
 import sys
 import json
-from helpers_functions import get_version
+from helpers_functions import get_version, BASE_DIR, resource_path
 from PyQt6 import QtWidgets
 from PyQt6.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PyQt6.uic import loadUi
@@ -10,8 +10,6 @@ from PyQt6.QtCore import Qt
 from main_window import MainWindow
 from db_backup import create_backup
 
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def main_window():
     mainwindow = MainWindow()
@@ -29,6 +27,7 @@ class Login(QMainWindow):
     def __init__(self):
         super(Login, self).__init__()
         loadUi(os.path.join(BASE_DIR, 'ui', 'login.ui'), self)
+        self.database_backup.setIcon(QIcon(resource_path('icons/database_b.svg')))
         self.login_button.clicked.connect(self.authorize)
         self.version.setText(f"ვერსია: {get_version()}")
         self.database_backup.clicked.connect(create_backup)
@@ -58,7 +57,7 @@ loginwindow = Login()
 widget = QtWidgets.QStackedWidget()
 widget.addWidget(loginwindow)
 widget.setWindowTitle('მრავალპროფილური ესთეტიკური მედიცინის ცენტრი "რენიუ"')
-widget.setWindowIcon(QIcon("ui/renew.ico"))
+widget.setWindowIcon(QIcon(resource_path('icons/renew.ico')))
 widget.setFixedWidth(600)
 widget.setFixedHeight(280)
 widget.show()

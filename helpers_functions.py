@@ -9,6 +9,13 @@ from PyQt6.QtWidgets import QApplication, QMessageBox
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 db = Database()
 
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
+
 def critical_error(message):
     app = QApplication.instance()
     if not app:

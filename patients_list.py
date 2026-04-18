@@ -1,9 +1,10 @@
 import os
 from PyQt6 import QtWidgets
 from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QWidget, QTableWidgetItem
 from PyQt6.uic import loadUi
-from helpers_functions import db, BASE_DIR
+from helpers_functions import db, BASE_DIR, resource_path
 
 
 class PatientsList(QWidget):
@@ -11,6 +12,7 @@ class PatientsList(QWidget):
     def __init__(self):
         super().__init__()
         loadUi(os.path.join(BASE_DIR, 'ui', 'patients_list.ui'), self)
+        self.setWindowIcon(QIcon(resource_path('icons/renew.ico')))
         self.conn = db.connect()
 
         self.patients_table.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
@@ -33,9 +35,9 @@ class PatientsList(QWidget):
         self.patients_table.setRowCount(len(patients))
         self.patients_num.setText(f"სულ რეგისტრირებულია {str(len(patients))} პაციენტი.")
         self.patients_table.setColumnWidth(0, 50)
-        self.patients_table.setColumnWidth(1, 150)
-        self.patients_table.setColumnWidth(2, 170)
-        self.patients_table.setColumnWidth(3, 150)
+        self.patients_table.setColumnWidth(1, 200)
+        self.patients_table.setColumnWidth(2, 200)
+        self.patients_table.horizontalHeader().setStretchLastSection(True)
 
         for row_id, patient in enumerate(patients):
             patient_id = QTableWidgetItem(str(patient[0]))

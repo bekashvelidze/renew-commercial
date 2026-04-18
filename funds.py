@@ -4,11 +4,10 @@ import calendar
 from datetime import datetime
 from PyQt6.QtWidgets import QWidget, QTableWidgetItem, QMessageBox
 from PyQt6.uic import loadUi
-from PyQt6.QtGui import QColor
+from PyQt6.QtGui import QColor, QIcon
 from connection import Database
-from helpers_functions import db, BASE_DIR
+from helpers_functions import db, BASE_DIR, resource_path
 
-db = Database()
 today = datetime.now().date().strftime("%Y-%m-%d")
 year = datetime.now().year
 month_name = calendar.month_name[int(today.split("-")[1])]
@@ -60,6 +59,7 @@ class Funds(QWidget):
     def __init__(self, *args):
         super().__init__()
         loadUi(os.path.join(BASE_DIR,'ui', 'pay.ui'), self)
+        self.setWindowIcon(QIcon(resource_path('icons/renew.ico')))
         self.category.setCurrentText("კატეგორია")
         self.years_combo.setCurrentText(str(year))
         self.appo_id = None

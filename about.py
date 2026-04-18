@@ -11,7 +11,7 @@ class About(QWidget):
 
     def __init__(self):
         super().__init__()
-        self.setWindowIcon(QIcon(resource_path('ui/renew.ico')))
+        self.setWindowIcon(QIcon(resource_path('icons/renew.ico')))
         loadUi(os.path.join(BASE_DIR, 'ui', 'about.ui'), self)
         production_year = 2023
         current_year = datetime.now().year

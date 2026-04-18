@@ -24,7 +24,7 @@ def load_database_data():
 def create_backup():
     QApplication.setOverrideCursor(QCursor(Qt.CursorShape.WaitCursor))
     data = load_database_data()
-    
+
     db_host = data["HOST"]
     db_user = data["USER"]
     db_password = data["PASSWORD"]
@@ -49,11 +49,13 @@ def create_backup():
         f"--user={db_user}",
         f"--password={db_password}",
         db_name,
+        f"--single-transaction",
+        f"--quick",
         f"--result-file={sql_filepath}"
     ]
 
     try:
-        subprocess.run(command, check=True)
+        subprocess.run(command, check=True, capture_output=True, shell=True, text=True)
 
         with zipfile.ZipFile(zip_filepath, 'w', zipfile.ZIP_DEFLATED) as zipf:
             zipf.write(sql_filepath, os.path.basename(sql_filepath))
@@ -64,9 +66,11 @@ def create_backup():
         QApplication.restoreOverrideCursor()
         success_message(f"მონაცემთა ბაზის ასლი შეიქმნა წარმატებით!\nმისამართი: {backup_path}\\{zip_filename}")
 
-
+    except subprocess.TimeoutExpired:
+        critical_error("პროცესი შეჩერდა: ბაზის ასლის აღებას ძალიან დიდი დრო დასჭირდა (Timeout).")
     except subprocess.CalledProcessError as e:
-        critical_error(f"ბაზის ასლის აღების პროცესში შეცდომა: {e}")
+        error_msg = e.stderr if e.stderr else e.stdout
+        critical_error(f"ბაზის შეცდომა: {error_msg}")
     except FileNotFoundError:
         critical_error("mariadb-dump ბრძანება არ მოიძებნა. დარწმუნდით, რომ ის თქვენს სისტემურ PATH-შია.")
     except Exception as e:

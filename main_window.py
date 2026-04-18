@@ -1,6 +1,8 @@
 import datetime
 import os
-from helpers_functions import critical_error, close_main_application, db, get_version, check_integer, open_documentation, load_days, load_times, load_types, load_doctors, load_procedures, load_zones, BASE_DIR
+from helpers_functions import (critical_error, close_main_application, db, get_version, check_integer,
+                               open_documentation, load_days, load_times, load_types, load_doctors, load_procedures,
+                               load_zones, BASE_DIR, resource_path)
 from datetime import datetime
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem, QPushButton
@@ -13,6 +15,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         loadUi(os.path.join(BASE_DIR, 'ui', 'main_window.ui'), self)
+        self.setWindowIcon(QIcon(resource_path('icons/renew.ico')))
 
         self.today = datetime.now().date().strftime("%Y-%m-%d")
         self.statusBar().showMessage(f"ვერსია: {get_version()}")
@@ -99,20 +102,21 @@ class MainWindow(QMainWindow):
             from history import PatientHistory
             self.history_win = PatientHistory()
         self.history_win.setWindowTitle("პაციენტის ისტორია")
-        self.history_win.setWindowIcon(QIcon("ui/renew.ico"))
+        self.history_win.setWindowIcon(QIcon(resource_path('icons/renew.ico')))
         self.history_win.show()
 
     def patients_list_window(self):
         if not hasattr(self, 'patients_list_win'):
             from patients_list import PatientsList
             self.patients_list_win = PatientsList()
-        self.patients_list_win.setFixedWidth(550)
-        self.patients_list_win.setFixedHeight(600)
-        x = (self.patients_list_win.screen().availableGeometry().width() // 2) - (self.patients_list_win.width() // 2)
-        y = (self.patients_list_win.screen().availableGeometry().height() // 2) - (self.patients_list_win.height() // 2)
-        self.patients_list_win.move(x, y)
+        self.patients_list_win.showMaximized()
+        # self.patients_list_win.setFixedWidth(550)
+        # self.patients_list_win.setFixedHeight(600)
+        # x = (self.patients_list_win.screen().availableGeometry().width() // 2) - (self.patients_list_win.width() // 2)
+        # y = (self.patients_list_win.screen().availableGeometry().height() // 2) - (self.patients_list_win.height() // 2)
+        # self.patients_list_win.move(x, y)
         self.patients_list_win.setWindowTitle("პაციენტების სია")
-        self.patients_list_win.setWindowIcon(QIcon("ui/renew.ico"))
+        self.patients_list_win.setWindowIcon(QIcon(resource_path('icons/renew.ico')))
         self.patients_list_win.show()
 
     def patients_edit_window(self):
@@ -127,7 +131,7 @@ class MainWindow(QMainWindow):
                     self.patient_edit_win.height() // 2)
         self.patient_edit_win.move(x, y)
         self.patient_edit_win.setWindowTitle("პაციენტის რედაქტირება")
-        self.patient_edit_win.setWindowIcon(QIcon("ui/renew.ico"))
+        self.patient_edit_win.setWindowIcon(QIcon(resource_path('icons/renew.ico')))
         self.patient_edit_win.show()
 
 
@@ -708,7 +712,7 @@ class MainWindow(QMainWindow):
                 self.funds_window = Funds(appo_id, fname, lname, phone, category)
                 self.funds_window.search_client_2()
         self.funds_window.setWindowTitle("საფასურის გადახდა")
-        self.funds_window.setWindowIcon(QIcon("ui/renew.ico"))
+        self.funds_window.setWindowIcon(QIcon(resource_path('icons/renew.ico')))
         self.funds_window.show()
 
     def settings_window(self):
@@ -716,7 +720,7 @@ class MainWindow(QMainWindow):
             from settings import Settings
             self.settings_window_open = Settings()
         self.settings_window_open.setWindowTitle("პარამეტრები")
-        self.settings_window_open.setWindowIcon(QIcon("ui/renew.ico"))
+        self.settings_window_open.setWindowIcon(QIcon(resource_path('icons/renew.ico')))
         self.settings_window_open.show()
 
     def about_window(self):
@@ -724,7 +728,7 @@ class MainWindow(QMainWindow):
             from about import About
             self.about_window_open = About()
         self.about_window_open.setWindowTitle("პროგრამის შესახებ")
-        self.about_window_open.setWindowIcon(QIcon("ui/renew.ico"))
+        self.about_window_open.setWindowIcon(QIcon(resource_path('icons/renew.ico')))
         self.about_window_open.show()
 
     def search_client_cos(self):
