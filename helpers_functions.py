@@ -53,6 +53,14 @@ def load_times():
 def load_days():
     return load_json_files("days.json")
 
+def load_years():
+    conn = db.connect()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM payments")
+    years = [year_num[6].split("-")[0] for year_num in cursor]
+
+    return years
+
 def get_version():
     try:
         with open(os.path.join(BASE_DIR, 'version.json'), "r") as file:
@@ -95,6 +103,20 @@ def load_zones():
 
 def load_types():
     return get_data_from_db("SELECT * FROM types")
+
+def load_categories():
+    conn = db.connect()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM categories")
+
+    return cursor
+
+def load_payment_methods():
+    conn = db.connect()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM payment_methods")
+
+    return cursor
 
 def close_main_application():
     sys.exit()

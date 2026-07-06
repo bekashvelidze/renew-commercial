@@ -5,8 +5,8 @@ from datetime import datetime
 from PyQt6.QtWidgets import QWidget, QTableWidgetItem, QMessageBox
 from PyQt6.uic import loadUi
 from PyQt6.QtGui import QColor, QIcon
-from connection import Database
-from helpers_functions import db, BASE_DIR, resource_path
+from helpers_functions import (db, BASE_DIR, resource_path, check_integer, load_years,
+                               load_categories, load_payment_methods)
 
 today = datetime.now().date().strftime("%Y-%m-%d")
 year = datetime.now().year
@@ -14,44 +14,11 @@ month_name = calendar.month_name[int(today.split("-")[1])]
 month_number = int(today.split("-")[1])
 
 
-def check_integer(number):
-    try:
-        if int(number):
-            return True
-    except ValueError:
-        return False
-
-
 def load_months():
     with open(os.path.join(BASE_DIR, 'months.json'), "r", encoding="utf-8") as file:
         months = json.load(file)
 
     return months
-
-
-def load_years():
-    conn = db.connect()
-    cursor_years = conn.cursor()
-    cursor_years.execute("SELECT * FROM payments")
-    years = [year_num[6].split("-")[0] for year_num in cursor_years]
-
-    return years
-
-
-def load_categories():
-    conn = db.connect()
-    cursor_cats = conn.cursor()
-    cursor_cats.execute("SELECT * FROM categories")
-
-    return cursor_cats
-
-
-def load_payment_methods():
-    conn = db.connect()
-    cursor_methods = conn.cursor()
-    cursor_methods.execute("SELECT * FROM payment_methods")
-
-    return cursor_methods
 
 
 class Funds(QWidget):
