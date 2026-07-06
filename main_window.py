@@ -110,11 +110,6 @@ class MainWindow(QMainWindow):
             from patients_list import PatientsList
             self.patients_list_win = PatientsList()
         self.patients_list_win.showMaximized()
-        # self.patients_list_win.setFixedWidth(550)
-        # self.patients_list_win.setFixedHeight(600)
-        # x = (self.patients_list_win.screen().availableGeometry().width() // 2) - (self.patients_list_win.width() // 2)
-        # y = (self.patients_list_win.screen().availableGeometry().height() // 2) - (self.patients_list_win.height() // 2)
-        # self.patients_list_win.move(x, y)
         self.patients_list_win.setWindowTitle("პაციენტების სია")
         self.patients_list_win.setWindowIcon(QIcon(resource_path('icons/renew.ico')))
         self.patients_list_win.show()
