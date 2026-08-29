@@ -9,6 +9,12 @@ from PyQt6.QtWidgets import QApplication, QMessageBox
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 db = Database()
 
+def local_version():
+    with open("version.json", "r") as file:
+        data = json.load(file)
+
+    return data["version"]
+
 def resource_path(relative_path):
     try:
         base_path = sys._MEIPASS

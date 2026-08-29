@@ -1,6 +1,7 @@
 import os
 import shutil
 import subprocess
+from helpers_functions import local_version
 
 
 print("Building with PyInstaller...")
@@ -14,6 +15,8 @@ if result.returncode != 0:
 print("PyInstaller completed successfully!")
 
 dist_dir = 'dist/Renew/_internal'
+folder_to_copy = 'dist/Renew'
+release_dir = f'D:/Commercial Orders/Renew Commercial/Releases/Renew {local_version()}/'
 files_to_copy = [
     'database.json',
     'days.json',
@@ -30,7 +33,7 @@ folders_to_copy = [
     'icons'
 ]
 
-print(f"Copying files to {dist_dir}...")
+print(f"Copying files to {dist_dir} and {release_dir}...")
 
 for file in files_to_copy:
     if os.path.exists(file):
@@ -49,7 +52,7 @@ for folder in folders_to_copy:
         print(f"✓ Copied folder {folder}/")
     else:
         print(f"⚠ Warning: folder {folder}/ not found")
-
+shutil.copytree(folder_to_copy, release_dir)
 print("\n🎉 Build completed!")
-print(f"Your executable and files are in: {dist_dir}/")
-print(f"Main executable: {dist_dir}/main.exe")
+print(f"Your executable and files are in: {dist_dir} and {release_dir}./")
+print(f"Main executable: {dist_dir}/main.exe and {release_dir}/main.exe")

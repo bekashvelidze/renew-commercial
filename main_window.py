@@ -724,6 +724,7 @@ class MainWindow(QMainWindow):
             self.about_window_open = About()
         self.about_window_open.setWindowTitle("პროგრამის შესახებ")
         self.about_window_open.setWindowIcon(QIcon(resource_path('icons/renew.ico')))
+        self.about_window_open.setFixedSize(450, 243)
         self.about_window_open.show()
 
     def search_client_cos(self):
